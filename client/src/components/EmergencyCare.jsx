@@ -1,102 +1,99 @@
-import { Link } from "react-router-dom";
-import { FaSyringe, FaExclamationTriangle } from "react-icons/fa";
+import React from 'react';
+import { ShieldAlert, Dog, Bug, Zap, PhoneCall } from 'lucide-react';
 
-export default function EmergencyCare() {
-  const services = [
+import {
+  FaSyringe,
+} from "react-icons/fa";
+
+const EmergencyCare = () => {
+  const emergencyServices = [
     {
+      id: 1,
       title: "Dog Bite Injection",
-      desc: "Anti-rabies vaccination & wound care.",
-      price: "₹300+",
-      btn: "Book Now",
+      description: "Anti-rabies vaccination & wound care for dog bites.",
+      price: "₹300",
+      icon: <FaSyringe  className="w-6 h-6 text-cyan-500" />,
+      buttonText: "Book Now",
+      accent: "border-gray-100"
     },
     {
+      id: 2,
       title: "Monkey Bite Injection",
-      desc: "Immediate injection & care for injuries.",
-      price: "₹300+",
-      btn: "Book Now",
+      description: "Immediate injection & care for monkey bite injuries.",
+      price: "₹300",
+      icon: <FaSyringe  className="w-6 h-6 text-cyan-500" />,
+      buttonText: "Book Now",
+      accent: "border-gray-100"
     },
     {
-      title: "Snake Bite Emergency",
-      desc: "Urgent anti-venom & first-aid treatment.",
-      price: "₹500+",
-      btn: "Get Help",
-      highlight: true,
-    },
+      id: 3,
+      title: "Snake Bite (Emergency)",
+      description: "Emergency anti-venom & first-aid for snake bites.",
+      price: "₹500",
+      icon: <ShieldAlert className="w-6 h-6 text-red-500" />,
+      buttonText: "Get Help",
+      accent: "border-red-200 bg-red-50/30",
+      isUrgent: true
+    }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-r from-red-500 via-pink-500 to-red-600 text-white relative overflow-hidden">
-      
-      {/* Glow Effects */}
-      <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl top-0 left-0"></div>
-      <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl bottom-0 right-0"></div>
-
-      {/* Heading */}
-      <div className="text-center max-w-2xl mx-auto px-6 relative z-10">
-        <h2 className="text-4xl font-bold flex items-center justify-center gap-2">
-          🚨 Emergency Care
+    <section className="py-16 px-6 max-w-7xl mx-auto font-sans">
+      {/* Header Section */}
+      <div className="text-center mb-12">
+        <span className="text-red-500 font-bold tracking-widest text-xs uppercase">
+          Emergency Care
+        </span>
+        <h2 className="flex items-center justify-center gap-3 text-3xl md:text-4xl font-bold text-slate-800 mt-4">
+          <span className="text-4xl">🐍</span> Bite & Emergency <span className="text-red-500">Injection Care</span>
         </h2>
-        <p className="mt-4 text-white/90">
-          Immediate professional response for animal bite emergencies. 
-          <span className="font-semibold text-yellow-300"> Don’t wait — get help now.</span>
+        <p className="text-slate-500 mt-4 max-w-2xl mx-auto leading-relaxed">
+          Immediate professional response for animal bite emergencies. Don't wait — get help now.
         </p>
       </div>
 
-      {/* Cards */}
-      <div className="mt-14 grid md:grid-cols-3 gap-8 px-6 max-w-6xl mx-auto relative z-10">
-        
-        {services.map((service, index) => (
-          <div
-            key={index}
-            className={`p-6 rounded-2xl backdrop-blur-lg shadow-lg transition duration-300 hover:scale-105 ${
-              service.highlight
-                ? "bg-white text-red-600 scale-105 border-2 border-yellow-300"
-                : "bg-white/20"
-            }`}
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {emergencyServices.map((service) => (
+          <div 
+            key={service.id} 
+            className={`rounded-2xl border-2 p-8 transition-all hover:shadow-lg ${service.accent}`}
           >
-            {/* Icon */}
-            <div className="text-3xl mb-3">
-              {service.highlight ? "⚠️" : <FaSyringe />}
+            <div className="mb-6">
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${service.isUrgent ? 'bg-red-100' : 'bg-cyan-100'}`}>
+                {service.icon}
+              </div>
             </div>
 
-            {/* Title */}
-            <h3 className="text-xl font-semibold">
+            <h3 className="text-xl font-bold text-slate-800 mb-2">
               {service.title}
             </h3>
-
-            {/* Desc */}
-            <p className="mt-2 text-sm">
-              {service.desc}
+            <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+              {service.description}
             </p>
 
-            {/* Price */}
-            <p className="mt-4 font-bold text-lg">
-              {service.price}
-            </p>
-
-            {/* CTA */}
-            <Link
-              to="/booking"
-              className={`block mt-4 text-center py-2 rounded-lg font-medium transition ${
-                service.highlight
-                  ? "bg-red-600 text-white hover:bg-red-700 animate-pulse"
-                  : "bg-white text-red-600 hover:bg-gray-100"
-              }`}
-            >
-              {service.btn}
-            </Link>
+            <div className="flex items-center justify-between mt-auto">
+              <div className="flex flex-col">
+                <span className="text-cyan-500 font-bold text-xl">
+                  {service.price} <span className="text-slate-400 text-xs font-normal">onwards</span>
+                </span>
+              </div>
+              <button 
+                className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+                  service.isUrgent 
+                  ? 'bg-red-500 text-white hover:bg-red-600' 
+                  : 'bg-cyan-400 text-white hover:bg-cyan-500'
+                }`}
+              >
+                {service.buttonText}
+              </button>
+            </div>
           </div>
         ))}
-
       </div>
 
-      {/* Bottom Alert */}
-      <div className="mt-12 text-center relative z-10">
-        <p className="text-sm text-white/90 flex justify-center items-center gap-2">
-          <FaExclamationTriangle className="text-yellow-300" />
-          Available 24/7 • Fast Response • Certified Professionals
-        </p>
-      </div>
     </section>
   );
-}
+};
+
+export default EmergencyCare;

@@ -1,10 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import API from "../services/api.js";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     name: "",
@@ -21,7 +25,7 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const res = await axios.post(
+        const res = await API.post(
           "http://localhost:5000/api/auth/login",
           {
             email: data.email,
@@ -30,18 +34,20 @@ const Auth = () => {
         );
 
         localStorage.setItem("token", res.data.token);
-        alert("Login successful ✅");
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        alert("Login successful");
+        navigate("/");
       } else {
-        await axios.post(
+        await API.post(
           "http://localhost:5000/api/auth/signup",
           data
         );
 
-        alert("Signup successful ✅");
+        alert("Signup successful");
         setIsLogin(true);
       }
     } catch (err) {
-      alert("Something went wrong ❌");
+      alert(err.response?.data?.message || "Error occurred" );
     }
   };
 

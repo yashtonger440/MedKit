@@ -59,9 +59,9 @@ export default function DoctorCall() {
 
           {/* Image */}
           <img
-            src="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b"
+            src="https://images.unsplash.com/photo-1758691463333-c79215e8bc3b"
             alt="Doctor Consultation"
-            className="relative z-10 w-[350px] md:w-[420px] rounded-2xl shadow-2xl"
+            className="relative z-10 w-[450px] md:w-[620px] rounded-2xl shadow-2xl"
           />
 
           {/* Floating Card */}
