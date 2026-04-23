@@ -19,13 +19,8 @@ export default function Ambulance() {
           <img
             src="https://images.unsplash.com/photo-1619025873875-59dfdd2bbbd6"
             alt="Ambulance Service"
-            className="relative z-10 w-[350px] md:w-[420px] rounded-2xl shadow-2xl"
+            className="relative z-10 w-[350px] md:w-[400px] rounded-2xl shadow-2xl"
           />
-
-          {/* Floating Badge */}
-          {/* <div className="absolute top-5 left-5 bg-white text-red-600 px-4 py-2 rounded-full shadow font-semibold text-sm">
-            🚨 24/7 Emergency
-          </div> */}
         </div>
 
         {/* RIGHT CONTENT */}
@@ -33,11 +28,11 @@ export default function Ambulance() {
           
           <h2 className="text-4xl font-bold leading-tight">
             Ambulance Service <br />
-            <span className="text-yellow-300">We’re Minutes Away</span>
+            <span className="text-yellow-300">We're Minutes Away</span>
           </h2>
 
           <p className="mt-5 text-white/90">
-            Fast, reliable ambulance dispatch for emergencies and hospital transfers in Haldwani & Kathgodam. Every second counts — and we don’t waste them.
+            Fast, reliable ambulance dispatch for emergencies and hospital transfers in Haldwani & Kathgodam. Every second counts — and we don't waste them.
           </p>
 
           {/* Features */}
