@@ -39,7 +39,7 @@ export default function ElderlyCarePlans() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-100 px-6">
+    <section className="py-20 bg-linear-to-br from-blue-50 to-cyan-100 px-6">
 
       {/* TOP CONTENT */}
       <motion.div
@@ -61,7 +61,7 @@ export default function ElderlyCarePlans() {
           comfort, and regular health monitoring.
         </p>
 
-        <p className="mt-3 text-gray-900 text-medium font-bold">
+        <p className="mt-3 text-gray-900 text-medium font-semibold">
           👉 Ensure your parents are cared for even when you're not around.
         </p>
       </motion.div>
@@ -74,9 +74,9 @@ export default function ElderlyCarePlans() {
         className="max-w-2xl mx-auto mb-12"
       >
         <img
-          src="https://images.unsplash.com/photo-1584515933487-779824d29309"
+          src="/images/careforparents.jpg"
           alt="Elderly Care"
-          className="w-full mt-3 h-[550px] object-cover rounded-3xl shadow-2xl"
+          className="w-full mt-3 h-137.5 object-cover rounded-3xl shadow-2xl"
         />
       </motion.div>
 
@@ -99,7 +99,7 @@ export default function ElderlyCarePlans() {
 
             {/* POPULAR TAG */}
             {plan.popular && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-xs px-4 py-1 rounded-full shadow">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-linear-to-r from-blue-500 to-cyan-400 text-white text-xs px-4 py-1 rounded-full shadow">
                 Most Popular
               </span>
             )}
@@ -135,7 +135,7 @@ export default function ElderlyCarePlans() {
             <button
               className={`mt-8 w-full py-3 rounded-full font-semibold transition ${
                 plan.popular
-                  ? "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg hover:scale-105"
+                  ? "bg-linear-to-r from-blue-500 to-cyan-400 text-white shadow-lg hover:scale-105"
                   : "border border-blue-500 text-blue-600 hover:bg-blue-50"
               }`}
             >

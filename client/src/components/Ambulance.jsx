@@ -2,7 +2,7 @@ import { FaPhoneAlt, FaWhatsapp, FaAmbulance } from "react-icons/fa";
 
 export default function Ambulance() {
   return (
-    <section className="py-20 bg-gradient-to-r from-red-600 via-red-500 to-pink-500 text-white relative overflow-hidden">
+    <section className="py-20 bg-linear-to-r from-red-600 via-red-500 to-pink-500 text-white relative overflow-hidden">
       
       {/* Glow Effects */}
       <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl top-0 left-0"></div>
@@ -17,10 +17,18 @@ export default function Ambulance() {
           <div className="absolute w-80 h-80 bg-white/20 backdrop-blur-lg rounded-full"></div>
 
           <img
-            src="https://images.unsplash.com/photo-1619025873875-59dfdd2bbbd6"
+            src="/images/ambulance.jpg"
             alt="Ambulance Service"
-            className="relative z-10 w-[350px] md:w-[400px] rounded-2xl shadow-2xl"
+            className="relative z-10 w-100 md:w-150 rounded-2xl shadow-2xl"
           />
+
+          <div className="absolute bottom-0 left-108 z-10 bg-gray-300 rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
+            <div>
+              <p className="text-sm font-bold text-blue-600">🚨 24/7 Emergency</p>
+              <p className="text-sm font-semibold text-gray-700">Response in minutes</p>
+            </div>
+          </div>
+
         </div>
 
         {/* RIGHT CONTENT */}

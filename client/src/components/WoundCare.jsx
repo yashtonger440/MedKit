@@ -32,14 +32,14 @@ export default function WoundCare() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+    <section className="py-20 bg-linear-to-b from-white to-blue-50">
 
       {/* Heading */}
       <div className="text-center max-w-2xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-gray-800">
           🩹 Dressing & Injury Management
         </h2>
-        <p className="mt-4 text-gray-600">
+        <p className="mt-4 text-slate-500">
           Professional wound care, burn treatment, and plaster services at your doorstep.
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function WoundCare() {
             {/* CTA */}
             <Link
               to="/booking"
-              className="mt-5 inline-block w-full text-center bg-gradient-to-r from-blue-500 to-cyan-400 text-white py-2 rounded-lg font-medium hover:scale-105 transition"
+              className="mt-5 inline-block w-full text-center bg-linear-to-r from-blue-500 to-cyan-400 text-white py-2 rounded-lg font-medium hover:scale-105 transition"
             >
               Book Now
             </Link>

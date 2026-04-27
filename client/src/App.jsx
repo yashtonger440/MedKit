@@ -8,6 +8,13 @@ import Services from "./pages/Services";
 import ScrollManager from "./components/ScrollManager";
 import AmbulancePage from "./pages/AmbulancePage";
 import DoctorBooking from "./pages/DoctorBooking";
+import Partners from "./pages/Partners";
+import PartnerForm from "./pages/PartnerForm";
+import AuthDoctor from "./pages/AuthDoctor";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AuthAdmin from "./pages/admin/AuthAdmin";
+import AdminDoctors from "./pages/admin/AdminDoctors";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -19,9 +26,20 @@ function App() {
         <Route path="/booking" element={<Booking />}/>
         <Route path="/ambulance" element={<AmbulancePage />}/>
         <Route path="/bookadoctor" element={<DoctorBooking />}/>
+        <Route path="/partners" element={<Partners />}/>
+        <Route path="/partnerform" element={<PartnerForm />}/>
         <Route path="/login" element={<Auth />}/>
+        <Route path="/doctorlogin" element={<AuthDoctor />}/>
         <Route path="/profile" element={<Profile />}/>
         <Route path="/bookinghistory" element={<BookingHistory />}/>
+
+        {/* Admin Dashboard */}
+        <Route path="/admin" element={<AdminDashboard />}/>
+        <Route path="/admin-login" element={<AuthAdmin />}/>
+        <Route path="/admin/doctors" element={<AdminDoctors />}/>
+
+         {/* Protected Routes */}
+        <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>
       </Routes>
     </>
   );

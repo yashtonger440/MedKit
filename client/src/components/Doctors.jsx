@@ -9,7 +9,7 @@ export default function Doctors() {
       exp: "8+ years experience",
       rating: "4.8",
       available: true,
-      // img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d",
+      img: "/images/doctors/rahulsharma.jpg",
     },
     {
       name: "Dr. Neha Verma",
@@ -18,7 +18,7 @@ export default function Doctors() {
       exp: "6+ years experience",
       rating: "4.7",
       available: true,
-      // img: "https://plus.unsplash.com/premium_photo-1664475450083-5c9eef17a191",
+      img: "/images/doctors/nehaverma.jpg",
     },
     {
       name: "Dr. Amit Joshi",
@@ -27,7 +27,7 @@ export default function Doctors() {
       exp: "10+ years experience",
       rating: "4.9",
       available: false,
-      // img: "https://plus.unsplash.com/premium_photo-1661443940692-c3b1a66c80ad",
+      img: "/images/doctors/amitjoshi.jpg",
     },
     {
       name: "Dr. Priya Rawat",
@@ -36,12 +36,12 @@ export default function Doctors() {
       exp: "5+ years experience",
       rating: "4.6",
       available: true,
-      // img: "https://plus.unsplash.com/premium_photo-1661402410455-964507d8dd95",
+      img: "/images/doctors/priyarawat.jpg",
     },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+    <section className="py-20 bg-linear-to-b from-white to-blue-50">
       
       {/* Heading */}
       <div className="text-center max-w-2xl mx-auto px-6">

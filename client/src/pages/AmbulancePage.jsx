@@ -9,7 +9,7 @@ export default function Ambulance() {
     <div className="bg-gray-50">
 
       {/* HERO SECTION */}
-      <section className="bg-gradient-to-r from-red-500 to-red-600 text-white py-20 px-6">
+      <section className="bg-linear-to-r from-red-500 to-red-600 text-white py-20 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 items-center gap-10">
 
           {/* TEXT */}
@@ -39,7 +39,7 @@ export default function Ambulance() {
             <img
               src="https://images.unsplash.com/photo-1686797366685-6420f4bd9c2f"
               alt="Ambulance"
-              className="rounded-3xl shadow-xl w-full h-[350px] object-cover"
+              className="rounded-3xl shadow-xl w-full h-87.5 object-cover"
             />
           </div>
 

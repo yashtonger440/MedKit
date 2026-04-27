@@ -30,12 +30,12 @@ const DoctorBooking = () => {
     { name: "Orthopadic", price: 799, icon: <FaBone /> },
     { name: "Cardiology", price: 899, icon: <FaHeartbeat /> },
     { name: "Physician", price: 499, icon: <FaUserMd /> },
+    { name: "Dietitian", price: 399, icon: <FaUserMd /> },
     { name: "Pediatrician", price: 599, icon: <FaBaby /> },
     { name: "Dermatology", price: 699, icon: <FaEye /> },
     { name: "Gastrology", price: 699, icon: <FaHeartbeat /> },
     { name: "Gynecologist", price: 799, icon: <FaFemale /> },
     { name: "ENT", price: 599, icon: <FaUserMd /> },
-    { name: "Dietitian", price: 399, icon: <FaUserMd /> },
   ];
 
   const selected = doctors.find((d) => d.name === selectedDoctor);
@@ -64,13 +64,10 @@ const DoctorBooking = () => {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 px-6 py-20">
-
+      <div className="min-h-screen bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
         {/* Heading */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800">
-            Book a Doctor 👨‍⚕️
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-800">Book a Doctor 👨‍⚕️</h1>
           <p className="text-gray-600 mt-2">
             Choose your specialist and get consultation at home or online
           </p>
@@ -78,7 +75,6 @@ const DoctorBooking = () => {
 
         {/* Doctor Selection */}
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 mb-10">
-
           {doctors.map((doc, i) => (
             <div
               key={i}
@@ -95,25 +91,21 @@ const DoctorBooking = () => {
               <p className="text-sm mt-1">₹{doc.price}</p>
             </div>
           ))}
-
         </div>
 
         {/* FORM */}
-        <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-
-            {/* Consultation Type */}
+        {/* FORM */}
+        <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl p-6 md:p-7 rounded-3xl shadow-2xl border border-white/40">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* TYPE */}
             <div>
-              <label className="block mb-1 font-medium">
+              <label className="text-xs font-semibold text-gray-500">
                 Consultation Type
               </label>
+
               <select
-                name="type"
-                onChange={(e) =>
-                  setForm({ ...form, type: e.target.value })
-                }
-                className="w-full p-3 border rounded-lg"
+                onChange={(e) => setForm({ ...form, type: e.target.value })}
+                className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition"
               >
                 <option>Call</option>
                 <option>Video</option>
@@ -121,50 +113,44 @@ const DoctorBooking = () => {
               </select>
             </div>
 
-            {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* DATE + TIME */}
+            <div className="grid grid-cols-2 gap-3">
               <input
                 type="date"
                 required
-                onChange={(e) =>
-                  setForm({ ...form, date: e.target.value })
-                }
-                className="p-3 border rounded-lg"
+                onChange={(e) => setForm({ ...form, date: e.target.value })}
+                className="p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition"
               />
+
               <input
                 type="time"
                 required
-                onChange={(e) =>
-                  setForm({ ...form, time: e.target.value })
-                }
-                className="p-3 border rounded-lg"
+                onChange={(e) => setForm({ ...form, time: e.target.value })}
+                className="p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition"
               />
             </div>
 
-            {/* Phone */}
+            {/* PHONE */}
             <input
               type="text"
-              placeholder="Phone Number"
+              placeholder="📞 Phone Number"
               required
-              onChange={(e) =>
-                setForm({ ...form, phone: e.target.value })
-              }
-              className="w-full p-3 border rounded-lg"
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              className="w-full p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition"
             />
 
-            {/* Address */}
+            {/* ADDRESS */}
             <textarea
-              placeholder="Enter Address"
+              placeholder="📍 Enter Address"
               required
-              onChange={(e) =>
-                setForm({ ...form, address: e.target.value })
-              }
-              className="w-full p-3 border rounded-lg"
+              rows={2}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
+              className="w-full p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition resize-none"
             />
 
             {/* PRICE BOX */}
-            <div className="flex justify-between items-center bg-blue-50 p-4 rounded-lg">
-              <span className="font-medium">Consultation Fee</span>
+            <div className="flex justify-between items-center bg-linear-to-r from-blue-50 to-cyan-50 p-3 rounded-xl">
+              <span className="text-sm text-gray-600">Consultation Fee</span>
               <span className="text-blue-600 font-bold text-lg">
                 ₹{selected.price}
               </span>
@@ -174,14 +160,12 @@ const DoctorBooking = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-semibold hover:scale-105 transition"
+              className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold hover:scale-[1.02] active:scale-[0.98] transition duration-300 shadow-md"
             >
               {loading ? "Booking..." : "Confirm Booking"}
             </button>
-
           </form>
         </div>
-
       </div>
 
       <Footer />

@@ -22,7 +22,7 @@ export default function Coverage() {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-25 bg-gray-50">
 
       <div className="max-w-5xl mx-auto text-center px-4">
 

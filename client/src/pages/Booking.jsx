@@ -63,7 +63,6 @@ const Booking = () => {
 
       alert("Booking successful");
       navigate("/");
-
     } catch (err) {
       alert(err.response?.data?.message || "Booking failed");
     } finally {
@@ -75,12 +74,12 @@ const Booking = () => {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 px-6 py-20">
+      <div className="min-h-screen mt-4 bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
 
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
 
-          {/* LEFT INFO PANEL */}
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
+          {/* LEFT PANEL */}
+          <div className="bg-white/70 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/40">
 
             <h2 className="text-3xl font-bold text-gray-800">
               Book Healthcare Service
@@ -90,31 +89,33 @@ const Booking = () => {
               Get professional healthcare services at your home quickly and safely.
             </p>
 
+            {/* IMAGE ADDED */}
+            <img
+              src="https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Healthcare"
+              className="mt-5 rounded-2xl h-48 w-full object-cover shadow-md"
+            />
+
             <div className="mt-8 space-y-5">
 
               <div className="flex gap-4 items-center">
                 <FaUserMd className="text-blue-500 text-xl" />
-                <p className="text-gray-700">Certified healthcare professionals</p>
+                <p className="text-gray-700">Certified professionals</p>
               </div>
 
               <div className="flex gap-4 items-center">
                 <FaClock className="text-blue-500 text-xl" />
-                <p className="text-gray-700">Fast response within 30 minutes</p>
+                <p className="text-gray-700">Response within 30 minutes</p>
               </div>
 
               <div className="flex gap-4 items-center">
                 <FaShieldAlt className="text-blue-500 text-xl" />
-                <p className="text-gray-700">100% safe & hygienic service</p>
-              </div>
-
-              <div className="flex gap-4 items-center">
-                <FaMapMarkerAlt className="text-blue-500 text-xl" />
-                <p className="text-gray-700">Available in your local area</p>
+                <p className="text-gray-700">100% safe & hygienic</p>
               </div>
 
             </div>
 
-            <div className="mt-10 bg-blue-50 p-4 rounded-xl">
+            <div className="mt-4 bg-blue-50 p-4 rounded-xl">
               <p className="text-sm text-gray-700">
                 ⚡ Need urgent help? Call now:
               </p>
@@ -126,37 +127,32 @@ const Booking = () => {
           </div>
 
           {/* RIGHT FORM */}
-          <div className="bg-white shadow-xl rounded-2xl p-8">
+          <div className="bg-white/60 backdrop-blur-xl shadow-2xl rounded-3xl p-8 border border-white/40">
 
             <form onSubmit={handleSubmit} className="space-y-5">
 
-              {/* Service */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select Service
-                </label>
-                <select
-                  name="service"
-                  value={form.service}
-                  onChange={handleChange}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                >
-                  {services.map((s, i) => (
-                    <option key={i} value={s.name}>
-                      {s.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              {/* SERVICE */}
+              <select
+                name="service"
+                value={form.service}
+                onChange={handleChange}
+                className="w-full p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                {services.map((s, i) => (
+                  <option key={i} value={s.name}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
 
-              {/* Date & Time */}
+              {/* DATE & TIME */}
               <div className="grid grid-cols-2 gap-4">
                 <input
                   type="date"
                   name="date"
                   value={form.date}
                   onChange={handleChange}
-                  className="p-3 border rounded-lg"
+                  className="p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
 
@@ -165,43 +161,43 @@ const Booking = () => {
                   name="time"
                   value={form.time}
                   onChange={handleChange}
-                  className="p-3 border rounded-lg"
+                  className="p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
 
-              {/* Address */}
+              {/* ADDRESS */}
               <textarea
                 name="address"
                 value={form.address}
                 onChange={handleChange}
                 placeholder="Enter full address"
-                className="w-full p-3 border rounded-lg"
+                className="w-full p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
                 required
               />
 
-              {/* Phone */}
+              {/* PHONE */}
               <input
                 type="text"
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="Phone number"
-                className="w-full p-3 border rounded-lg"
+                className="w-full p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
                 required
               />
 
-              {/* Notes */}
+              {/* NOTES */}
               <textarea
                 name="notes"
                 value={form.notes}
                 onChange={handleChange}
                 placeholder="Additional notes (optional)"
-                className="w-full p-3 border rounded-lg"
+                className="w-full p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
               />
 
-              {/* Price */}
-              <div className="flex justify-between items-center bg-gradient-to-r from-blue-50 to-cyan-50 p-4 rounded-xl border">
+              {/* PRICE */}
+              <div className="flex justify-between items-center bg-linear-to-r from-blue-50 to-cyan-50 p-4 rounded-xl shadow-inner">
                 <span className="font-medium text-gray-700">
                   Total Price
                 </span>
@@ -210,11 +206,11 @@ const Booking = () => {
                 </span>
               </div>
 
-              {/* Submit */}
+              {/* BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-semibold hover:scale-105 transition"
+                className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold hover:scale-105 transition shadow-lg"
               >
                 {loading ? "Booking..." : "Confirm Booking"}
               </button>

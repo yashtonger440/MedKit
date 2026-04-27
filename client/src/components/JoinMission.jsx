@@ -9,7 +9,7 @@ export default function JoinMission() {
     {
       icon: <FaUserNurse />,
       role: "HEALTHCARE TECHNICIAN",
-      title: "Bring care closer to every home",
+      title: "Bring care closer to every home that suits everybody",
       desc: "Serve patients in your own city with flexible hours — from injections to ECGs.",
     },
     {
@@ -87,9 +87,9 @@ export default function JoinMission() {
           {/* RIGHT IMAGE */}
           <div>
             <img
-              src="https://images.unsplash.com/photo-1581595219315-a187dd40c322"
+              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef"
               alt="Healthcare Team"
-              className="rounded-3xl shadow-xl w-full h-[380px] object-cover"
+              className="rounded-3xl shadow-xl w-full h-95 object-cover"
             />
           </div>
 
@@ -105,7 +105,7 @@ export default function JoinMission() {
             >
 
               {/* ICON */}
-              <div className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white w-12 h-12 flex items-center justify-center rounded-xl mb-4 text-xl">
+              <div className="bg-linear-to-r from-blue-500 to-cyan-400 text-white w-12 h-12 flex items-center justify-center rounded-xl mb-4 text-xl">
                 {p.icon}
               </div>
 
@@ -125,7 +125,7 @@ export default function JoinMission() {
               </p>
 
               {/* BUTTON */}
-              <button className="mt-6 w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full font-medium hover:scale-105 transition">
+              <button className="mt-6 w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-medium hover:scale-105 transition">
                 Join as Partner
               </button>
 

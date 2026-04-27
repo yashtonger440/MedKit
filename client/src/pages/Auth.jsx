@@ -1,12 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import API from "../services/api.js";
 import { useNavigate } from "react-router-dom";
+import { FaUser, FaUserMd, FaUserShield } from "react-icons/fa";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(null); 
 
   const navigate = useNavigate();
 
@@ -25,29 +26,33 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const res = await API.post(
-          "http://localhost:5000/api/auth/login",
-          {
-            email: data.email,
-            password: data.password,
-          }
-        );
+        const res = await API.post("/auth/login", {
+          email: data.email,
+          password: data.password,
+          role: selectedRole, // ⭐ send role
+        });
 
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
+
         alert("Login successful");
-        navigate("/");
+
+        // Role based redirect
+        if (selectedRole === "admin") navigate("/admin");
+        else if (selectedRole === "doctor") navigate("/doctor");
+        else navigate("/");
+
       } else {
-        await API.post(
-          "http://localhost:5000/api/auth/signup",
-          data
-        );
+        await API.post("/auth/signup", {
+          ...data,
+          role: selectedRole,
+        });
 
         alert("Signup successful");
         setIsLogin(true);
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Error occurred" );
+      alert(err.response?.data?.message || "Error occurred");
     }
   };
 
@@ -55,7 +60,7 @@ const Auth = () => {
     <div className="min-h-screen flex">
 
       {/* LEFT SIDE */}
-      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-600 to-cyan-400 text-white flex-col justify-center items-center p-10">
+      <div className="hidden md:flex w-1/2 bg-linear-to-br from-blue-600 to-cyan-400 text-white flex-col justify-center items-center p-10">
         <h1 className="text-4xl font-bold mb-4">MedKit</h1>
         <p className="text-lg text-center max-w-sm">
           Get healthcare services at your doorstep within 30 minutes.
@@ -67,78 +72,122 @@ const Auth = () => {
 
         <div className="bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-md transition-all duration-500">
 
-          {/* Heading */}
-          <h2 className="text-2xl font-bold text-center mb-6">
-            {isLogin ? "Login" : "Create Account"}
-          </h2>
+          {/* STEP 1: ROLE SELECTION */}
+          {!selectedRole ? (
+            <>
+              <h2 className="text-2xl font-bold text-center mb-6">
+                Login As
+              </h2>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-3 gap-4">
 
-            {!isLogin && (
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                required
-              />
-            )}
+                {/* USER */}
+                <div
+                  onClick={() => setSelectedRole("user")}
+                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
+                >
+                  <FaUser className="mx-auto text-2xl text-blue-500 mb-2" />
+                  <p className="text-sm font-medium">User</p>
+                </div>
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-              required
-            />
+                {/* DOCTOR */}
+                <div
+                 onClick={() => navigate("/doctorlogin")}
+                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
+                >
+                  <FaUserMd className="mx-auto text-2xl text-green-500 mb-2" />
+                  <p className="text-sm font-medium">Doctor</p>
+                </div>
 
-            {/* Password Field */}
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Password"
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                required
-              />
+                {/* ADMIN */}
+                <div
+                  onClick={() => navigate("/admin-login")}
+                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
+                >
+                  <FaUserShield className="mx-auto text-2xl text-red-500 mb-2" />
+                  <p className="text-sm font-medium">Admin</p>
+                </div>
 
-              <span
-                className="absolute right-3 top-3 cursor-pointer text-gray-500"
-                onClick={() => setShowPassword(!showPassword)}
+              </div>
+            </>
+          ) : (
+            <>
+              {/* BACK BUTTON */}
+              <button
+                onClick={() => setSelectedRole(null)}
+                className="text-sm text-blue-500 mb-3"
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </span>
-            </div>
+                ← Change Role
+              </button>
 
-            {/* Button */}
-            <button
-              className={`w-full py-3 rounded-lg text-white font-semibold transition ${
-                isLogin
-                  ? "bg-blue-500 hover:bg-blue-600"
-                  : "bg-green-500 hover:bg-green-600"
-              }`}
-            >
-              {isLogin ? "Login" : "Signup"}
-            </button>
+              {/* HEADING */}
+              <h2 className="text-2xl font-bold text-center mb-6 capitalize">
+                {isLogin ? `Login as ${selectedRole}` : `Signup as ${selectedRole}`}
+              </h2>
 
-          </form>
+              {/* FORM */}
+              <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* Toggle */}
-          <p className="text-center mt-5 text-sm">
-            {isLogin
-              ? "Don't have an account?"
-              : "Already have an account?"}
-            <span
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-500 cursor-pointer ml-1 font-medium"
-            >
-              {isLogin ? "Signup" : "Login"}
-            </span>
-          </p>
+                {!isLogin && (
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Full Name"
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
+                    required
+                  />
+                )}
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  onChange={handleChange}
+                  className="w-full p-3 rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
+                  required
+                />
+
+                {/* PASSWORD */}
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
+                    required
+                  />
+
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer text-gray-500"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </span>
+                </div>
+
+                {/* BUTTON */}
+                <button className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-semibold hover:scale-105 transition">
+                  {isLogin ? "Login" : "Signup"}
+                </button>
+
+              </form>
+
+              {/* TOGGLE */}
+              <p className="text-center mt-5 text-sm">
+                {isLogin
+                  ? "Don't have an account?"
+                  : "Already have an account?"}
+                <span
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-blue-500 cursor-pointer ml-1 font-medium"
+                >
+                  {isLogin ? "Signup" : "Login"}
+                </span>
+              </p>
+            </>
+          )}
 
         </div>
       </div>

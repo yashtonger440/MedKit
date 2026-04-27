@@ -2,7 +2,7 @@ import { FaPhoneAlt, FaWhatsapp, FaUserMd } from "react-icons/fa";
 
 export default function DoctorCall() {
   return (
-    <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
+    <section className="py-20 bg-linear-to-b from-blue-50 to-white">
       
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
 
@@ -59,19 +59,17 @@ export default function DoctorCall() {
 
           {/* Image */}
           <img
-            src="https://images.unsplash.com/photo-1758691463333-c79215e8bc3b"
+            src="/images/doctorfromhome.jpg"
             alt="Doctor Consultation"
-            className="relative z-10 w-[450px] md:w-[620px] rounded-2xl shadow-2xl"
+            className="relative z-10 w-112.5 md:w-155 rounded-2xl shadow-2xl"
           />
 
-          {/* Floating Card */}
-          {/* <div className="absolute bottom-5 left-5 bg-white p-4 rounded-xl shadow-lg flex items-center gap-3">
-            <FaUserMd className="text-blue-500 text-xl" />
+          <div className="absolute bottom-0 left-0 z-10 bg-gray-300 rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
             <div>
-              <p className="text-sm font-semibold">4.8★ Rated Doctors</p>
-              <p className="text-xs text-gray-500">Trusted by 100+ families</p>
+              <p className="text-sm font-bold text-blue-600">🩺 4.8★ Rated Doctors</p>
+              <p className="text-sm font-semibold text-gray-700">Trusted by 100+ families</p>
             </div>
-          </div> */}
+          </div>
 
         </div>
 

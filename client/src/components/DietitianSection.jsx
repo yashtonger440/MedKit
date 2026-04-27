@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
-import { FaWhatsapp, FaUserMd, FaLeaf, FaPhone } from "react-icons/fa";
+import { FaWhatsapp, FaUserMd, FaLeaf, FaPhone, FaPhoneAlt } from "react-icons/fa";
 
 export default function DietitianSection() {
   return (
-    <section className="py-20 bg-gradient-to-br from-green-50 to-emerald-100 px-6">
-
+    <section className="py-20 bg-linear-to-br from-green-50 to-emerald-100 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-
         {/* LEFT CONTENT */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
@@ -32,19 +30,14 @@ export default function DietitianSection() {
 
           {/* Features */}
           <div className="mt-6 space-y-4">
-
             <div className="flex items-center gap-3">
               <FaUserMd className="text-green-500 text-xl" />
-              <span className="text-gray-700">
-                Certified nutrition experts
-              </span>
+              <span className="text-gray-700">Certified nutrition experts</span>
             </div>
 
             <div className="flex items-center gap-3">
               <FaLeaf className="text-green-500 text-xl" />
-              <span className="text-gray-700">
-                Personalized diet plans
-              </span>
+              <span className="text-gray-700">Personalized diet plans</span>
             </div>
 
             <div className="flex items-center gap-3">
@@ -53,12 +46,10 @@ export default function DietitianSection() {
                 Phone or WhatsApp consultation
               </span>
             </div>
-
           </div>
 
           {/* CTA Buttons */}
           <div className="mt-8 flex gap-4 flex-wrap">
-
             <a
               href="https://wa.me/919818185270"
               target="_blank"
@@ -70,11 +61,10 @@ export default function DietitianSection() {
 
             <a
               href="tel:9818185270"
-              className="flex items-center gap-2 px-6 py-3 border border-green-500 text-green-600 rounded-full font-semibold hover:bg-green-50 transition"
+              className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full hover:scale-105 transition"
             >
-              <FaPhone /> Call Now
+              <FaPhoneAlt /> Call Now
             </a>
-
           </div>
 
           {/* Trust Line */}
@@ -93,11 +83,11 @@ export default function DietitianSection() {
           <img
             src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
             alt="Dietitian"
-            className="rounded-3xl shadow-2xl w-full h-[400px] object-cover"
+            className="rounded-3xl shadow-2xl w-full h-100 object-cover"
           />
 
           {/* Overlay Card */}
-          <div className="absolute bottom-5 left-5 bg-white p-4 rounded-xl shadow-lg">
+          <div className="absolute bottom-0 left-0 bg-gray-100 p-4 rounded-xl shadow-lg">
             <h3 className="font-semibold text-gray-800">
               Expert Nutrition Advice
             </h3>
@@ -106,7 +96,6 @@ export default function DietitianSection() {
             </p>
           </div>
         </motion.div>
-
       </div>
     </section>
   );

@@ -3,7 +3,7 @@ import {
   FaWhatsapp,
   FaCheckCircle,
   FaUser,
-  FaPhone,
+  FaPhoneAlt,
   FaMapMarkerAlt,
   FaCalendarAlt,
   FaClock,
@@ -32,18 +32,22 @@ export default function BookingSection() {
     let finalPrice = selected.price;
 
     if (form.area.toLowerCase().includes("far")) {
-      finalPrice += 100; // area charge
+      finalPrice += 100;
     }
 
     setPrice(finalPrice);
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-100 px-6">
+    <section className="py-20 bg-linear-to-br from-blue-50 to-cyan-100 px-6">
 
-      <h2 className="text-4xl font-bold text-center mb-12">
+      <h2 className="text-xl font-semibold text-cyan-500 text-center mb-5">
         Book & Calculate
       </h2>
+      <p className="text-5xl font-semibold text-center mb-12">
+        Quick Booking & 
+        <span className="text-cyan-500"> Transparent Pricing </span>
+      </p>
 
       <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
 
@@ -53,17 +57,14 @@ export default function BookingSection() {
           whileInView={{ opacity: 1, x: 0 }}
           className="bg-white rounded-3xl shadow-xl overflow-hidden"
         >
-          <img
-            src="https://images.unsplash.com/photo-1584515933487-779824d29309"
-            className="h-48 w-full object-cover"
-          />
-
+        
           <div className="p-6">
-            <h3 className="text-xl font-semibold mb-4">
-              Why Choose Us
-            </h3>
+            <h3 className="text-2xl font-semibold mb-4">Why Choose Us</h3>
 
-            <ul className="space-y-3 text-sm text-gray-600">
+            <img src="/images/whychooseus.jpg" 
+          className="h-40 mt-3 w-full object-cover rounded-2xl" />
+
+            <ul className="space-y-3 mt-2 text-sm text-gray-600">
               {[
                 "Certified Healthcare Professionals",
                 "Transparent Pricing",
@@ -79,9 +80,13 @@ export default function BookingSection() {
               ))}
             </ul>
 
-            <p className="mt-4 text-sm text-gray-500">
+            <p className="mt-6 text-sm text-gray-500">
               ⭐ 4.8 Rated | 100+ Happy Patients
             </p>
+
+            <button className="w-full py-2 mt-4 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-semibold hover:scale-105 transition">
+              Talk to Expert
+            </button>
           </div>
         </motion.div>
 
@@ -89,64 +94,75 @@ export default function BookingSection() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="bg-white p-6 rounded-3xl shadow-xl"
+          className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-white/50"
         >
-          <h3 className="text-xl font-semibold mb-4">
-            Quick Booking
-          </h3>
+          <h3 className="text-2xl font-semibold mb-2">Book Service</h3>
+          <p className="mb-4 text-gray-600 text-sm">
+            ⚡ Need quick service? Book instantly on WhatsApp
+          </p>
 
           <div className="space-y-4">
 
-            <div className="flex items-center border p-3 rounded-lg focus-within:ring-2 focus-within:ring-blue-400">
-              <FaUser className="mr-2 text-gray-400" />
-              <input placeholder="Your Name" className="w-full outline-none" />
-            </div>
+            {/* INPUT STYLE */}
+            {[
+              { icon: <FaUser />, placeholder: "Your Name" },
+              { icon: <FaPhoneAlt />, placeholder: "Phone Number" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center bg-white/80 shadow-sm px-4 py-3 rounded-xl focus-within:ring-2 focus-within:ring-blue-400 transition"
+              >
+                <span className="text-gray-400 mr-2">{item.icon}</span>
+                <input
+                  placeholder={item.placeholder}
+                  className="w-full bg-transparent outline-none text-sm"
+                />
+              </div>
+            ))}
 
-            <div className="flex items-center border p-3 rounded-lg focus-within:ring-2 focus-within:ring-blue-400">
-              <FaPhone className="mr-2 text-gray-400" />
-              <input placeholder="Phone Number" className="w-full outline-none" />
-            </div>
-
-            <div className="flex items-center border p-3 rounded-lg focus-within:ring-2 focus-within:ring-blue-400">
-              <FaMapMarkerAlt className="mr-2 text-gray-400" />
+            {/* AREA */}
+            <div className="flex items-center bg-white/80 shadow-sm px-4 py-3 rounded-xl focus-within:ring-2 focus-within:ring-blue-400">
+              <FaMapMarkerAlt className="text-gray-400 mr-2" />
               <input
                 placeholder="Area"
                 value={form.area}
                 onChange={(e) =>
                   setForm({ ...form, area: e.target.value })
                 }
-                className="w-full outline-none"
+                className="w-full bg-transparent outline-none text-sm"
               />
             </div>
 
-            {/* DATE */}
-            <div className="flex items-center border p-3 rounded-lg">
-              <FaCalendarAlt className="mr-2 text-gray-400" />
-              <input
-                type="date"
-                value={form.date}
-                onChange={(e) =>
-                  setForm({ ...form, date: e.target.value })
-                }
-                className="w-full outline-none"
-              />
+            {/* DATE + TIME */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center bg-white/80 shadow-sm px-4 py-3 rounded-xl">
+                <FaCalendarAlt className="text-gray-400 mr-2" />
+                <input
+                  type="date"
+                  value={form.date}
+                  onChange={(e) =>
+                    setForm({ ...form, date: e.target.value })
+                  }
+                  className="w-full bg-transparent outline-none text-sm"
+                />
+              </div>
+
+              <div className="flex items-center bg-white/80 shadow-sm px-4 py-3 rounded-xl">
+                <FaClock className="text-gray-400 mr-2" />
+                <input
+                  type="time"
+                  value={form.time}
+                  onChange={(e) =>
+                    setForm({ ...form, time: e.target.value })
+                  }
+                  className="w-full bg-transparent outline-none text-sm"
+                />
+              </div>
             </div>
 
-            {/* TIME */}
-            <div className="flex items-center border p-3 rounded-lg">
-              <FaClock className="mr-2 text-gray-400" />
-              <input
-                type="time"
-                value={form.time}
-                onChange={(e) =>
-                  setForm({ ...form, time: e.target.value })
-                }
-                className="w-full outline-none"
-              />
-            </div>
-
+            {/* SERVICE */}
             <select
-              className="w-full p-3 border rounded-lg"
+              className="w-full p-3 rounded-xl bg-white/80 shadow-sm outline-none text-sm focus:ring-2 focus:ring-blue-400"
               onChange={(e) =>
                 setForm({ ...form, service: e.target.value })
               }
@@ -156,13 +172,15 @@ export default function BookingSection() {
               ))}
             </select>
 
-            <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-semibold hover:scale-105 transition">
+            {/* BUTTON */}
+            <button className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold hover:scale-105 transition shadow-md">
               Book Now
             </button>
 
+            {/* WHATSAPP */}
             <a
               href="https://wa.me/919818185270"
-              className="flex items-center justify-center gap-2 py-2 bg-green-500 text-white rounded-lg hover:scale-105 transition"
+              className="flex items-center justify-center gap-2 py-3 bg-green-500 text-white rounded-xl hover:scale-105 transition shadow-md"
             >
               <FaWhatsapp /> WhatsApp Booking
             </a>
@@ -173,30 +191,27 @@ export default function BookingSection() {
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          className="bg-white p-8 rounded-3xl shadow-xl flex flex-col justify-between"
+          className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl"
         >
-          {/* HEADER */}
           <div className="text-center mb-4">
-            <div className="flex justify-center mb-2">
-              <div className="bg-blue-100 p-4 rounded-full shadow-inner">
-                <FaCalculator className="text-blue-500 text-2xl" />
-              </div>
+            <div className="bg-blue-100 p-4 rounded-full inline-block">
+              <FaCalculator className="text-blue-500 text-2xl" />
             </div>
 
-            <h3 className="text-2xl font-bold text-gray-800">
-              Price Calculator
-            </h3>
-
-            <p className="text-sm text-gray-500 mt-1">
+            <h3 className="text-2xl font-semibold mt-2">Price Calculator</h3>
+            <p className="text-sm text-gray-500">
               Transparent pricing • No surprises
             </p>
+
+            <img
+              src="/images/pricecalculator.jpg"
+              className="h-40 mt-3 w-full object-cover rounded-2xl"
+            />
           </div>
 
-          {/* FORM */}
           <div className="space-y-4">
-
             <select
-              className="w-full p-3 border rounded-lg"
+              className="w-full p-3 rounded-xl bg-white shadow-sm outline-none"
               onChange={(e) =>
                 setForm({ ...form, service: e.target.value })
               }
@@ -207,47 +222,28 @@ export default function BookingSection() {
             </select>
 
             <input
-              placeholder="Enter Area (e.g. near/far)"
+              placeholder="Enter Area"
               value={form.area}
               onChange={(e) =>
                 setForm({ ...form, area: e.target.value })
               }
-              className="w-full p-3 border rounded-lg"
+              className="w-full p-3 rounded-xl bg-white shadow-sm outline-none"
             />
 
             <button
               onClick={calculatePrice}
-              className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:scale-105 transition"
+              className="w-full py-3 bg-blue-500 text-white rounded-xl font-semibold hover:scale-105 transition"
             >
               Calculate Price
             </button>
           </div>
 
-          {/* RESULT */}
           {price && (
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-xl text-center shadow-inner border"
-            >
+            <div className="mt-6 bg-blue-50 p-5 rounded-xl text-center">
               <p className="text-gray-600">Estimated Price</p>
-
-              <h3 className="text-4xl font-bold text-blue-600 mt-1">
-                ₹{price}
-              </h3>
-
-              <p className="text-xs text-gray-500 mt-2">
-                Final price may vary based on location & urgency
-              </p>
-            </motion.div>
+              <h3 className="text-3xl font-bold text-blue-600">₹{price}</h3>
+            </div>
           )}
-
-          {/* TRUST */}
-          <ul className="mt-5 text-sm text-gray-500 space-y-2">
-            <li>✔ No hidden charges</li>
-            <li>✔ Pay after service</li>
-            <li>✔ Quick response team</li>
-          </ul>
         </motion.div>
 
       </div>

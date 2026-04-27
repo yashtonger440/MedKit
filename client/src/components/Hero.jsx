@@ -5,7 +5,7 @@ export default function Hero() {
   const [location, setLocation] = useState("");
 
   return (
-    <section className="relative min-h-screen flex items-center bg-[#0b2c3a] overflow-hidden">
+    <section className="mt-2 relative min-h-screen flex items-center bg-[#0b2c3a] overflow-hidden">
 
       {/* Glow Effects */}
       <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl top-10 left-10"></div>
@@ -43,7 +43,7 @@ export default function Hero() {
           <div className="mt-6 flex gap-4 flex-wrap">
             <Link
               to="/bookadoctor"
-              className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition shadow-md"
+              className="bg-linear-to-r from-blue-500 to-cyan-400 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition shadow-md"
             >
               Book a Doctor Now
             </Link>
@@ -92,7 +92,7 @@ export default function Hero() {
           <img
             src="https://plus.unsplash.com/premium_photo-1681843126728-04eab730febe"
             alt="Medical team of trusted doctors"
-            className="relative z-10 w-[450px] md:w-[670px] rounded-3xl shadow-2xl animate-float"
+            className="relative z-10 w-112.5 md:w-167.5 rounded-3xl shadow-2xl animate-float"
             style={{ maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)" }}
           />
 
