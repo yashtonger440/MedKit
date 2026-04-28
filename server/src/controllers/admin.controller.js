@@ -28,7 +28,7 @@ export const getAllDoctors = async (req, res) => {
   }
 };
 
-// ✅ Approve Doctor
+// Approve Doctor
 export const approveDoctor = async (req, res) => {
   try {
     const { id } = req.params;

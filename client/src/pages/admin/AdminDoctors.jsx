@@ -32,11 +32,7 @@ const AdminDoctors = () => {
     fetchDoctors();
   }, []);
 
-  // Approve / Reject
-  const handleAction = async (id, status) => {
-    try {
-      const token = localStorage.getItem("token");
-
+      // Approve and Reject
       const handleAction = async (id, status) => {
   try {
     const token = localStorage.getItem("token");
@@ -62,17 +58,6 @@ const AdminDoctors = () => {
     console.log(err);
   }
 };
-
-      // Update UI instantly
-      setDoctors((prev) =>
-        prev.map((doc) =>
-          doc._id === id ? { ...doc, status } : doc
-        )
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   if (loading) {
     return <div className="p-6">Loading doctors...</div>;
