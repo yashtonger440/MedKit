@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import Booking from "../models/booking.model.js";
 
-// 📊 Get Dashboard Stats
+// Get Dashboard Stats
 export const getAdminStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: "user" });
@@ -18,7 +18,27 @@ export const getAdminStats = async (req, res) => {
   }
 };
 
-// 🩺 Get All Doctors
+// Get All Users (ONLY role = user)
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role: "user" }).select("-password");
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users" });
+  }
+};
+
+// Delete User
+export const deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting user" });
+  }
+};
+
+// Get All Doctors
 export const getAllDoctors = async (req, res) => {
   try {
     const doctors = await User.find({ role: "doctor" });
@@ -43,7 +63,7 @@ export const approveDoctor = async (req, res) => {
   }
 };
 
-// ❌ Reject Doctor
+// Reject Doctor
 export const rejectDoctor = async (req, res) => {
   try {
     const { id } = req.params;
