@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const AuthAdmin = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // 🔥 error state
 
   const [formData, setFormData] = useState({
     email: "",
@@ -15,6 +17,7 @@ const AuthAdmin = () => {
 
   // Handle Input
   const handleChange = (e) => {
+    setError(""); // clear error while typing
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -24,19 +27,21 @@ const AuthAdmin = () => {
   // Handle Login
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(""); // clear old errors
 
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        // "http://localhost:5000/api/auth/login",
         formData
       );
 
       const user = res.data.user;
 
-      // 🔐 Check Role
+      // Check Role
       if (user.role !== "admin") {
-        alert("Access denied. Not an admin.");
+        setError("Access denied. Not an admin.");
+        setLoading(false);
         return;
       }
 
@@ -44,16 +49,38 @@ const AuthAdmin = () => {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", user.role);
 
-      alert("Admin login successful");
       navigate("/admin");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      // 🔥 show backend message or fallback
+      setError(
+        err.response?.data?.message || "Email or password is incorrect"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-100 to-blue-300 px-4">
-      
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-100 to-blue-300 px-4 relative">
+
+      {/* 🔙 Back Button */}
+      <button
+        onClick={() => navigate("/login")}
+        className="absolute top-6 left-6 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100"
+      >
+        ← Back
+      </button>
+
+      {/* 🔥 Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl flex flex-col items-center">
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-3 text-gray-700 font-medium">Logging in...</p>
+          </div>
+        </div>
+      )}
+
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
 
         {/* Title */}
@@ -70,6 +97,7 @@ const AuthAdmin = () => {
             name="email"
             placeholder="Admin Email"
             required
+            value={formData.email}
             onChange={handleChange}
             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -81,6 +109,7 @@ const AuthAdmin = () => {
               name="password"
               placeholder="Password"
               required
+              value={formData.password}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
@@ -92,12 +121,20 @@ const AuthAdmin = () => {
             </span>
           </div>
 
+          {/* 🔥 Error Message */}
+          {error && (
+            <p className="text-red-500 text-sm text-center font-medium">
+              {error}
+            </p>
+          )}
+
           {/* Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition transform hover:scale-105"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition transform hover:scale-105 disabled:opacity-50"
           >
-            Login as Admin
+            {loading ? "Please wait..." : "Login as Admin"}
           </button>
         </form>
 

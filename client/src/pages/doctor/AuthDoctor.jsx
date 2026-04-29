@@ -7,6 +7,7 @@ const AuthDoctor = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // 🔥 error state
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,16 +22,16 @@ const AuthDoctor = () => {
 
   const navigate = useNavigate();
 
-  // Handle text input
   const handleChange = (e) => {
+    setError(""); // clear error on typing
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  // Handle file input
   const handleFileChange = (e) => {
+    setError("");
     if (e.target.name === "profileImage") {
       setProfileImage(e.target.files[0]);
     } else if (e.target.name === "certificate") {
@@ -38,9 +39,9 @@ const AuthDoctor = () => {
     }
   };
 
-  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // reset error
 
     try {
       setLoading(true);
@@ -58,17 +59,14 @@ const AuthDoctor = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.user.role);
 
-        alert("Login successful");
         navigate("/doctor-dashboard");
       } else {
-        // ✅ File validation
         if (!profileImage || !certificate) {
-          alert("Please upload all required files");
+          setError("Please upload all required files");
           setLoading(false);
           return;
         }
 
-        // Create FormData for file upload
         const data = new FormData();
         data.append("name", formData.name);
         data.append("email", formData.email);
@@ -89,27 +87,13 @@ const AuthDoctor = () => {
           }
         );
 
-        alert("Signup successful. Wait for admin approval.");
-
-        // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          specialization: "",
-          experience: "",
-        });
-        setProfileImage(null);
-        setCertificate(null);
-
+        setError("Signup successful. Wait for admin approval."); // success message
         setIsLogin(true);
       }
     } catch (err) {
-      console.log(err);
-      alert(
-        err.response?.data?.message ||
-        err.message ||
-        "Something went wrong"
+      // backend message OR fallback
+      setError(
+        err.response?.data?.message || "Email or password is incorrect"
       );
     } finally {
       setLoading(false);
@@ -117,14 +101,36 @@ const AuthDoctor = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 flex items-center justify-center bg-blue-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 relative">
+
+      {/* 🔙 Back Button */}
+      <button
+        onClick={() => navigate("/login")}
+        className="absolute top-6 left-6 bg-white px-4 py-2 rounded-lg shadow"
+      >
+        ← Back
+      </button>
+
+      {/* Loading */}
+      {loading && (
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl flex flex-col items-center">
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-3">
+              {isLogin ? "Logging in..." : "Creating account..."}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+
         <h2 className="text-2xl font-bold text-center mb-6">
           {isLogin ? "Doctor Login" : "Doctor Signup"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
+
           {!isLogin && (
             <input
               type="text"
@@ -137,7 +143,6 @@ const AuthDoctor = () => {
             />
           )}
 
-          {/* Email */}
           <input
             type="email"
             name="email"
@@ -148,7 +153,6 @@ const AuthDoctor = () => {
             className="w-full p-3 border rounded-lg"
           />
 
-          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -167,7 +171,13 @@ const AuthDoctor = () => {
             </span>
           </div>
 
-          {/* Extra fields */}
+          {/* ERROR MESSAGE */}
+          {error && (
+            <p className="text-sm text-red-500 font-medium text-center">
+              {error}
+            </p>
+          )}
+
           {!isLogin && (
             <>
               <input
@@ -190,43 +200,29 @@ const AuthDoctor = () => {
                 className="w-full p-3 border rounded-lg"
               />
 
-              {/* Profile Image Upload */}
-              <div>
-                <label className="text-sm font-medium">
-                  Upload Profile Image
-                </label>
-                <input
-                  type="file"
-                  name="profileImage"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="w-full mt-1"
-                />
-              </div>
+              <input
+                type="file"
+                name="profileImage"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
 
-              {/* Certificate Upload */}
-              <div>
-                <label className="text-sm font-medium">
-                  Upload Medical Certificate (Proof)
-                </label>
-                <input
-                  type="file"
-                  name="certificate"
-                  accept=".pdf,image/*"
-                  onChange={handleFileChange}
-                  className="w-full mt-1"
-                />
-              </div>
+              <input
+                type="file"
+                name="certificate"
+                accept=".pdf,image/*"
+                onChange={handleFileChange}
+              />
             </>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+            className="w-full bg-blue-600 text-white p-3 rounded-lg disabled:bg-gray-400"
           >
             {loading
-              ? "Processing..."
+              ? "Please wait..."
               : isLogin
               ? "Login"
               : "Signup"}

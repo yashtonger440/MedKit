@@ -29,7 +29,7 @@ const Auth = () => {
         const res = await API.post("/auth/login", {
           email: data.email,
           password: data.password,
-          role: selectedRole, // ⭐ send role
+          role: selectedRole, // send role
         });
 
         localStorage.setItem("token", res.data.token);
@@ -92,7 +92,7 @@ const Auth = () => {
 
                 {/* DOCTOR */}
                 <div
-                 onClick={() => navigate("/doctorlogin")}
+                 onClick={() => navigate("/doctor-login")}
                   className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
                 >
                   <FaUserMd className="mx-auto text-2xl text-green-500 mb-2" />
