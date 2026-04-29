@@ -12,7 +12,8 @@ const AdminDoctors = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/admin/doctors",
+        `${import.meta.env.VITE_API_URL}/api/admin/doctors`,
+        // "http://localhost:5000/api/admin/doctors",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,8 +40,10 @@ const AdminDoctors = () => {
 
     const endpoint =
       status === "approved"
-        ? `http://localhost:5000/api/admin/doctor/${id}/approve`
-        : `http://localhost:5000/api/admin/doctor/${id}/reject`;
+      ? `${import.meta.env.VITE_API_URL}/api/admin/doctor/${id}/approve`
+      : `${import.meta.env.VITE_API_URL}/api/admin/doctor/${id}/reject`;
+      // ? `http://localhost:5000/api/admin/doctor/${id}/approve`
+      // : `http://localhost:5000/api/admin/doctor/${id}/reject`;
 
     await axios.put(endpoint, {}, {
       headers: {
@@ -78,7 +81,8 @@ const AdminDoctors = () => {
             {/* Profile */}
             <div className="flex items-center gap-4 mb-4">
               <img
-                src={`http://localhost:5000/uploads/${doc.profileImage}`}
+                 src={`${import.meta.env.VITE_API_URL}/uploads/${doc.profileImage}`}
+                // src={`http://localhost:5000/uploads/${doc.profileImage}`}
                 alt="profile"
                 className="w-16 h-16 rounded-full object-cover border"
               />
@@ -99,7 +103,8 @@ const AdminDoctors = () => {
 
             {/* Certificate */}
             <a
-              href={`http://localhost:5000/uploads/${doc.certificate}`}
+              href={`${import.meta.env.VITE_API_URL}/uploads/${doc.certificate}`}
+              // href={`http://localhost:5000/uploads/${doc.certificate}`}
               target="_blank"
               rel="noreferrer"
               className="text-blue-600 text-sm underline mt-2 block"
