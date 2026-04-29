@@ -34,7 +34,7 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  // 🔥 Delete User
+  // Delete User
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
@@ -93,25 +93,10 @@ const AdminUsers = () => {
         </button>
       </div>
 
-      {/* 🔍 Filter */}
-      <div className="flex gap-3 mb-6">
-        {["all", "user", "admin"].map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-4 py-1 rounded-full ${
-              filter === f ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-
-      {/* 🚫 Empty State */}
+      {/* Empty State */}
       {filteredUsers.length === 0 && (
         <div className="text-center text-gray-500 mt-10">
-          No users found 🚫
+          No users found 
         </div>
       )}
 

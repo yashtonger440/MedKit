@@ -39,7 +39,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
         <Link to="/">
-          <img className="w-35 h-15" src="/images/logo/logo.png" alt="logo" />
+          <img className="w-38 h-18" src="/images/logo/logo.png" alt="logo" />
         </Link>
 
         <ul
