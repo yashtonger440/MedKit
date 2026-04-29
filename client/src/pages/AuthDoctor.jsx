@@ -47,7 +47,8 @@ const AuthDoctor = () => {
 
       if (isLogin) {
         const res = await axios.post(
-          "http://localhost:5000/api/auth/doctor-login",
+          `${import.meta.env.VITE_API_URL}/api/auth/doctor-login`,
+          // "http://localhost:5000/api/auth/doctor-login",
           {
             email: formData.email,
             password: formData.password,
@@ -78,7 +79,8 @@ const AuthDoctor = () => {
         data.append("certificate", certificate);
 
         await axios.post(
-          "http://localhost:5000/api/auth/doctor-signup",
+          `${import.meta.env.VITE_API_URL}/api/auth/doctor-signup`,
+          // "http://localhost:5000/api/auth/doctor-signup",
           data,
           {
             headers: {
