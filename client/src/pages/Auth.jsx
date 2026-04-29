@@ -7,7 +7,7 @@ import { FaUser, FaUserMd, FaUserShield } from "react-icons/fa";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(null); 
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const navigate = useNavigate();
 
@@ -29,26 +29,21 @@ const Auth = () => {
         const res = await API.post("/auth/login", {
           email: data.email,
           password: data.password,
-          role: selectedRole, // send role
+          role: selectedRole,
         });
 
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        alert("Login successful");
-
-        // Role based redirect
         if (selectedRole === "admin") navigate("/admin");
         else if (selectedRole === "doctor") navigate("/doctor");
         else navigate("/");
-
       } else {
         await API.post("/auth/signup", {
           ...data,
           role: selectedRole,
         });
 
-        alert("Signup successful");
         setIsLogin(true);
       }
     } catch (err) {
@@ -57,26 +52,42 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-linear-to-br from-blue-100 to-blue-300">
 
-      {/* LEFT SIDE */}
-      <div className="hidden md:flex w-1/2 bg-linear-to-br from-blue-600 to-cyan-400 text-white flex-col justify-center items-center p-10">
-        <h1 className="text-4xl font-bold mb-4">MedKit</h1>
-        <p className="text-lg text-center max-w-sm">
-          Get healthcare services at your doorstep within 30 minutes.
-        </p>
+      {/* 🔙 BACK BUTTON */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-5 left-5 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100"
+      >
+        ← Home
+      </button>
+
+      {/* LEFT SIDE (IMAGE SECTION) */}
+      <div className="hidden md:flex w-1/2 items-center justify-center p-10">
+        <div className="text-center">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+            alt="health"
+            className="w-80 mx-auto mb-6 drop-shadow-xl"
+          />
+          <h1 className="text-4xl font-bold text-blue-700 mb-3">
+            MedKit
+          </h1>
+          <p className="text-gray-600 max-w-sm mx-auto">
+            Book doctors, manage appointments, and get healthcare at your doorstep.
+          </p>
+        </div>
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="flex w-full md:w-1/2 justify-center items-center bg-gray-100 px-6">
+      <div className="flex w-full md:w-1/2 justify-center items-center px-6">
 
-        <div className="bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-md transition-all duration-500">
+        <div className="bg-white/70 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-md">
 
-          {/* STEP 1: ROLE SELECTION */}
           {!selectedRole ? (
             <>
               <h2 className="text-2xl font-bold text-center mb-6">
-                Login As
+                Choose Role
               </h2>
 
               <div className="grid grid-cols-3 gap-4">
@@ -84,48 +95,46 @@ const Auth = () => {
                 {/* USER */}
                 <div
                   onClick={() => setSelectedRole("user")}
-                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
+                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center border"
                 >
-                  <FaUser className="mx-auto text-2xl text-blue-500 mb-2" />
-                  <p className="text-sm font-medium">User</p>
+                  <FaUser className="mx-auto text-3xl text-blue-500 mb-2" />
+                  <p className="font-medium">User</p>
                 </div>
 
                 {/* DOCTOR */}
                 <div
-                 onClick={() => navigate("/doctor-login")}
-                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
+                  onClick={() => navigate("/doctor-login")}
+                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center border"
                 >
-                  <FaUserMd className="mx-auto text-2xl text-green-500 mb-2" />
-                  <p className="text-sm font-medium">Doctor</p>
+                  <FaUserMd className="mx-auto text-3xl text-green-500 mb-2" />
+                  <p className="font-medium">Doctor</p>
                 </div>
 
                 {/* ADMIN */}
                 <div
                   onClick={() => navigate("/admin-login")}
-                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center"
+                  className="cursor-pointer bg-white p-4 rounded-xl shadow hover:shadow-xl hover:scale-105 transition text-center border"
                 >
-                  <FaUserShield className="mx-auto text-2xl text-red-500 mb-2" />
-                  <p className="text-sm font-medium">Admin</p>
+                  <FaUserShield className="mx-auto text-3xl text-red-500 mb-2" />
+                  <p className="font-medium">Admin</p>
                 </div>
 
               </div>
             </>
           ) : (
             <>
-              {/* BACK BUTTON */}
+              {/* CHANGE ROLE */}
               <button
                 onClick={() => setSelectedRole(null)}
-                className="text-sm text-blue-500 mb-3"
+                className="text-sm text-blue-600 mb-3"
               >
                 ← Change Role
               </button>
 
-              {/* HEADING */}
               <h2 className="text-2xl font-bold text-center mb-6 capitalize">
                 {isLogin ? `Login as ${selectedRole}` : `Signup as ${selectedRole}`}
               </h2>
 
-              {/* FORM */}
               <form onSubmit={handleSubmit} className="space-y-4">
 
                 {!isLogin && (
@@ -134,7 +143,7 @@ const Auth = () => {
                     name="name"
                     placeholder="Full Name"
                     onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-400 outline-none"
                     required
                   />
                 )}
@@ -144,18 +153,17 @@ const Auth = () => {
                   name="email"
                   placeholder="Email Address"
                   onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
+                  className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-400 outline-none"
                   required
                 />
 
-                {/* PASSWORD */}
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Password"
                     onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-400 outline-none"
                     required
                   />
 
@@ -167,21 +175,17 @@ const Auth = () => {
                   </span>
                 </div>
 
-                {/* BUTTON */}
                 <button className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-semibold hover:scale-105 transition">
                   {isLogin ? "Login" : "Signup"}
                 </button>
 
               </form>
 
-              {/* TOGGLE */}
               <p className="text-center mt-5 text-sm">
-                {isLogin
-                  ? "Don't have an account?"
-                  : "Already have an account?"}
+                {isLogin ? "Don't have an account?" : "Already have an account?"}
                 <span
                   onClick={() => setIsLogin(!isLogin)}
-                  className="text-blue-500 cursor-pointer ml-1 font-medium"
+                  className="text-blue-600 cursor-pointer ml-1 font-medium"
                 >
                   {isLogin ? "Signup" : "Login"}
                 </span>

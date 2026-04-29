@@ -15,6 +15,7 @@ import AuthAdmin from "./pages/admin/AuthAdmin";
 import AdminDoctors from "./pages/admin/AdminDoctors";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthDoctor from "./pages/doctor/AuthDoctor";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />}/>
         <Route path="/admin-login" element={<AuthAdmin />}/>
         <Route path="/admin/doctors" element={<AdminDoctors />}/>
+        <Route path="/admin/users" element={<AdminUsers />}/>
 
         {/* Doctor Dashboard */}
         <Route path="/doctor-login" element={<AuthDoctor />}/>
