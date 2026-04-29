@@ -12,67 +12,125 @@ import {
   User,
 } from "lucide-react";
 
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [chartData, setChartData] = useState([]);
 
- const[stats, setStats] = useState({
+  const [stats, setStats] = useState({
     totalUsers: 0,
     totalDoctors: 0,
     totalBookings: 0,
- });
+  });
 
- useEffect(() => {
+  useEffect(() => {
     const fetchStats = async () => {
-        try {
-            const token = localStorage.getItem("token");
+      try {
+        const token = localStorage.getItem("token");
 
-            const res = await axios.get(
-              `${import.meta.env.VITE_API_URL}/api/admin/stats`,
-                // "http://localhost:5000/api/admin/stats",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/admin/stats`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
 
-            setStats(res.data)
-        } catch (err) {
-            console.log(err);
-        }
-    }
+        setStats(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     fetchStats();
- }, []);
+  }, []);
 
-const statsData = [
-  { title: "Total Users", value: stats.totalUsers, icon: <Users size={28} /> },
-  { title: "Total Doctors", value: stats.totalDoctors, icon: <UserCheck size={28} /> },
-  { title: "Total Bookings", value: stats.totalBookings, icon: <Calendar size={28} /> },
-];
+  useEffect(() => {
+    const fetchBookingStats = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
-  // Logout Function
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/admin/booking-stats`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        // Format data for chart
+        const formatted = res.data.map((item) => ({
+          day: item._id,
+          bookings: item.total,
+        }));
+
+        setChartData(formatted);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchBookingStats();
+  }, []);
+
+  const statsData = [
+    {
+      title: "Total Users",
+      value: stats.totalUsers,
+      icon: <Users size={28} />,
+    },
+    {
+      title: "Total Doctors",
+      value: stats.totalDoctors,
+      icon: <UserCheck size={28} />,
+    },
+    {
+      title: "Total Bookings",
+      value: stats.totalBookings,
+      icon: <Calendar size={28} />,
+    },
+  ];
+
+  // 🔥 Chart Data
+  const pieData = [
+    { name: "Users", value: stats.totalUsers },
+    { name: "Doctors", value: stats.totalDoctors },
+  ];
+
+  const lineData = chartData;
+
+  const COLORS = ["#3b82f6", "#10b981"];
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    alert("Logged out successfully");
     navigate("/admin-login");
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-
       {/* Sidebar */}
       <div
         className={`fixed md:static z-50 top-0 left-0 h-full w-64 bg-white shadow-lg transform ${
           open ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition duration-300`}
       >
-        <div className="p-6 font-bold text-xl border-b">
-          Admin Panel
-        </div>
+        <div className="p-6 font-bold text-xl border-b">Admin Panel</div>
 
         <nav className="p-4 space-y-4">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-100 text-blue-600">
@@ -106,7 +164,7 @@ const statsData = [
         </nav>
       </div>
 
-      {/* 🔘 Overlay (Mobile) */}
+      {/* Overlay */}
       {open && (
         <div
           onClick={() => setOpen(false)}
@@ -114,10 +172,9 @@ const statsData = [
         />
       )}
 
-      {/* 🟢 Main Content */}
+      {/* Main */}
       <div className="flex-1 flex flex-col">
-
-        {/* 🔝 Navbar */}
+        {/* Navbar */}
         <div className="flex items-center justify-between bg-white px-6 py-4 shadow-sm">
           <div className="flex items-center gap-3">
             <button onClick={() => setOpen(!open)} className="md:hidden">
@@ -126,9 +183,7 @@ const statsData = [
             <h1 className="text-xl font-semibold">Dashboard</h1>
           </div>
 
-          {/* 🔥 Profile Section */}
           <div className="relative">
-            {/* Profile Icon */}
             <div
               onClick={() => setProfileOpen(!profileOpen)}
               className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer"
@@ -136,10 +191,8 @@ const statsData = [
               A
             </div>
 
-            {/* Dropdown */}
             {profileOpen && (
-              <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-xl overflow-hidden z-50 animate-fadeIn">
-
+              <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-xl overflow-hidden z-50">
                 <div className="flex items-center gap-2 px-4 py-3 border-b">
                   <User size={16} />
                   <span className="text-sm font-medium">Admin</span>
@@ -152,15 +205,13 @@ const statsData = [
                   <LogOut size={16} />
                   Logout
                 </button>
-
               </div>
             )}
           </div>
         </div>
 
-        {/* 📊 Content */}
+        {/* Content */}
         <div className="p-6">
-
           {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {statsData.map((item, i) => (
@@ -170,35 +221,72 @@ const statsData = [
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-gray-500 text-sm">
-                      {item.title}
-                    </p>
-                    <h2 className="text-2xl font-bold">
-                      {item.value}
-                    </h2>
+                    <p className="text-gray-500 text-sm">{item.title}</p>
+                    <h2 className="text-2xl font-bold">{item.value}</h2>
                   </div>
-                  <div className="text-blue-600">
-                    {item.icon}
-                  </div>
+                  <div className="text-blue-600">{item.icon}</div>
                 </div>
               </div>
             ))}
           </div>
 
+          {/* 🔥 Charts Section */}
+          <h2 className="text-xl font-semibold mb-4">Analytics Overview</h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Pie Chart */}
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h3 className="text-lg font-semibold mb-4">Users vs Doctors</h3>
+
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    dataKey="value"
+                    label
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Line Chart */}
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h3 className="text-lg font-semibold mb-4">Weekly Bookings</h3>
+
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={lineData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="bookings"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
           {/* Quick Actions */}
-          <h2 className="text-xl font-semibold mb-4">
-            Quick Actions
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
             <div
               onClick={() => navigate("/admin/doctors")}
               className="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:scale-105 transition cursor-pointer"
             >
-              <h3 className="text-lg font-semibold mb-2">
-                Manage Doctors
-              </h3>
+              <h3 className="text-lg font-semibold mb-2">Manage Doctors</h3>
               <p className="text-gray-500">
                 Approve or reject doctor registrations
               </p>
@@ -208,28 +296,18 @@ const statsData = [
               onClick={() => navigate("/admin/users")}
               className="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:scale-105 transition cursor-pointer"
             >
-              <h3 className="text-lg font-semibold mb-2">
-                Manage Users
-              </h3>
-              <p className="text-gray-500">
-                View and manage all users
-              </p>
+              <h3 className="text-lg font-semibold mb-2">Manage Users</h3>
+              <p className="text-gray-500">View and manage all users</p>
             </div>
 
             <div
               onClick={() => navigate("/admin/bookings")}
               className="bg-white p-6 rounded-2xl shadow hover:shadow-xl hover:scale-105 transition cursor-pointer"
             >
-              <h3 className="text-lg font-semibold mb-2">
-                Manage Bookings
-              </h3>
-              <p className="text-gray-500">
-                Track and manage appointments
-              </p>
+              <h3 className="text-lg font-semibold mb-2">Manage Bookings</h3>
+              <p className="text-gray-500">Track and manage appointments</p>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>

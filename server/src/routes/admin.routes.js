@@ -8,6 +8,7 @@ import {
   deleteUser
 } from "../controllers/admin.controller.js";
 import { isAdmin } from "../middleware/auth.middleware.js";
+import { getBookingStats } from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
@@ -22,5 +23,7 @@ router.put("/doctor/:id/reject", isAdmin, rejectDoctor);
 // User ROUTES
 router.get("/users", isAdmin, getAllUsers);
 router.delete("/user/:id", isAdmin, deleteUser);
+
+router.get("/booking-stats", isAdmin, getBookingStats);
 
 export default router;

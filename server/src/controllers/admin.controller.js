@@ -77,3 +77,28 @@ export const rejectDoctor = async (req, res) => {
     res.status(500).json({ message: "Error rejecting doctor" });
   }
 };
+
+// Booking Analytics (Last 7 Days)
+export const getBookingStats = async (req, res) => {
+  try {
+    const stats = await Booking.aggregate([
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$createdAt",
+              timezone: "Asia/Kolkata",
+            },
+          },
+          total: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching booking stats" });
+  }
+};
