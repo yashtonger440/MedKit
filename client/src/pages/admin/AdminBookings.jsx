@@ -58,10 +58,17 @@ const AdminBookings = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Bookings Management</h1>
+      <h1 className="text-2xl font-bold mb-6">Bookings</h1>
+
+      <button
+          onClick={() => window.history.back()}
+          className="px-4 py-2 rounded-lg hover:bg-gray-300"
+        >
+          ⬅ Back
+        </button>
 
       {/* 🔍 Search + Filter */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
+      <div className="flex flex-col md:flex-row justify-between gap-4 mb-6 mt-4">
         <div className="flex items-center gap-2 bg-white p-3 rounded-xl shadow w-full md:w-1/3">
           <Search size={18} />
           <input

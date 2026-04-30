@@ -58,6 +58,7 @@ const AuthDoctor = () => {
 
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.user.role);
+        localStorage.setItem("doctorName", res.data.user.name);
 
         navigate("/doctor-dashboard");
       } else {

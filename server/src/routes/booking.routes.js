@@ -14,20 +14,19 @@ router.post("/", async (req, res) => {
 
     const { date, time, service, address, phone, price } = req.body;
 
-// Merge date + time
-const dateTime = new Date(`${date}T${time}`);
+    // Merge date + time
+    const dateTime = new Date(`${date}T${time}`);
 
-const booking = await Booking.create({
-  service,
-  date: dateTime, // ✅ combined datetime
-  address,
-  phone,
-  price,
-  user: decoded.id,
-});
+    const booking = await Booking.create({
+      service,
+      date: dateTime, // combined datetime
+      address,
+      phone,
+      price,
+      user: decoded.id,
+    });
 
     res.json(booking);
-
   } catch (err) {
     res.status(500).json({ message: "Booking failed" });
   }
@@ -40,11 +39,11 @@ router.get("/my", async (req, res) => {
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    const bookings = await Booking.find({ user: decoded.id })
-      .sort({ createdAt: -1 });
+    const bookings = await Booking.find({ user: decoded.id }).sort({
+      createdAt: -1,
+    });
 
     res.json(bookings);
-
   } catch (err) {
     res.status(500).json({ message: "Error fetching bookings" });
   }
