@@ -16,6 +16,8 @@ import AdminDoctors from "./pages/admin/AdminDoctors";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthDoctor from "./pages/doctor/AuthDoctor";
 import AdminUsers from "./pages/admin/AdminUsers";
+import ElderlyCarePlans from "./pages/ElderlyCare";
+import AdminBookings from "./pages/admin/AdminBookings";
 
 function App() {
   return (
@@ -32,12 +34,14 @@ function App() {
         <Route path="/login" element={<Auth />}/>
         <Route path="/profile" element={<Profile />}/>
         <Route path="/bookinghistory" element={<BookingHistory />}/>
+        <Route path="/elderlycare" element={<ElderlyCarePlans />}/>
 
         {/* Admin Dashboard */}
         <Route path="/admin" element={<AdminDashboard />}/>
         <Route path="/admin-login" element={<AuthAdmin />}/>
         <Route path="/admin/doctors" element={<AdminDoctors />}/>
         <Route path="/admin/users" element={<AdminUsers />}/>
+        <Route path="/admin/bookings" element={<AdminBookings />}/>
 
         {/* Doctor Dashboard */}
         <Route path="/doctor-login" element={<AuthDoctor />}/>

@@ -11,7 +11,7 @@ export default function Partners() {
       <div className="bg-linear-to-br from-blue-50 to-cyan-100 min-h-screen">
 
         {/* HERO */}
-        <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
+        <section className="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-10 items-center">
 
           {/* TEXT */}
           <div>
@@ -31,7 +31,7 @@ export default function Partners() {
               <li>✔ Trusted & growing platform</li>
             </ul>
 
-            {/* ✅ UPDATED BUTTON */}
+            {/* UPDATED BUTTON */}
             <Link
               to="/partnerform"
               className="inline-block mt-6 px-6 py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transition"
@@ -105,8 +105,28 @@ export default function Partners() {
 
         </section>
 
+        {/* CTA SECTION (REPLACES FORM) */}
+        <section className=" bg-white py-20 text-center">
+
+          <h2 className="text-3xl font-bold text-gray-800">
+            Ready to Join Us?
+          </h2>
+
+          <p className="text-gray-600 mt-3">
+            Fill a simple form and start your journey with MedKit
+          </p>
+
+          <Link
+            to="/partnerform"
+            className="mt-6 inline-block px-8 py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transition"
+          >
+            Apply Now 🚀
+          </Link>
+
+        </section>
+
         {/* BENEFITS */}
-        <section className="bg-white py-16 px-6">
+        <section className="py-16 px-6">
 
           <div className="max-w-6xl mx-auto text-center">
 
@@ -126,7 +146,7 @@ export default function Partners() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="bg-blue-50 p-5 rounded-xl shadow-sm hover:shadow-md transition"
+                  className="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition"
                 >
                   <p className="font-medium text-gray-700">✔ {item}</p>
                 </div>
@@ -135,26 +155,6 @@ export default function Partners() {
             </div>
 
           </div>
-
-        </section>
-
-        {/* CTA SECTION (REPLACES FORM) */}
-        <section className="py-20 text-center">
-
-          <h2 className="text-3xl font-bold text-gray-800">
-            Ready to Join Us?
-          </h2>
-
-          <p className="text-gray-600 mt-3">
-            Fill a simple form and start your journey with MedKit
-          </p>
-
-          <Link
-            to="/partnerform"
-            className="mt-6 inline-block px-8 py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transition"
-          >
-            Apply Now 🚀
-          </Link>
 
         </section>
 

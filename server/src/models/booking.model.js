@@ -5,6 +5,13 @@ const bookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+
+  // ADD THIS — needed for b.doctor?.name and b.doctor?.specialization
+  doctor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Doctor",
+  },
+
   service: String,
   date: String,
   address: String,
@@ -12,8 +19,16 @@ const bookingSchema = new mongoose.Schema({
   price: Number,
   status: {
     type: String,
+    enum: ["pending", "completed", "cancelled"],
     default: "pending",
   },
+
+  // ADD THIS — needed for b.review?.rating and b.review?.comment
+  review: {
+    rating: Number,
+    comment: String,
+  },
+
 }, { timestamps: true });
 
 export default mongoose.model("Booking", bookingSchema);

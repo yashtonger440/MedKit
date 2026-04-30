@@ -25,7 +25,7 @@ export default function Navbar() {
     };
   }, []);
 
-  const menuItems = ["Home", "Services", "Booking", "Partners"];
+  const menuItems = ["Home", "Services", "Booking", "Partners", "Ambulance"];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -43,7 +43,7 @@ export default function Navbar() {
         </Link>
 
         <ul
-          className={`hidden md:flex gap-12 pl-120 font-medium transition text-gray-800`}
+          className={`hidden md:flex gap-11 pl-120 font-medium transition text-gray-800`}
         >
           {menuItems.map((item, i) => (
             <li key={i}>
@@ -60,7 +60,7 @@ export default function Navbar() {
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
-          <span
+          {/* <span
             className={`hidden md:block text-xs px-3 py-1 rounded-full font-medium ${
               scrolled
                 ? "bg-red-100 text-red-500"
@@ -68,7 +68,7 @@ export default function Navbar() {
             }`}
           >
             24/7 Emergency
-          </span>
+          </span> */}
 
           {/*LOGIN */}
           {user ? (

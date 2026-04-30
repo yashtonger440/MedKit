@@ -106,7 +106,7 @@ const AdminDashboard = () => {
     },
   ];
 
-  // 🔥 Chart Data
+  // Chart Data
   const pieData = [
     { name: "Users", value: stats.totalUsers },
     { name: "Doctors", value: stats.totalDoctors },

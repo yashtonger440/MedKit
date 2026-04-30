@@ -102,3 +102,38 @@ export const getBookingStats = async (req, res) => {
     res.status(500).json({ message: "Error fetching booking stats" });
   }
 };
+
+// Get All Bookings (for AdminBookings.jsx)
+export const getBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find()
+      .populate("user", "name email")        // gives b.user?.name, b.user?.email
+      .populate("doctor", "name specialization") // gives b.doctor?.name, b.doctor?.specialization
+      .sort({ createdAt: -1 });
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching bookings" });
+  }
+};
+
+// Update Booking Status (Complete / Cancel buttons)
+export const updateBookingStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const updated = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating booking status" });
+  }
+};
