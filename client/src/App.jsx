@@ -18,6 +18,7 @@ import AuthDoctor from "./pages/doctor/AuthDoctor";
 import AdminUsers from "./pages/admin/AdminUsers";
 import ElderlyCarePlans from "./pages/ElderlyCare";
 import AdminBookings from "./pages/admin/AdminBookings";
+import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
 
         {/* Doctor Dashboard */}
         <Route path="/doctor-login" element={<AuthDoctor />}/>
+        <Route path="/doctor-dashboard" element={<DoctorDashboard />}/>
 
          {/* Protected Routes */}
         <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>

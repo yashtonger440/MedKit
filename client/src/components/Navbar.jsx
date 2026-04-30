@@ -35,11 +35,11 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`h-18.75 fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/40 backdrop-blur-xl shadow-lg`}
+      className={`h-18.75 fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/50 backdrop-blur-xl shadow-lg`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-1 py-1 flex justify-between items-center">
         <Link to="/">
-          <img className="w-38 h-18" src="/images/logo/logo.png" alt="logo" />
+          <img className="w-38 h-18 " src="/images/logo/logo.png" alt="logo" />
         </Link>
 
         <ul
