@@ -96,7 +96,7 @@ const AdminDashboard = () => {
       >
         {/* Logo */}
         <div className="p-5 border-b border-gray-100">
-          <img src="/images/logo/logo.png" alt="logo" className="h-10 w-auto" />
+          <img src="/images/logo/logo.png" alt="logo" className="h-25 w-auto" />
         </div>
 
         {/* Nav Links */}
