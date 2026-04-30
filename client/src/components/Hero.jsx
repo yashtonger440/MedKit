@@ -5,7 +5,7 @@ export default function Hero() {
   const [location, setLocation] = useState("");
 
   return (
-    <section className="mt-2 relative min-h-screen flex items-center bg-[#0b2c3a] overflow-hidden">
+    <section className="py-6 relative min-h-screen flex items-center bg-[#0b2c3a] overflow-hidden">
 
       {/* Glow Effects */}
       <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl top-10 left-10"></div>
@@ -48,10 +48,10 @@ export default function Hero() {
               Book a Doctor Now
             </Link>
             <Link
-              to="/ambulance"
+              to="/elderlycare"
               className="bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition shadow-md"
             >
-              Ambulance service
+              Elderly Care
             </Link>
             <Link
               to="/services"
