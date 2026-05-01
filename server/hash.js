@@ -1,13 +1,33 @@
+// hash.js
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
+import User from "./src/models/user.model.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-const password = "admin123";
+const createAdmin = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("✅ DB Connected");
 
-const hashPassword = async () => {
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(password, salt);
+    const hashed = await bcrypt.hash("admin123", 10);
 
-    console.log("Hashed password");
-    console.log(hashed);
+    await User.findOneAndUpdate(
+      { email: "admin@medkit.com" },         // find by email
+      {
+        name: "Admin",
+        email: "admin@medkit.com",
+        password: hashed,
+        role: "admin",                        // ✅ critical field
+      },
+      { upsert: true, new: true }            // create if not exists
+    );
+
+    console.log("✅ Admin created successfully in DB");
+    await mongoose.disconnect();
+  } catch (err) {
+    console.error("❌ Error:", err);
+  }
 };
 
-hashPassword();
+createAdmin();
