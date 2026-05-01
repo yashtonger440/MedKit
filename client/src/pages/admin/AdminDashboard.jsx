@@ -2,26 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
-  Users,
-  UserCheck,
-  Calendar,
-  Menu,
-  X,
-  LayoutDashboard,
-  LogOut,
-  User,
+  Users, UserCheck, Calendar, Menu, X,
+  LayoutDashboard, LogOut, User,
 } from "lucide-react";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
 } from "recharts";
 
 const AdminDashboard = () => {
@@ -31,61 +17,40 @@ const AdminDashboard = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [stats, setStats] = useState({
-    totalUsers: 0,
-    totalDoctors: 0,
-    totalBookings: 0,
+    totalUsers: 0, totalDoctors: 0, totalBookings: 0,
   });
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role");
-        console.log("Token", token);
-        console.log("Role in localstorage", role);
-
-        if (token) {
-          const payload = JSON.parse(atob(token.split(".")[1]));
-          console.log("TOKEN PAYLOAD:", payload);
-          console.log("Role in token:", payload.role);
-          console.log("Token expires:", new Date(payload.exp * 1000));
-        }
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/admin/stats`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { _t: Date.now() },
-          },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         setStats(res.data);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) { console.log(err); }
     };
     fetchStats();
-  }, [location]);
+  }, []);
 
   useEffect(() => {
     const fetchBookingStats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role");
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/admin/booking-stats`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-            params: { _t: Date.now() },
-          },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         setChartData(
-          res.data.map((item) => ({ day: item._id, bookings: item.total })),
+          res.data.map((item) => ({ day: item._id, bookings: item.total }))
         );
       } catch (err) {
-        console.log(err);
+         console.log(err);
       }
     };
     fetchBookingStats();
-  }, [location]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -94,14 +59,10 @@ const AdminDashboard = () => {
   };
 
   const navItems = [
-    { label: "Dashboard", path: "/admin", icon: <LayoutDashboard size={18} /> },
-    { label: "Doctors", path: "/admin/doctors", icon: <UserCheck size={18} /> },
-    { label: "Users", path: "/admin/users", icon: <Users size={18} /> },
-    {
-      label: "Bookings",
-      path: "/admin/bookings",
-      icon: <Calendar size={18} />,
-    },
+    { label: "Dashboard", path: "/admin",          icon: <LayoutDashboard size={18} /> },
+    { label: "Doctors",   path: "/admin/doctors",  icon: <UserCheck size={18} /> },
+    { label: "Users",     path: "/admin/users",    icon: <Users size={18} /> },
+    { label: "Bookings",  path: "/admin/bookings", icon: <Calendar size={18} /> },
   ];
 
   const isActive = (path) =>
@@ -110,59 +71,29 @@ const AdminDashboard = () => {
       : location.pathname.startsWith(path);
 
   const statCards = [
-    {
-      title: "Total Users",
-      value: stats.totalUsers,
-      icon: <Users size={24} />,
-      bg: "bg-blue-50",
-      text: "text-blue-600",
-    },
-    {
-      title: "Total Doctors",
-      value: stats.totalDoctors,
-      icon: <UserCheck size={24} />,
-      bg: "bg-green-50",
-      text: "text-green-600",
-    },
-    {
-      title: "Total Bookings",
-      value: stats.totalBookings,
-      icon: <Calendar size={24} />,
-      bg: "bg-purple-50",
-      text: "text-purple-600",
-    },
+    { title: "Total Users",    value: stats.totalUsers,    icon: <Users size={24} />,     bg: "bg-blue-50",   text: "text-blue-600"   },
+    { title: "Total Doctors",  value: stats.totalDoctors,  icon: <UserCheck size={24} />, bg: "bg-green-50",  text: "text-green-600"  },
+    { title: "Total Bookings", value: stats.totalBookings, icon: <Calendar size={24} />,  bg: "bg-purple-50", text: "text-purple-600" },
   ];
 
   const pieData = [
-    { name: "Users", value: stats.totalUsers },
+    { name: "Users",   value: stats.totalUsers   },
     { name: "Doctors", value: stats.totalDoctors },
   ];
 
   const COLORS = ["#3b82f6", "#10b981"];
 
   const quickActions = [
-    {
-      title: "Manage Doctors",
-      desc: "Approve or reject doctor registrations",
-      path: "/admin/doctors",
-    },
-    {
-      title: "Manage Users",
-      desc: "View and manage all users",
-      path: "/admin/users",
-    },
-    {
-      title: "Manage Bookings",
-      desc: "Track and manage appointments",
-      path: "/admin/bookings",
-    },
+    { title: "Manage Doctors",  desc: "Approve or reject doctor registrations", path: "/admin/doctors"  },
+    { title: "Manage Users",    desc: "View and manage all users",               path: "/admin/users"    },
+    { title: "Manage Bookings", desc: "Track and manage appointments",           path: "/admin/bookings" },
   ];
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+
       {/* ── Sidebar ── */}
-      <aside
-        className={`fixed top-0 left-0 h-full w-60 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300
+      <aside className={`fixed top-0 left-0 h-full w-60 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         {/* Logo */}
@@ -178,10 +109,9 @@ const AdminDashboard = () => {
               to={item.path}
               onClick={() => setSidebarOpen(false)}
               className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all
-                ${
-                  isActive(item.path)
-                    ? "bg-blue-50 text-blue-600"
-                    : "text-gray-600 hover:bg-gray-50"
+                ${isActive(item.path)
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-600 hover:bg-gray-50"
                 }`}
             >
               {item.icon}
@@ -212,13 +142,11 @@ const AdminDashboard = () => {
 
       {/* ── Main Content ── */}
       <div className="flex-1 md:ml-60 flex flex-col min-h-screen">
+
         {/* Topbar */}
         <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
           <div className="flex items-center gap-3">
-            <button
-              className="md:hidden text-gray-600"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
+            <button className="md:hidden text-gray-600" onClick={() => setSidebarOpen(!sidebarOpen)}>
               {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
             <h2 className="text-base font-semibold text-gray-700 hidden md:block">
@@ -245,10 +173,7 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => {
-                    setProfileOpen(false);
-                    handleLogout();
-                  }}
+                  onClick={() => { setProfileOpen(false); handleLogout(); }}
                   className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-all"
                 >
                   <LogOut size={15} />
@@ -261,6 +186,7 @@ const AdminDashboard = () => {
 
         {/* Page Content */}
         <main className="p-6 w-full">
+
           {/* Title */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
@@ -270,16 +196,11 @@ const AdminDashboard = () => {
           {/* Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {statCards.map((item, i) => (
-              <div
-                key={i}
-                className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow"
-              >
+              <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-500 mb-1">{item.title}</p>
-                    <p className="text-3xl font-bold text-gray-800">
-                      {item.value}
-                    </p>
+                    <p className="text-3xl font-bold text-gray-800">{item.value}</p>
                   </div>
                   <div className={`${item.bg} ${item.text} p-3 rounded-xl`}>
                     {item.icon}
@@ -290,24 +211,14 @@ const AdminDashboard = () => {
           </div>
 
           {/* Charts */}
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Analytics Overview
-          </h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Analytics Overview</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-              <h3 className="text-base font-semibold text-gray-700 mb-4">
-                Users vs Doctors
-              </h3>
+              <h3 className="text-base font-semibold text-gray-700 mb-4">Users vs Doctors</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    dataKey="value"
-                    label
-                  >
+                  <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label>
                     {pieData.map((_, index) => (
                       <Cell key={index} fill={COLORS[index % COLORS.length]} />
                     ))}
@@ -318,31 +229,21 @@ const AdminDashboard = () => {
             </div>
 
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-              <h3 className="text-base font-semibold text-gray-700 mb-4">
-                Weekly Bookings
-              </h3>
+              <h3 className="text-base font-semibold text-gray-700 mb-4">Weekly Bookings</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="day" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 11 }} />
                   <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="bookings"
-                    stroke="#3b82f6"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                  />
+                  <Line type="monotone" dataKey="bookings" stroke="#3b82f6" strokeWidth={3} dot={{ r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Quick Actions */}
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Quick Actions
-          </h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {quickActions.map((item) => (
               <div
@@ -350,13 +251,12 @@ const AdminDashboard = () => {
                 onClick={() => navigate(item.path)}
                 className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer"
               >
-                <h3 className="text-base font-semibold text-gray-800 mb-1">
-                  {item.title}
-                </h3>
+                <h3 className="text-base font-semibold text-gray-800 mb-1">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
               </div>
             ))}
           </div>
+
         </main>
       </div>
     </div>

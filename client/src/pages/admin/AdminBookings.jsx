@@ -110,7 +110,6 @@ const AdminBookings = () => {
               <th className="p-4">Price</th>
               <th className="p-4">Status</th>
               <th className="p-4">Review</th>
-              <th className="p-4">Actions</th>
             </tr>
           </thead>
 
@@ -176,27 +175,6 @@ const AdminBookings = () => {
                       No Review
                     </span>
                   )}
-                </td>
-
-                {/* Actions */}
-                <td className="p-4 space-x-2">
-                  <button
-                    onClick={() =>
-                      updateStatus(b._id, "completed")
-                    }
-                    className="px-3 py-1 bg-green-500 text-white rounded"
-                  >
-                    Complete
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      updateStatus(b._id, "cancelled")
-                    }
-                    className="px-3 py-1 bg-red-500 text-white rounded"
-                  >
-                    Cancel
-                  </button>
                 </td>
               </tr>
             ))}
