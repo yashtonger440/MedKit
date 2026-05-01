@@ -20,6 +20,8 @@ const AdminDashboard = () => {
     totalUsers: 0, totalDoctors: 0, totalBookings: 0,
   });
 
+  const adminName = localStorage.getItem("adminName") || "Admin";
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -150,7 +152,7 @@ const AdminDashboard = () => {
               {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
             <h2 className="text-base font-semibold text-gray-700 hidden md:block">
-              Admin Panel
+              Welcome, {adminName}
             </h2>
           </div>
 
