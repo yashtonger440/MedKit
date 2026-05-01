@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const AuthAdmin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(""); // 🔥 error state
+  const [error, setError] = useState(""); // error state
 
   const [formData, setFormData] = useState({
     email: "",
@@ -32,18 +32,18 @@ const AuthAdmin = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        `${import.meta.env.VITE_API_URL}/api/auth/admin-login`,
         formData
       );
 
       const user = res.data.user;
 
       // Check Role
-      if (user.role !== "admin") {
-        setError("Access denied. Not an admin.");
-        setLoading(false);
-        return;
-      }
+      // if (user.role !== "admin") {
+      //   setError("Access denied. Not an admin.");
+      //   setLoading(false);
+      //   return;
+      // }
 
       // Save token & role
       localStorage.setItem("token", res.data.token);

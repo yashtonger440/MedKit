@@ -106,11 +106,36 @@ router.post("/doctor-login", async (req, res) => {
 
   const token = jwt.sign(
     { id: doctor._id, role: doctor.role },
-    "secretkey",
+    JWT_SECRET,
     { expiresIn: "7d" }
   );
 
   res.json({ token, user: doctor });
+});
+
+// Admin login
+// auth.routes.js — add this before export default router
+
+router.post("/admin-login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const admin = await User.findOne({ email, role: "admin" }); // only finds admin
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
+
+    const match = await bcrypt.compare(password, admin.password);
+    if (!match) return res.status(400).json({ message: "Wrong password" });
+
+    const token = jwt.sign(
+      { id: admin._id, role: admin.role }, // role: "admin" in token
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ token, user: admin });
+  } catch (err) {
+    res.status(500).json({ message: "Admin login error" });
+  }
 });
 
 export default router;
