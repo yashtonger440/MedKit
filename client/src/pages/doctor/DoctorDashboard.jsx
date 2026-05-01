@@ -19,6 +19,7 @@ const DoctorDashboard = () => {
   });
 
   const doctorName = localStorage.getItem("doctorName") || "Doctor";
+
   const initials = doctorName
     .split(" ")
     .map((n) => n[0])
@@ -71,7 +72,6 @@ const DoctorDashboard = () => {
 
   const navItems = [
     { label: "Dashboard",    path: "/doctor-dashboard",   icon: <LayoutDashboard size={18} /> },
-    // { label: "Appointments", path: "/doctor-appointments", icon: <CalendarDays size={18} /> },
   ];
 
   const isActive = (path) => location.pathname === path;
