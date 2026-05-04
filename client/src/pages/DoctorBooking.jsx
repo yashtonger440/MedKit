@@ -3,17 +3,25 @@ import API from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
-  FaUserMd,
-  FaHeartbeat,
-  FaBone,
-  FaBaby,
-  FaFemale,
-  FaEye,
+  FaUserMd, FaHeartbeat, FaBone,
+  FaBaby, FaFemale, FaEye,
 } from "react-icons/fa";
 
-const DoctorBooking = () => {
-  const [selectedDoctor, setSelectedDoctor] = useState("General Medicine");
+const services = [
+  { name: "General Medicine",  price: 499, icon: <FaUserMd />,    specialization: "General Medicine" },
+  { name: "Gastroenterology",  price: 699, icon: <FaHeartbeat />, specialization: "Gastroenterology" },
+  { name: "Orthopaedic",       price: 799, icon: <FaBone />,      specialization: "Orthopaedic" },
+  { name: "Cardiology",        price: 899, icon: <FaHeartbeat />, specialization: "Cardiology" },
+  { name: "Physician",         price: 499, icon: <FaUserMd />,    specialization: "Physician" },
+  { name: "Dietitian",         price: 399, icon: <FaUserMd />,    specialization: "Dietitian" },
+  { name: "Pediatrician",      price: 599, icon: <FaBaby />,      specialization: "Pediatrician" },
+  { name: "Dermatology",       price: 699, icon: <FaEye />,       specialization: "Dermatology" },
+  { name: "Gynecologist",      price: 799, icon: <FaFemale />,    specialization: "Gynecologist" },
+  { name: "ENT",               price: 599, icon: <FaUserMd />,    specialization: "ENT" },
+];
 
+const DoctorBooking = () => {
+  const [selectedService, setSelectedService] = useState(services[0]);
   const [form, setForm] = useState({
     date: "",
     time: "",
@@ -21,24 +29,7 @@ const DoctorBooking = () => {
     address: "",
     type: "Call",
   });
-
   const [loading, setLoading] = useState(false);
-
-  const doctors = [
-    { name: "General Medicine", price: 499, icon: <FaUserMd /> },
-    { name: "Gastroenterology", price: 699, icon: <FaHeartbeat /> },
-    { name: "Orthopadic", price: 799, icon: <FaBone /> },
-    { name: "Cardiology", price: 899, icon: <FaHeartbeat /> },
-    { name: "Physician", price: 499, icon: <FaUserMd /> },
-    { name: "Dietitian", price: 399, icon: <FaUserMd /> },
-    { name: "Pediatrician", price: 599, icon: <FaBaby /> },
-    { name: "Dermatology", price: 699, icon: <FaEye /> },
-    { name: "Gastrology", price: 699, icon: <FaHeartbeat /> },
-    { name: "Gynecologist", price: 799, icon: <FaFemale /> },
-    { name: "ENT", price: 599, icon: <FaUserMd /> },
-  ];
-
-  const selected = doctors.find((d) => d.name === selectedDoctor);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,15 +37,18 @@ const DoctorBooking = () => {
     try {
       setLoading(true);
 
-      await API.post("/bookings", {
-        service: selectedDoctor,
+      const res = await API.post("/bookings", {
+        service: selectedService.specialization,
         ...form,
-        price: selected.price,
+        price: selectedService.price,
+        // doctorId nahi bhejenge — backend auto assign karega
       });
 
-      alert("Doctor booked successfully");
+      alert("Booking successful! A doctor will be assigned shortly.");
     } catch (err) {
-      alert("Booking failed");
+      // Backend se message aayega agar doctor nahi mila
+      const msg = err.response?.data?.message || "Booking failed";
+      alert(msg);
     } finally {
       setLoading(false);
     }
@@ -65,44 +59,59 @@ const DoctorBooking = () => {
       <Navbar />
 
       <div className="min-h-screen bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
+
         {/* Heading */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800">Book a Doctor 👨‍⚕️</h1>
           <p className="text-gray-600 mt-2">
-            Choose your specialist and get consultation at home or online
+            Choose your service and get consultation at home or online
           </p>
         </div>
 
-        {/* Doctor Selection */}
+        {/* Service Cards */}
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 mb-10">
-          {doctors.map((doc, i) => (
+          {services.map((svc, i) => (
             <div
               key={i}
-              onClick={() => setSelectedDoctor(doc.name)}
+              onClick={() => setSelectedService(svc)}
               className={`cursor-pointer p-5 rounded-2xl border transition-all duration-300 
-              ${
-                selectedDoctor === doc.name
-                  ? "bg-blue-500 text-white shadow-xl scale-105"
-                  : "bg-white hover:shadow-lg"
+              ${selectedService.name === svc.name
+                ? "bg-blue-500 text-white shadow-xl scale-105"
+                : "bg-white hover:shadow-lg"
               }`}
             >
-              <div className="text-3xl mb-3">{doc.icon}</div>
-              <h3 className="font-semibold">{doc.name}</h3>
-              <p className="text-sm mt-1">₹{doc.price}</p>
+              <div className="text-3xl mb-3">{svc.icon}</div>
+              <h3 className="font-semibold">{svc.name}</h3>
+              <p className={`text-sm mt-1 ${selectedService.name === svc.name ? "text-white/80" : "text-gray-400"}`}>
+                Consultation
+              </p>
+              <p className="text-sm font-bold mt-1">₹{svc.price}</p>
             </div>
           ))}
         </div>
 
         {/* FORM */}
-        {/* FORM */}
         <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl p-6 md:p-7 rounded-3xl shadow-2xl border border-white/40">
+
+          {/* Selected Service Info */}
+          <div className="mb-5 p-4 bg-blue-50 rounded-2xl flex items-center gap-3">
+            <div className="text-2xl text-blue-500">{selectedService.icon}</div>
+            <div>
+              <p className="font-semibold text-gray-800">{selectedService.name}</p>
+              <p className="text-sm text-gray-500">Best available doctor will be assigned</p>
+            </div>
+            <p className="ml-auto font-bold text-blue-600 text-lg">
+              ₹{selectedService.price}
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
+
             {/* TYPE */}
             <div>
               <label className="text-xs font-semibold text-gray-500">
                 Consultation Type
               </label>
-
               <select
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
                 className="w-full mt-1 p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition"
@@ -121,7 +130,6 @@ const DoctorBooking = () => {
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
                 className="p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition"
               />
-
               <input
                 type="time"
                 required
@@ -148,19 +156,11 @@ const DoctorBooking = () => {
               className="w-full p-3 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition resize-none"
             />
 
-            {/* PRICE BOX */}
-            <div className="flex justify-between items-center bg-linear-to-r from-blue-50 to-cyan-50 p-3 rounded-xl">
-              <span className="text-sm text-gray-600">Consultation Fee</span>
-              <span className="text-blue-600 font-bold text-lg">
-                ₹{selected.price}
-              </span>
-            </div>
-
             {/* BUTTON */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold hover:scale-[1.02] active:scale-[0.98] transition duration-300 shadow-md"
+              className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold hover:scale-[1.02] active:scale-[0.98] transition duration-300 shadow-md disabled:opacity-60"
             >
               {loading ? "Booking..." : "Confirm Booking"}
             </button>
