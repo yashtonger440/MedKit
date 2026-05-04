@@ -3,7 +3,6 @@ import Booking from "../models/booking.model.js";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env.js";
-import Doctor from "../models/doctor.model.js";
 
 const router = express.Router();
 
