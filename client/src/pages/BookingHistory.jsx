@@ -11,7 +11,8 @@ const BookingHistory = () => {
                 const res = await API.get("/bookings/my");
                 setBookings(res.data);
             } catch (err) {
-                console.log(err)
+                console.log("error object", err);
+                console.log("BACKEND ERROR:", err.response?.data);
             } finally {
                 setLoading(false);
             }
