@@ -32,7 +32,7 @@ const DoctorDashboard = () => {
       const token = localStorage.getItem("token");
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/bookings/doctor`,
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = res.data;
       setBookings(data);
@@ -62,9 +62,9 @@ const DoctorDashboard = () => {
       await axios.put(
         `${import.meta.env.VITE_API_URL}/api/bookings/${id}/status`,
         { status },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      fetchBookings();
+      fetchBookings();  
     } catch (err) {
       console.log(err);
     }

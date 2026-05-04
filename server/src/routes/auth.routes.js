@@ -106,7 +106,7 @@ router.post("/doctor-login", async (req, res) => {
 
   const token = jwt.sign(
     { id: doctor._id, role: doctor.role },
-    "secretkey",
+    JWT_SECRET,
     { expiresIn: "7d" }
   );
 
