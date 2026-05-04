@@ -3,6 +3,7 @@ import Booking from "../models/booking.model.js";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env.js";
+import Doctor from "../models/doctor.model.js";
 
 const router = express.Router();
 
@@ -50,13 +51,12 @@ router.get("/my", async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const bookings = await Booking.find({ user: decoded.id })
-      .populate("doctor", "name specialization profileImage")
       .sort({ createdAt: -1 });
 
     res.json(bookings);
 
   } catch (err) {
-    console.log("🔥 REAL ERROR:", err);   // <-- MUST print
+    console.log("REAL ERROR:", err);   // <-- MUST print
     res.status(500).json({ error: err.message });  // <-- change message
   }
 });
