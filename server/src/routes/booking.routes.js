@@ -6,13 +6,12 @@ import { JWT_SECRET } from "../config/env.js";
 
 const router = express.Router();
 
-// ── Helper: extract token (handles "Bearer xxx" and raw "xxx")
 const getToken = (req) => {
   const auth = req.headers.authorization;
   return auth?.startsWith("Bearer ") ? auth.split(" ")[1] : auth;
 };
 
-// ── CREATE BOOKING (user sends request to a doctor)
+// CREATE BOOKING (user sends request to a doctor)
 router.post("/", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
@@ -28,7 +27,7 @@ router.post("/", async (req, res) => {
       price,
       notes,
       user: decoded.id,
-      doctor: doctorId || null, // ✅ attach doctor
+      doctor: doctorId || null, // attach doctor
       status: "pending",
     });
 
@@ -39,28 +38,36 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ── GET MY BOOKINGS (user sees their bookings with doctor info + status)
+// GET MY BOOKINGS (user sees their bookings with doctor info + status)
 router.get("/my", async (req, res) => {
   try {
-    const decoded = jwt.verify(getToken(req), JWT_SECRET);
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     const bookings = await Booking.find({ user: decoded.id })
-      .populate("doctor", "name specialization profileImage") // ✅ show doctor info
+      .populate("doctor", "name specialization profileImage")
       .sort({ createdAt: -1 });
 
     res.json(bookings);
+
   } catch (err) {
-    res.status(500).json({ message: "Error fetching bookings" });
+    console.log("🔥 REAL ERROR:", err);   // <-- MUST print
+    res.status(500).json({ error: err.message });  // <-- change message
   }
 });
 
-// ── GET DOCTOR'S BOOKINGS (doctor sees requests sent to them)
+// GET DOCTOR'S BOOKINGS (doctor sees requests sent to them)
 router.get("/doctor", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
 
     const bookings = await Booking.find({ doctor: decoded.id })
-      .populate("user", "name email phone") // ✅ show patient info
+      .populate("user", "name email phone") // show patient info
       .sort({ createdAt: -1 });
 
     res.json(bookings);
@@ -69,7 +76,7 @@ router.get("/doctor", async (req, res) => {
   }
 });
 
-// ── UPDATE STATUS (doctor accepts/rejects/completes)
+// UPDATE STATUS (doctor accepts/rejects/completes)
 router.put("/:id/status", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
@@ -92,7 +99,7 @@ router.put("/:id/status", async (req, res) => {
   }
 });
 
-// ── GET ALL APPROVED DOCTORS (for booking form dropdown)
+// GET ALL APPROVED DOCTORS (for booking form dropdown)
 router.get("/doctors", async (req, res) => {
   try {
     const doctors = await User.find({ role: "doctor", status: "approved" })
