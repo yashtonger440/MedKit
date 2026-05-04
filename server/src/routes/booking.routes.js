@@ -11,11 +11,26 @@ const getToken = (req) => {
   return auth?.startsWith("Bearer ") ? auth.split(" ")[1] : auth;
 };
 
-// CREATE BOOKING (user sends request to a doctor)
+// CREATE BOOKING — service ke basis pe doctor auto-assign
 router.post("/", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
-    const { date, time, service, address, phone, price, notes, doctorId } = req.body;
+    const { date, time, service, address, phone, price } = req.body;
+
+    console.log("service received:", service);
+
+    // Service se matching doctor dhundo
+    const doctor = await User.findOne({
+      role: "doctor",
+      status: "approved",
+      specialization: { $regex: service, $options: "i" } // case-insensitive match
+    });
+
+    console.log("Doctor found:", doctor);
+
+    if (!doctor) {
+      return res.status(404).json({ message: "No doctor available for this service" });
+    }
 
     const dateTime = new Date(`${date}T${time}`);
 
@@ -25,9 +40,8 @@ router.post("/", async (req, res) => {
       address,
       phone,
       price,
-      notes,
       user: decoded.id,
-      doctor: doctorId || null, // attach doctor
+      doctor: doctor._id, // auto-assign
       status: "pending",
     });
 
