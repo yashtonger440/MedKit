@@ -154,6 +154,7 @@ const DoctorDashboard = () => {
         <CallScreen
           myVideo={myVideo}
           remoteVideo={remoteVideo}
+          remoteStream={callState.remoteStream}
           callerName={callState.caller?.name}
           callAccepted={callState.callAccepted}
           callType={callState.callType}

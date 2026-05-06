@@ -1,62 +1,41 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FaMicrophone, FaMicrophoneSlash,
   FaVideo, FaVideoSlash, FaPhone
 } from "react-icons/fa";
 
-const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted, callType }) => {
+// ✅ remoteStream prop directly receive karo — ref polling ki zaroorat nahi
+const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName, callAccepted, callType }) => {
   const [muted, setMuted] = useState(false);
   const [videoOff, setVideoOff] = useState(false);
-
-  // ✅ FIX — audio call ke liye alag local ref banao
-  // remoteVideo ref video element pe point karta hai
-  // Android Chrome mein audio element alag ref chahiye
   const audioRef = useRef(null);
 
+  // ✅ FIX — remoteStream state se aata hai, ref se nahi
+  // Jaise hi remoteStream available ho, audio element pe attach karo
   useEffect(() => {
     if (callType !== "audio") return;
-    if (!callAccepted) return;
+    if (!remoteStream) return;
+    if (!audioRef.current) return;
 
-    // remoteVideo.current pe stream already set hai useCall.js se
-    // Hum woh stream audioRef pe lagaate hain
-    const tryAttach = () => {
-      const stream = remoteVideo?.current?.srcObject;
+    console.log("✅ remoteStream mila — audio attach kar raha hoon");
+    audioRef.current.srcObject = remoteStream;
+    audioRef.current
+      .play()
+      .then(() => console.log("✅ Audio playing successfully"))
+      .catch((e) => {
+        if (e.name !== "AbortError") console.error("Audio error:", e);
+      });
 
-      if (stream && audioRef.current) {
-        audioRef.current.srcObject = stream;
-        audioRef.current
-          .play()
-          .then(() => console.log("✅ Audio playing successfully"))
-          .catch((e) => console.log("❌ Audio play error:", e));
-      } else {
-        // Stream abhi nahi aayi — thodi der baad try karo
-        setTimeout(tryAttach, 300);
-      }
-    };
+  }, [remoteStream, callType]); // remoteStream change hone pe trigger
 
-    tryAttach();
-  }, [callAccepted, callType]);
-
-  // ✅ remoteVideo ki stream watch karo — jab bhi set ho audioRef pe lagao
+  // ✅ Video call ke liye remoteVideo ref pe stream lagao
   useEffect(() => {
-    if (callType !== "audio") return;
+    if (callType !== "video") return;
+    if (!remoteStream) return;
+    if (!remoteVideo?.current) return;
 
-    const interval = setInterval(() => {
-      const stream = remoteVideo?.current?.srcObject;
-      if (stream && audioRef.current && audioRef.current.srcObject !== stream) {
-        audioRef.current.srcObject = stream;
-        audioRef.current
-          .play()
-          .then(() => {
-            console.log("✅ Audio attached via interval");
-            clearInterval(interval);
-          })
-          .catch((e) => console.log("Audio attach error:", e));
-      }
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, [callType]);
+    remoteVideo.current.srcObject = remoteStream;
+  }, [remoteStream, callType]);
 
   const toggleMute = () => {
     const stream = myVideo.current?.srcObject;
@@ -77,7 +56,6 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
   return (
     <div className="fixed inset-0 bg-gray-900 z-50 flex flex-col">
 
-      {/* Remote Video / Audio */}
       <div className="flex-1 relative">
         {callType === "audio" ? (
           <div className="w-full h-full flex flex-col items-center justify-center">
@@ -89,13 +67,7 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
               {callAccepted ? "🔊 Audio Call Connected" : "Calling..."}
             </p>
 
-            {/* ✅ FIX — remoteVideo hidden div mein rakho stream hold karne ke liye */}
-            {/* audioRef se actual playback hoga */}
-            <div style={{ display: "none" }}>
-              <video ref={remoteVideo} autoPlay playsInline />
-            </div>
-
-            {/* ✅ Yeh actual audio play karega */}
+            {/* ✅ Sirf audio element — koi hidden video nahi */}
             <audio
               ref={audioRef}
               autoPlay
@@ -111,7 +83,6 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
                 autoPlay
                 playsInline
                 className="w-full h-full object-cover"
-                // ✅ muted bilkul mat likhna — remote ki awaaz band ho jaayegi
               />
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center">
@@ -123,7 +94,7 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
               </div>
             )}
 
-            {/* My Video — corner — muted ZAROORI (echo avoid) */}
+            {/* My Video corner — muted ZAROORI (echo avoid) */}
             <div className="absolute bottom-4 right-4 w-32 h-44 rounded-2xl overflow-hidden border-2 border-white shadow-lg">
               <video
                 ref={myVideo}
