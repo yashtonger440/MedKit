@@ -60,17 +60,6 @@ export default function Navbar() {
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
-          {/* <span
-            className={`hidden md:block text-xs px-3 py-1 rounded-full font-medium ${
-              scrolled
-                ? "bg-red-100 text-red-500"
-                : "bg-white/20 text-red-500 backdrop-blur"
-            }`}
-          >
-            24/7 Emergency
-          </span> */}
-
-          {/*LOGIN */}
           {user ? (
             <div className="relative hidden md:block">
               {/* Profile Button */}
@@ -128,9 +117,9 @@ export default function Navbar() {
           {/* Hamburger Icon */}
           <button className="md:hidden" onClick={() => setOpen(!open)}>
             {open ? (
-              <X className={scrolled ? "text-black" : "text-white"} />
+              <X className={"text-black"} />
             ) : (
-              <Menu className={scrolled ? "text-black" : "text-white"} />
+              <Menu className={"text-black"} />
             )}
           </button>
         </div>

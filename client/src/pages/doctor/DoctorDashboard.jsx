@@ -5,7 +5,7 @@ import {
   Search, LayoutDashboard,
   LogOut, Menu, X, User,
 } from "lucide-react";
-import { FaPhone, FaPhoneSlash } from "react-icons/fa";
+import { FaPhone, FaPhoneSlash, FaVideo, FaHome } from "react-icons/fa";
 import useCall from "../../hooks/useCall";
 import CallScreen from "../../components/CallScreen";
 
@@ -30,16 +30,15 @@ const DoctorDashboard = () => {
     .toUpperCase()
     .slice(0, 2);
 
-  // ── Doctor ID JWT se nikalo ──
   const doctorId = JSON.parse(
     atob(localStorage.getItem("token")?.split(".")[1] || "e30=")
   )?.id;
 
-  // ── useCall hook ──
   const {
     callState,
     myVideo,
     remoteVideo,
+    initiateCall,
     acceptCall,
     rejectCall,
     endCall,
@@ -88,6 +87,32 @@ const DoctorDashboard = () => {
     }
   };
 
+  // ✅ Booking type ka badge — doctor ko pata chale patient ne kya book kiya
+  const bookingTypeBadge = (type) => {
+    switch (type?.toLowerCase()) {
+      case "call":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+            <FaPhone size={9} /> Audio Call Book kiya
+          </span>
+        );
+      case "video":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+            <FaVideo size={9} /> Video Call Book kiya
+          </span>
+        );
+      case "home visit":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
+            <FaHome size={9} /> Home Visit Book kiya
+          </span>
+        );
+      default:
+        return null;
+    }
+  };
+
   const navItems = [
     { label: "Dashboard", path: "/doctor-dashboard", icon: <LayoutDashboard size={18} /> },
   ];
@@ -128,8 +153,8 @@ const DoctorDashboard = () => {
             <div>
               <p className="font-semibold text-gray-800">{callState.caller?.name}</p>
               <p className="text-sm text-gray-500 animate-pulse">
-          Incoming {callState.callType === "video" ? "Video" : "Audio"} Call...
-        </p>
+                Incoming {callState.callType === "video" ? "Video 📹" : "Audio 📞"} Call...
+              </p>
             </div>
           </div>
           <div className="flex gap-3">
@@ -224,7 +249,6 @@ const DoctorDashboard = () => {
             </h2>
           </div>
 
-          {/* Profile Dropdown */}
           <div className="relative">
             <button
               onClick={() => setProfileOpen(!profileOpen)}
@@ -347,6 +371,13 @@ const DoctorDashboard = () => {
                           })}
                         </span>
                       </p>
+
+                      {/* ✅ Booking type badge — doctor ko pata chale patient ne kya book kiya */}
+                      {b.type && (
+                        <div className="pt-1">
+                          {bookingTypeBadge(b.type)}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -375,11 +406,37 @@ const DoctorDashboard = () => {
                           </button>
                         </>
                       )}
+
                       {b.status === "accepted" && (
                         <>
+                          {/* ✅ Booking type ke hisaab se call button show karo */}
+                          {b.type?.toLowerCase() === "call" && (
+                            <button
+                              onClick={() => initiateCall(b.user._id, b.user.name, "audio")}
+                              className="px-4 py-1.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm transition-all flex items-center gap-1.5 justify-center"
+                            >
+                              <FaPhone size={11} /> Call Patient
+                            </button>
+                          )}
+
+                          {b.type?.toLowerCase() === "video" && (
+                            <button
+                              onClick={() => initiateCall(b.user._id, b.user.name, "video")}
+                              className="px-4 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm transition-all flex items-center gap-1.5 justify-center"
+                            >
+                              <FaVideo size={11} /> Video Call
+                            </button>
+                          )}
+
+                          {b.type?.toLowerCase() === "home visit" && (
+                            <span className="px-4 py-1.5 bg-orange-100 text-orange-700 rounded-lg text-sm flex items-center gap-1.5 justify-center">
+                              <FaHome size={11} /> Home Visit
+                            </span>
+                          )}
+
                           <button
                             onClick={() => updateStatus(b._id, "completed")}
-                            className="px-4 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm transition-all"
+                            className="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-all"
                           >
                             Complete
                           </button>
@@ -391,6 +448,7 @@ const DoctorDashboard = () => {
                           </button>
                         </>
                       )}
+
                       {(b.status === "completed" || b.status === "cancelled") && (
                         <span className="text-xs text-gray-400">No actions</span>
                       )}
