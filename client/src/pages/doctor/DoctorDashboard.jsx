@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
-  Search, LayoutDashboard, CalendarDays,
+  Search, LayoutDashboard,
   LogOut, Menu, X, User,
 } from "lucide-react";
+import { FaPhone, FaPhoneSlash } from "react-icons/fa";
+import useCall from "../../hooks/useCall";
+import CallScreen from "../../components/CallScreen";
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
@@ -26,6 +29,21 @@ const DoctorDashboard = () => {
     .join("")
     .toUpperCase()
     .slice(0, 2);
+
+  // ── Doctor ID JWT se nikalo ──
+  const doctorId = JSON.parse(
+    atob(localStorage.getItem("token")?.split(".")[1] || "e30=")
+  )?.id;
+
+  // ── useCall hook ──
+  const {
+    callState,
+    myVideo,
+    remoteVideo,
+    acceptCall,
+    rejectCall,
+    endCall,
+  } = useCall(doctorId);
 
   const fetchBookings = async () => {
     try {
@@ -64,14 +82,14 @@ const DoctorDashboard = () => {
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      fetchBookings();  
+      fetchBookings();
     } catch (err) {
       console.log(err);
     }
   };
 
   const navItems = [
-    { label: "Dashboard",    path: "/doctor-dashboard",   icon: <LayoutDashboard size={18} /> },
+    { label: "Dashboard", path: "/doctor-dashboard", icon: <LayoutDashboard size={18} /> },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -100,16 +118,55 @@ const DoctorDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
 
+      {/* ── Incoming Call Notification ── */}
+      {callState.isReceivingCall && !callState.callAccepted && (
+        <div className="fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl p-5 z-50 w-72 border border-gray-100 animate-pulse-once">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl shrink-0">
+              {callState.caller?.name?.[0]?.toUpperCase()}
+            </div>
+            <div>
+              <p className="font-semibold text-gray-800">{callState.caller?.name}</p>
+              <p className="text-sm text-gray-500 animate-pulse">Incoming Video Call...</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => acceptCall("video")}
+              className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-xl flex items-center justify-center gap-2 transition"
+            >
+              <FaPhone size={13} /> Accept
+            </button>
+            <button
+              onClick={rejectCall}
+              className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl flex items-center justify-center gap-2 transition"
+            >
+              <FaPhoneSlash size={13} /> Reject
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Active Call Screen ── */}
+      {callState.callAccepted && !callState.callEnded && (
+        <CallScreen
+          myVideo={myVideo}
+          remoteVideo={remoteVideo}
+          callerName={callState.caller?.name}
+          callAccepted={callState.callAccepted}
+          callType={callState.callType}
+          onEndCall={() => endCall(callState.caller?.id)}
+        />
+      )}
+
       {/* ── Sidebar ── */}
       <aside className={`fixed top-0 left-0 h-full w-60 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
-        {/* Logo / Title */}
         <div className="p-5 border-b border-gray-100">
           <h1 className="text-lg font-bold text-gray-800">Doctor Panel</h1>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => (
             <Link
@@ -128,7 +185,6 @@ const DoctorDashboard = () => {
           ))}
         </nav>
 
-        {/* Logout at bottom */}
         <div className="p-4 border-t border-gray-100">
           <button
             onClick={handleLogout}
@@ -198,7 +254,6 @@ const DoctorDashboard = () => {
         {/* Page Content */}
         <main className="p-6 w-full">
 
-          {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800">My Appointments</h1>
             <p className="text-gray-500 text-sm">Manage incoming patient requests</p>
@@ -221,8 +276,6 @@ const DoctorDashboard = () => {
 
           {/* Search + Filter */}
           <div className="flex flex-col md:flex-row gap-4 mb-6">
-
-            {/* Search */}
             <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-2.5 w-full md:w-80 shadow-sm">
               <Search size={16} className="text-gray-400" />
               <input
@@ -234,7 +287,6 @@ const DoctorDashboard = () => {
               />
             </div>
 
-            {/* Filter Tabs */}
             <div className="flex gap-2 flex-wrap">
               {["all", "pending", "accepted", "completed", "cancelled"].map((f) => (
                 <button
@@ -270,7 +322,6 @@ const DoctorDashboard = () => {
                     <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold text-sm shrink-0">
                       {getInitials(b.user?.name)}
                     </div>
-
                     <div className="space-y-1">
                       <p className="font-semibold text-gray-800 text-base">{b.user?.name}</p>
                       <p className="text-sm text-gray-500">
