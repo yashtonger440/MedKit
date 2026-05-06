@@ -131,6 +131,14 @@ const useCall = (currentUserId) => {
         audio: true,
       });
 
+       // ✅ Yeh sab console mein check karo
+    console.log("=== PATIENT STREAM DEBUG ===");
+    console.log("Audio tracks:", stream.getAudioTracks());
+    console.log("Audio track enabled:", stream.getAudioTracks()[0]?.enabled);
+    console.log("Audio track muted:", stream.getAudioTracks()[0]?.muted);
+    console.log("Audio track readyState:", stream.getAudioTracks()[0]?.readyState);
+    console.log("Video tracks:", stream.getVideoTracks());
+
       streamRef.current = stream;
       if (callType === "video" && myVideo.current) {
         myVideo.current.srcObject = stream;
@@ -168,6 +176,10 @@ const useCall = (currentUserId) => {
         });
 
         call.on("stream", (remoteStream) => {
+           console.log("=== DOCTOR RECEIVED STREAM ===");
+  console.log("Audio tracks:", remoteStream.getAudioTracks());
+  console.log("Audio enabled:", remoteStream.getAudioTracks()[0]?.enabled);
+  console.log("Video tracks:", remoteStream.getVideoTracks());
           if (remoteVideo.current) remoteVideo.current.srcObject = remoteStream;
           setCallState((prev) => ({ ...prev, callAccepted: true }));
         });
