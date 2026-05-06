@@ -110,6 +110,7 @@ const DoctorBooking = () => {
         <CallScreen
           myVideo={myVideo}
           remoteVideo={remoteVideo}
+          remoteStream={callState.remoteStream}
           callerName={selectedDoctor?.name}
           callAccepted={callState.callAccepted}
           callType={callState.callType}
