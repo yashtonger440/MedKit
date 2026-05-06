@@ -11,7 +11,7 @@ const useCall = (currentUserId) => {
     caller: null,
     incomingCall: null,
     callType: "video",
-    remoteStream: null, // ✅ NEW — stream state mein rakho
+    remoteStream: null, // NEW — stream state mein rakho
   });
 
   const myVideo = useRef(null);

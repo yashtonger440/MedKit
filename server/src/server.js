@@ -32,31 +32,26 @@ io.on("connection", (socket) => {
 
   socket.on("register", (userId) => {
     onlineUsers[userId] = socket.id;
-    console.log("✅ Registered:", userId, "→", socket.id);
-    console.log("Online users:", onlineUsers);
-    socket.emit("registered", { success: true }); // ✅ confirm bhejo
+    socket.emit("registered", { success: true });
   });
 
   socket.on("register_peer", ({ userId, peerId }) => {
     userPeerIds[userId] = peerId;
-    console.log("✅ PeerID registered:", userId, "→", peerId);
   });
 
   socket.on("get_peer_id", ({ userId }) => {
     socket.emit("peer_id_response", { peerId: userPeerIds[userId] || null });
   });
 
-  // ✅ callType aur callerPeerId add kiya
+  // callType aur callerPeerId add kiya
   socket.on("call:initiate", ({ callerId, callerPeerId, doctorId, callerName, callType }) => {
-    console.log("📞 Call initiate:", callerId, "→", doctorId, "| Type:", callType);
-    console.log("Doctor socket:", onlineUsers[doctorId]);
     const doctorSocket = onlineUsers[doctorId];
     if (doctorSocket) {
       io.to(doctorSocket).emit("call:incoming", {
         callerId,
         callerName,
-        callerPeerId, // ✅ add kiya
-        callType,     // ✅ add kiya
+        callerPeerId,
+        callType,
       });
     }
   });
@@ -86,8 +81,7 @@ io.on("connection", (socket) => {
     Object.keys(onlineUsers).forEach((userId) => {
       if (onlineUsers[userId] === socket.id) {
         delete onlineUsers[userId];
-        delete userPeerIds[userId]; // ✅ cleanup
-        console.log("User disconnected:", userId);
+        delete userPeerIds[userId];
       }
     });
   });
