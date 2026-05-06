@@ -35,6 +35,8 @@ const useCall = (currentUserId) => {
     // ✅ Random suffix add karo PeerID mein — conflict avoid karo
     const peerId = `${currentUserId}_${Date.now()}`;
 
+    const isProduction = import.meta.env.PROD;
+
     const peer = new Peer(peerId, {
       host: isProduction ? "medkit-0snh.onrender.com" : "localhost",
       port: isProduction ? 443 : 5000,
