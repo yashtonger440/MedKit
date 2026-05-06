@@ -18,6 +18,40 @@ const useCall = (currentUserId) => {
   const peerRef = useRef(null);
   const streamRef = useRef(null);
 
+  // ✅ FIX — Android Chrome mein mic hardware muted hota hai initially
+  // Ek naya stream lete hain jo guaranteed unmuted ho
+  const getUnmutedStream = async (callType) => {
+    // Pehla stream lo — mic permission ke liye
+    const firstStream = await navigator.mediaDevices.getUserMedia({
+      video: callType === "video",
+      audio: true,
+    });
+
+    // Sab tracks band karo
+    firstStream.getTracks().forEach((t) => t.stop());
+
+    // Thoda wait karo — Android Chrome mic release karne mein time leta hai
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    // Doosra stream lo — ab muted nahi hoga
+    const freshStream = await navigator.mediaDevices.getUserMedia({
+      video: callType === "video",
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        sampleRate: 44100,
+      },
+    });
+
+    const audioTrack = freshStream.getAudioTracks()[0];
+    console.log("=== FRESH STREAM DEBUG ===");
+    console.log("Audio muted:", audioTrack?.muted);
+    console.log("Audio enabled:", audioTrack?.enabled);
+    console.log("Audio readyState:", audioTrack?.readyState);
+
+    return freshStream;
+  };
+
   useEffect(() => {
     if (!currentUserId) return;
 
@@ -71,20 +105,19 @@ const useCall = (currentUserId) => {
 
     peerRef.current = peer;
 
-    // Doctor ka dynamic peerId register karo socket pe
     peer.on("open", (id) => {
       console.log("PeerJS connected with ID:", id);
       socket.emit("register_peer", { userId: currentUserId, peerId: id });
     });
 
-    // ✅ FIX 1 — metadata se callType lo, default "audio" rakho
+    // ✅ FIX — metadata se callType lo
     peer.on("call", (call) => {
       const incomingCallType = call.metadata?.callType || "audio";
       setCallState((prev) => ({
         ...prev,
         isReceivingCall: true,
         incomingCall: call,
-        callType: incomingCallType, // ✅ callType ab sahi set hoga
+        callType: incomingCallType,
       }));
     });
 
@@ -92,14 +125,13 @@ const useCall = (currentUserId) => {
       console.error("PeerJS error:", err.type, err.message);
     });
 
-    // Socket events
     socket.on(
       "call:incoming",
       ({ callerId, callerName, callerPeerId, callType }) => {
         setCallState((prev) => ({
           ...prev,
           caller: { id: callerId, name: callerName, peerId: callerPeerId },
-          callType: callType, // socket se bhi callType set hoga
+          callType: callType,
         }));
       }
     );
@@ -113,7 +145,6 @@ const useCall = (currentUserId) => {
       endCall();
     });
 
-    // ✅ Cleanup on unmount
     return () => {
       socket.off("call:incoming");
       socket.off("call:rejected");
@@ -126,18 +157,8 @@ const useCall = (currentUserId) => {
 
   const initiateCall = async (doctorId, doctorName, callType = "video") => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: callType === "video",
-        audio: true,
-      });
-
-       // ✅ Yeh sab console mein check karo
-    console.log("=== PATIENT STREAM DEBUG ===");
-    console.log("Audio tracks:", stream.getAudioTracks());
-    console.log("Audio track enabled:", stream.getAudioTracks()[0]?.enabled);
-    console.log("Audio track muted:", stream.getAudioTracks()[0]?.muted);
-    console.log("Audio track readyState:", stream.getAudioTracks()[0]?.readyState);
-    console.log("Video tracks:", stream.getVideoTracks());
+      // ✅ FIX — unmuted stream lo Android Chrome ke liye
+      const stream = await getUnmutedStream(callType);
 
       streamRef.current = stream;
       if (callType === "video" && myVideo.current) {
@@ -151,7 +172,6 @@ const useCall = (currentUserId) => {
         caller: { id: doctorId, name: doctorName },
       }));
 
-      // Doctor ka peerId socket se lo
       socket.emit("get_peer_id", { userId: doctorId });
 
       socket.once("peer_id_response", ({ peerId: doctorPeerId }) => {
@@ -161,7 +181,6 @@ const useCall = (currentUserId) => {
           return;
         }
 
-        // Socket se doctor ko notify karo
         socket.emit("call:initiate", {
           callerId: currentUserId,
           callerPeerId: peerRef.current?.id,
@@ -170,16 +189,16 @@ const useCall = (currentUserId) => {
           callType,
         });
 
-        // ✅ FIX 2 — metadata mein callType bhejo doctor ko
+        // ✅ metadata mein callType bhejo
         const call = peerRef.current.call(doctorPeerId, stream, {
           metadata: { callType },
         });
 
         call.on("stream", (remoteStream) => {
-           console.log("=== DOCTOR RECEIVED STREAM ===");
-  console.log("Audio tracks:", remoteStream.getAudioTracks());
-  console.log("Audio enabled:", remoteStream.getAudioTracks()[0]?.enabled);
-  console.log("Video tracks:", remoteStream.getVideoTracks());
+          console.log("=== REMOTE STREAM RECEIVED ===");
+          console.log("Audio tracks:", remoteStream.getAudioTracks());
+          console.log("Audio enabled:", remoteStream.getAudioTracks()[0]?.enabled);
+
           if (remoteVideo.current) remoteVideo.current.srcObject = remoteStream;
           setCallState((prev) => ({ ...prev, callAccepted: true }));
         });
@@ -194,10 +213,8 @@ const useCall = (currentUserId) => {
 
   const acceptCall = async (callType = "audio") => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: callType === "video",
-        audio: true,
-      });
+      // ✅ FIX — doctor ke liye bhi unmuted stream lo
+      const stream = await getUnmutedStream(callType);
 
       streamRef.current = stream;
 
