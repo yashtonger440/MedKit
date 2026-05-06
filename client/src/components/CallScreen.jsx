@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   FaMicrophone, FaMicrophoneSlash,
   FaVideo, FaVideoSlash, FaPhone
@@ -7,6 +7,18 @@ import {
 const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted, callType }) => {
   const [muted, setMuted] = useState(false);
   const [videoOff, setVideoOff] = useState(false);
+
+  // ✅ FIX — audio call mein remoteVideo ref ka stream manually attach karo
+  // Chrome Android mein ref late mount hota hai, isliye useEffect zaroori hai
+  useEffect(() => {
+    if (callType === "audio" && remoteVideo?.current) {
+      const stream = remoteVideo.current.srcObject;
+      if (stream) {
+        remoteVideo.current.srcObject = stream;
+        remoteVideo.current.play().catch((e) => console.log("Audio play error:", e));
+      }
+    }
+  }, [callType, callAccepted]);
 
   const toggleMute = () => {
     const stream = myVideo.current?.srcObject;
@@ -27,7 +39,7 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
   return (
     <div className="fixed inset-0 bg-gray-900 z-50 flex flex-col">
 
-      {/* Remote Video */}
+      {/* Remote Video / Audio */}
       <div className="flex-1 relative">
         {callType === "audio" ? (
           <div className="w-full h-full flex flex-col items-center justify-center">
@@ -38,39 +50,46 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
             <p className="text-gray-400 mt-2">
               {callAccepted ? "🔊 Audio Call Connected" : "Calling..."}
             </p>
-            {/* Hidden audio element for remote audio */}
-            <audio ref={remoteVideo} autoPlay />
+
+            {/* ✅ FIX — autoPlay + playsInline + muted NAHI */}
+            <audio
+              ref={remoteVideo}
+              autoPlay
+              playsInline
+              style={{ display: "none" }}
+            />
           </div>
         ) : (
           <>
-        {callAccepted ? (
-          <video
-            ref={remoteVideo}
-            autoPlay
-            playsInline
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center">
-            <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold mb-4">
-              {callerName?.[0]?.toUpperCase() || "D"}
-            </div>
-            <p className="text-white text-xl font-semibold">{callerName}</p>
-            <p className="text-gray-400 mt-2 animate-pulse">Calling...</p>
-          </div>
-        )}
+            {callAccepted ? (
+              <video
+                ref={remoteVideo}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+                // ✅ muted bilkul mat likhna yahan — remote ki awaaz band ho jaati
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center">
+                <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold mb-4">
+                  {callerName?.[0]?.toUpperCase() || "D"}
+                </div>
+                <p className="text-white text-xl font-semibold">{callerName}</p>
+                <p className="text-gray-400 mt-2 animate-pulse">Calling...</p>
+              </div>
+            )}
 
-        {/* My Video — corner */}
-        <div className="absolute bottom-4 right-4 w-32 h-44 rounded-2xl overflow-hidden border-2 border-white shadow-lg">
-          <video
-            ref={myVideo}
-            autoPlay
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-        </div>
-        </>
+            {/* My Video — corner — muted ZAROORI hai (apni awaaz echo avoid) */}
+            <div className="absolute bottom-4 right-4 w-32 h-44 rounded-2xl overflow-hidden border-2 border-white shadow-lg">
+              <video
+                ref={myVideo}
+                autoPlay
+                muted        // ✅ sirf myVideo pe muted hona chahiye
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </>
         )}
       </div>
 
@@ -95,19 +114,18 @@ const CallScreen = ({ myVideo, remoteVideo, onEndCall, callerName, callAccepted,
           <FaPhone size={22} className="text-white" style={{ transform: "rotate(135deg)" }} />
         </button>
 
-        
         {callType === "video" && (
-        <button
-          onClick={toggleVideo}
-          className={`w-14 h-14 rounded-full flex items-center justify-center transition ${
-            videoOff ? "bg-red-500" : "bg-gray-600 hover:bg-gray-500"
-          }`}
-        >
-          {videoOff
-            ? <FaVideoSlash size={20} className="text-white" />
-            : <FaVideo size={20} className="text-white" />
-          }
-        </button>
+          <button
+            onClick={toggleVideo}
+            className={`w-14 h-14 rounded-full flex items-center justify-center transition ${
+              videoOff ? "bg-red-500" : "bg-gray-600 hover:bg-gray-500"
+            }`}
+          >
+            {videoOff
+              ? <FaVideoSlash size={20} className="text-white" />
+              : <FaVideo size={20} className="text-white" />
+            }
+          </button>
         )}
       </div>
     </div>
