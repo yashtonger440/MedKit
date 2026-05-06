@@ -127,12 +127,14 @@ const DoctorDashboard = () => {
             </div>
             <div>
               <p className="font-semibold text-gray-800">{callState.caller?.name}</p>
-              <p className="text-sm text-gray-500 animate-pulse">Incoming Video Call...</p>
+              <p className="text-sm text-gray-500 animate-pulse">
+          Incoming {callState.callType === "video" ? "Video" : "Audio"} Call...
+        </p>
             </div>
           </div>
           <div className="flex gap-3">
             <button
-              onClick={() => acceptCall("video")}
+              onClick={() => acceptCall(callState.callType)}
               className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-xl flex items-center justify-center gap-2 transition"
             >
               <FaPhone size={13} /> Accept

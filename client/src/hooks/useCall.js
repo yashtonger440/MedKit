@@ -44,30 +44,28 @@ const useCall = (currentUserId) => {
       secure: isProduction,
       config: {
         iceServers: [
-      {
-        urls: "stun:stun.relay.metered.ca:80",
-      },
-      {
-        urls: "turn:global.relay.metered.ca:80",
-        username: "a4214d3f77ee871a4780fc4e",
-        credential: "sE5EKTxyYGYvKdz8",
-      },
-      {
-        urls: "turn:global.relay.metered.ca:80?transport=tcp",
-        username: "a4214d3f77ee871a4780fc4e",
-        credential: "sE5EKTxyYGYvKdz8",
-      },
-      {
-        urls: "turn:global.relay.metered.ca:443",
-        username: "a4214d3f77ee871a4780fc4e",
-        credential: "sE5EKTxyYGYvKdz8",
-      },
-      {
-        urls: "turns:global.relay.metered.ca:443?transport=tcp",
-        username: "a4214d3f77ee871a4780fc4e",
-        credential: "sE5EKTxyYGYvKdz8",
-      },
-    ],
+          { urls: "stun:stun.relay.metered.ca:80" },
+          {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "a4214d3f77ee871a4780fc4e",
+            credential: "sE5EKTxyYGYvKdz8",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "a4214d3f77ee871a4780fc4e",
+            credential: "sE5EKTxyYGYvKdz8",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "a4214d3f77ee871a4780fc4e",
+            credential: "sE5EKTxyYGYvKdz8",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "a4214d3f77ee871a4780fc4e",
+            credential: "sE5EKTxyYGYvKdz8",
+          },
+        ],
       },
     });
 
@@ -76,16 +74,17 @@ const useCall = (currentUserId) => {
     // Doctor ka dynamic peerId register karo socket pe
     peer.on("open", (id) => {
       console.log("PeerJS connected with ID:", id);
-      // Socket pe dynamic ID bhi register karo
       socket.emit("register_peer", { userId: currentUserId, peerId: id });
     });
 
-    // Incoming call
+    // ✅ FIX 1 — metadata se callType lo, default "audio" rakho
     peer.on("call", (call) => {
+      const incomingCallType = call.metadata?.callType || "audio";
       setCallState((prev) => ({
         ...prev,
         isReceivingCall: true,
         incomingCall: call,
+        callType: incomingCallType, // ✅ callType ab sahi set hoga
       }));
     });
 
@@ -100,9 +99,9 @@ const useCall = (currentUserId) => {
         setCallState((prev) => ({
           ...prev,
           caller: { id: callerId, name: callerName, peerId: callerPeerId },
-          callType: callType,
+          callType: callType, // socket se bhi callType set hoga
         }));
-      },
+      }
     );
 
     socket.on("call:rejected", () => {
@@ -136,6 +135,7 @@ const useCall = (currentUserId) => {
       if (callType === "video" && myVideo.current) {
         myVideo.current.srcObject = stream;
       }
+
       setCallState((prev) => ({
         ...prev,
         isCalling: true,
@@ -162,8 +162,10 @@ const useCall = (currentUserId) => {
           callType,
         });
 
-        // PeerJS se call karo doctor ke peerId pe
-        const call = peerRef.current.call(doctorPeerId, stream);
+        // ✅ FIX 2 — metadata mein callType bhejo doctor ko
+        const call = peerRef.current.call(doctorPeerId, stream, {
+          metadata: { callType },
+        });
 
         call.on("stream", (remoteStream) => {
           if (remoteVideo.current) remoteVideo.current.srcObject = remoteStream;
@@ -178,7 +180,7 @@ const useCall = (currentUserId) => {
     }
   };
 
-  const acceptCall = async (callType = "video") => {
+  const acceptCall = async (callType = "audio") => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: callType === "video",
@@ -237,6 +239,7 @@ const useCall = (currentUserId) => {
       callEnded: true,
       caller: null,
       incomingCall: null,
+      callType: "video",
     });
   };
 
