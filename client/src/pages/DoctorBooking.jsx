@@ -8,7 +8,7 @@ import {
   FaUserMd, FaHeartbeat, FaBone,
   FaBaby, FaFemale, FaEye,
   FaStar, FaTimes, FaMapMarkerAlt,
-  FaVideo, FaPhoneAlt,
+  FaVideo, FaPhoneAlt, FaCheckCircle,
 } from "react-icons/fa";
 
 const services = [
@@ -36,14 +36,22 @@ const DoctorBooking = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  // User ID JWT se nikalo
+  // ✅ Booking confirm hone ke baad doctor ID + type save karo
+  // { doctorId, type: "Call" | "Video" | "Home Visit" }
+  const [confirmedBookings, setConfirmedBookings] = useState([]);
+
   const userId = JSON.parse(
     atob(localStorage.getItem("token")?.split(".")[1] || "e30=")
   )?.id;
 
   const { callState, myVideo, remoteVideo, initiateCall, endCall } = useCall(userId);
 
-  // Service click — doctors fetch karo
+  // ✅ Check karo kya is doctor ke liye call/video booking confirmed hai
+  const getConfirmedType = (doctorId) => {
+    const booking = confirmedBookings.find((b) => b.doctorId === doctorId);
+    return booking?.type || null;
+  };
+
   const handleServiceClick = async (svc) => {
     setSelectedService(svc);
     setPopupOpen(true);
@@ -58,28 +66,24 @@ const DoctorBooking = () => {
     }
   };
 
-  // Book Now click
   const handleBookNow = (doctor) => {
     setSelectedDoctor(doctor);
     setPopupOpen(false);
     setBookingOpen(true);
   };
 
-  // Video Call click
   const handleVideoCall = (doctor) => {
     setSelectedDoctor(doctor);
     setPopupOpen(false);
     initiateCall(doctor._id, doctor.name, "video");
   };
 
-  // Audio Call click
   const handleAudioCall = (doctor) => {
     setSelectedDoctor(doctor);
     setPopupOpen(false);
     initiateCall(doctor._id, doctor.name, "audio");
   };
 
-  // Booking submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedDoctor) return;
@@ -91,8 +95,21 @@ const DoctorBooking = () => {
         price: selectedDoctor.fee || selectedService.price,
         doctorId: selectedDoctor._id,
       });
+
+      // ✅ Booking confirm — is doctor ka type save karo
+      setConfirmedBookings((prev) => [
+        ...prev.filter((b) => b.doctorId !== selectedDoctor._id), // duplicate avoid
+        { doctorId: selectedDoctor._id, type: form.type },
+      ]);
+
       alert("Booking successful!");
       setBookingOpen(false);
+
+      // ✅ Agar Call ya Video book kiya toh doctor list wापस kholo
+      if (form.type === "Call" || form.type === "Video") {
+        setPopupOpen(true);
+      }
+
       setForm({ date: "", time: "", phone: "", address: "", type: "Call" });
     } catch (err) {
       alert(err.response?.data?.message || "Booking failed");
@@ -120,7 +137,6 @@ const DoctorBooking = () => {
 
       <div className="min-h-screen bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
 
-        {/* Heading */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800">Book a Doctor 👨‍⚕️</h1>
           <p className="text-gray-600 mt-2">
@@ -128,7 +144,6 @@ const DoctorBooking = () => {
           </p>
         </div>
 
-        {/* Service Cards */}
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 mb-10">
           {services.map((svc, i) => (
             <div
@@ -150,7 +165,6 @@ const DoctorBooking = () => {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto">
 
-            {/* Header */}
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <div>
                 <h2 className="text-xl font-bold text-gray-800">
@@ -169,7 +183,6 @@ const DoctorBooking = () => {
               </button>
             </div>
 
-            {/* Doctors List */}
             <div className="p-6 space-y-4">
               {loadingDoctors ? (
                 <div className="text-center py-10">
@@ -182,72 +195,95 @@ const DoctorBooking = () => {
                   <p className="text-gray-400 text-sm mt-1">Please try another service</p>
                 </div>
               ) : (
-                doctors.map((doc) => (
-                  <div
-                    key={doc._id}
-                    className="flex items-center gap-4 p-4 rounded-2xl border border-gray-100 hover:shadow-md transition-all"
-                  >
-                    {/* Profile Image */}
-                    <img
-                      src={
-                        doc.profileImage
-                          ? `${import.meta.env.VITE_API_URL}/uploads/${doc.profileImage}`
-                          : `https://ui-avatars.com/api/?name=${doc.name}&background=3b82f6&color=fff`
-                      }
-                      alt={doc.name}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-blue-100 shrink-0"
-                    />
+                doctors.map((doc) => {
+                  const confirmedType = getConfirmedType(doc._id);
+                  const hasCallBooked = confirmedType === "Call";
+                  const hasVideoBooked = confirmedType === "Video";
 
-                    {/* Doctor Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-800">{doc.name}</p>
-                      <p className="text-sm text-gray-500">{doc.specialization}</p>
+                  return (
+                    <div
+                      key={doc._id}
+                      className="flex items-center gap-4 p-4 rounded-2xl border border-gray-100 hover:shadow-md transition-all"
+                    >
+                      <img
+                        src={
+                          doc.profileImage
+                            ? `${import.meta.env.VITE_API_URL}/uploads/${doc.profileImage}`
+                            : `https://ui-avatars.com/api/?name=${doc.name}&background=3b82f6&color=fff`
+                        }
+                        alt={doc.name}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-blue-100 shrink-0"
+                      />
 
-                      {/* Rating */}
-                      <div className="flex items-center gap-1 mt-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <FaStar
-                            key={star}
-                            size={11}
-                            className={star <= (doc.rating || 4) ? "text-yellow-400" : "text-gray-200"}
-                          />
-                        ))}
-                        <span className="text-xs text-gray-400 ml-1">
-                          ({doc.rating || 4}.0)
-                        </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-800">{doc.name}</p>
+                        <p className="text-sm text-gray-500">{doc.specialization}</p>
+                        <div className="flex items-center gap-1 mt-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <FaStar
+                              key={star}
+                              size={11}
+                              className={star <= (doc.rating || 4) ? "text-yellow-400" : "text-gray-200"}
+                            />
+                          ))}
+                          <span className="text-xs text-gray-400 ml-1">({doc.rating || 4}.0)</span>
+                        </div>
+
+                        {/* ✅ Confirmed booking badge */}
+                        {confirmedType && (
+                          <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-green-600 font-medium">
+                            <FaCheckCircle size={10} />
+                            {confirmedType === "Call" && "Audio Call Booked"}
+                            {confirmedType === "Video" && "Video Call Booked"}
+                            {confirmedType === "Home Visit" && "Home Visit Booked"}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col items-end gap-2 shrink-0">
+                        <p className="font-bold text-blue-600">₹{doc.fee || selectedService?.price}</p>
+
+                        {/* Book Now — sirf tab hide karo jab already booked ho */}
+                        {!confirmedType && (
+                          <button
+                            onClick={() => handleBookNow(doc)}
+                            className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-xs font-medium transition w-full text-center"
+                          >
+                            Book Now
+                          </button>
+                        )}
+
+                        {/* ✅ Video Call — sirf tab enable hoga jab "Video" book kiya ho */}
+                        <button
+                          onClick={() => hasVideoBooked && handleVideoCall(doc)}
+                          disabled={!hasVideoBooked}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1 w-full
+                            ${hasVideoBooked
+                              ? "bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            }`}
+                        >
+                          <FaVideo size={10} />
+                          {hasVideoBooked ? "Video Call" : "Video Call (Book First)"}
+                        </button>
+
+                        {/* ✅ Audio Call — sirf tab enable hoga jab "Call" book kiya ho */}
+                        <button
+                          onClick={() => hasCallBooked && handleAudioCall(doc)}
+                          disabled={!hasCallBooked}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1 w-full
+                            ${hasCallBooked
+                              ? "bg-purple-500 hover:bg-purple-600 text-white cursor-pointer"
+                              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            }`}
+                        >
+                          <FaPhoneAlt size={10} />
+                          {hasCallBooked ? "Audio Call" : "Audio Call (Book First)"}
+                        </button>
                       </div>
                     </div>
-
-                    {/* Price + Buttons */}
-                    <div className="flex flex-col items-end gap-2 shrink-0">
-                      <p className="font-bold text-blue-600">₹{doc.fee || selectedService?.price}</p>
-
-                      {/* Book Now */}
-                      <button
-                        onClick={() => handleBookNow(doc)}
-                        className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-xs font-medium transition w-full text-center"
-                      >
-                        Book Now
-                      </button>
-
-                      {/* Video Call */}
-                      <button
-                        onClick={() => handleVideoCall(doc)}
-                        className="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-xl text-xs font-medium transition flex items-center justify-center gap-1 w-full"
-                      >
-                        <FaVideo size={10} /> Video Call
-                      </button>
-
-                      {/* Audio Call */}
-                      <button
-                        onClick={() => handleAudioCall(doc)}
-                        className="px-3 py-1.5 bg-purple-500 hover:bg-purple-600 text-white rounded-xl text-xs font-medium transition flex items-center justify-center gap-1 w-full"
-                      >
-                        <FaPhoneAlt size={10} /> Audio Call
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -270,7 +306,6 @@ const DoctorBooking = () => {
             </div>
 
             <div className="p-6">
-              {/* Doctor Info */}
               <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-2xl mb-5">
                 <img
                   src={
@@ -294,12 +329,13 @@ const DoctorBooking = () => {
                 <div>
                   <label className="text-xs font-semibold text-gray-500">Consultation Type</label>
                   <select
+                    value={form.type}
                     onChange={(e) => setForm({ ...form, type: e.target.value })}
                     className="w-full mt-1 p-3 rounded-xl bg-gray-100 outline-none"
                   >
-                    <option>Call</option>
-                    <option>Video</option>
-                    <option>Home Visit</option>
+                    <option value="Call">📞 Audio Call</option>
+                    <option value="Video">📹 Video Call</option>
+                    <option value="Home Visit">🏠 Home Visit</option>
                   </select>
                 </div>
 
