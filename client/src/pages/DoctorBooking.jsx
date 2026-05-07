@@ -35,9 +35,6 @@ const DoctorBooking = () => {
     date: "", time: "", phone: "", address: "", type: "Call",
   });
   const [loading, setLoading] = useState(false);
-
-  // ✅ Booking confirm hone ke baad doctor ID + type save karo
-  // { doctorId, type: "Call" | "Video" | "Home Visit" }
   const [confirmedBookings, setConfirmedBookings] = useState([]);
 
   const userId = JSON.parse(
@@ -46,7 +43,6 @@ const DoctorBooking = () => {
 
   const { callState, myVideo, remoteVideo, initiateCall, endCall } = useCall(userId);
 
-  // ✅ Check karo kya is doctor ke liye call/video booking confirmed hai
   const getConfirmedType = (doctorId) => {
     const booking = confirmedBookings.find((b) => b.doctorId === doctorId);
     return booking?.type || null;
@@ -89,23 +85,29 @@ const DoctorBooking = () => {
     if (!selectedDoctor) return;
     try {
       setLoading(true);
-      await API.post("/bookings", {
+
+      const payload = {
         service: selectedService.specialization,
         ...form,
         price: selectedDoctor.fee || selectedService.price,
         doctorId: selectedDoctor._id,
-      });
+      };
 
-      // ✅ Booking confirm — is doctor ka type save karo
+      // ✅ DEBUG — browser console mein dekho type ja rahi hai ya nahi
+      console.log("=== BOOKING PAYLOAD ===");
+      console.log("type:", payload.type);
+      console.log("full payload:", payload);
+
+      await API.post("/bookings", payload);
+
       setConfirmedBookings((prev) => [
-        ...prev.filter((b) => b.doctorId !== selectedDoctor._id), // duplicate avoid
+        ...prev.filter((b) => b.doctorId !== selectedDoctor._id),
         { doctorId: selectedDoctor._id, type: form.type },
       ]);
 
       alert("Booking successful!");
       setBookingOpen(false);
 
-      // ✅ Agar Call ya Video book kiya toh doctor list wापस kholo
       if (form.type === "Call" || form.type === "Video") {
         setPopupOpen(true);
       }
@@ -229,7 +231,6 @@ const DoctorBooking = () => {
                           <span className="text-xs text-gray-400 ml-1">({doc.rating || 4}.0)</span>
                         </div>
 
-                        {/* ✅ Confirmed booking badge */}
                         {confirmedType && (
                           <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-green-600 font-medium">
                             <FaCheckCircle size={10} />
@@ -243,7 +244,6 @@ const DoctorBooking = () => {
                       <div className="flex flex-col items-end gap-2 shrink-0">
                         <p className="font-bold text-blue-600">₹{doc.fee || selectedService?.price}</p>
 
-                        {/* Book Now — sirf tab hide karo jab already booked ho */}
                         {!confirmedType && (
                           <button
                             onClick={() => handleBookNow(doc)}
@@ -253,7 +253,6 @@ const DoctorBooking = () => {
                           </button>
                         )}
 
-                        {/* ✅ Video Call — sirf tab enable hoga jab "Video" book kiya ho */}
                         <button
                           onClick={() => hasVideoBooked && handleVideoCall(doc)}
                           disabled={!hasVideoBooked}
@@ -267,7 +266,6 @@ const DoctorBooking = () => {
                           {hasVideoBooked ? "Video Call" : "Video Call (Book First)"}
                         </button>
 
-                        {/* ✅ Audio Call — sirf tab enable hoga jab "Call" book kiya ho */}
                         <button
                           onClick={() => hasCallBooked && handleAudioCall(doc)}
                           disabled={!hasCallBooked}
