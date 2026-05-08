@@ -93,19 +93,19 @@ const DoctorDashboard = () => {
       case "call":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-            <FaPhone size={9} /> Audio Call Book kiya
+            <FaPhone size={9} /> Audio Call Booking
           </span>
         );
       case "video":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-            <FaVideo size={9} /> Video Call Book kiya
+            <FaVideo size={9} /> Video Call Booking
           </span>
         );
       case "home visit":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
-            <FaHome size={9} /> Home Visit Book kiya
+            <FaHome size={9} /> Home Visit Booking
           </span>
         );
       default:
@@ -352,9 +352,9 @@ const DoctorDashboard = () => {
                     </div>
                     <div className="space-y-1">
                       <p className="font-semibold text-gray-800 text-base">{b.user?.name}</p>
-                      <p className="text-sm text-gray-500">
+                      {/* <p className="text-sm text-gray-500">
                         Mobile: <span className="text-gray-700 font-medium">{b.phone || b.user?.phone || "N/A"}</span>
-                      </p>
+                      </p> */}
                       <p className="text-sm text-gray-500">
                         Address: <span className="text-gray-700 font-medium">{b.address || "N/A"}</span>
                       </p>
