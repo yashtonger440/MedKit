@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -25,6 +26,8 @@ const services = [
 ];
 
 const DoctorBooking = () => {
+  const navigate = useNavigate();
+
   const [selectedService, setSelectedService] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -37,9 +40,21 @@ const DoctorBooking = () => {
   const [loading, setLoading] = useState(false);
   const [confirmedBookings, setConfirmedBookings] = useState([]);
 
-  const userId = JSON.parse(
-    atob(localStorage.getItem("token")?.split(".")[1] || "e30=")
-  )?.id;
+  // ✅ Token check
+  const token = localStorage.getItem("token");
+  const userId = token
+    ? JSON.parse(atob(token.split(".")[1] || "e30="))?.id
+    : null;
+
+  // ✅ Login check helper — bina login ke kuch bhi nahi hoga
+  const checkLogin = () => {
+    if (!token) {
+      alert("Please login your account first");
+      navigate("/login");
+      return false;
+    }
+    return true;
+  };
 
   const { callState, myVideo, remoteVideo, initiateCall, endCall } = useCall(userId);
 
@@ -48,7 +63,10 @@ const DoctorBooking = () => {
     return booking?.type || null;
   };
 
+  // ✅ Service click pe login check
   const handleServiceClick = async (svc) => {
+    if (!checkLogin()) return;
+
     setSelectedService(svc);
     setPopupOpen(true);
     setLoadingDoctors(true);
@@ -62,19 +80,25 @@ const DoctorBooking = () => {
     }
   };
 
+  // ✅ Book Now pe login check
   const handleBookNow = (doctor) => {
+    if (!checkLogin()) return;
     setSelectedDoctor(doctor);
     setPopupOpen(false);
     setBookingOpen(true);
   };
 
+  // ✅ Video Call pe login check
   const handleVideoCall = (doctor) => {
+    if (!checkLogin()) return;
     setSelectedDoctor(doctor);
     setPopupOpen(false);
     initiateCall(doctor._id, doctor.name, "video");
   };
 
+  // Audio Call pe login check
   const handleAudioCall = (doctor) => {
+    if (!checkLogin()) return;
     setSelectedDoctor(doctor);
     setPopupOpen(false);
     initiateCall(doctor._id, doctor.name, "audio");
@@ -83,6 +107,8 @@ const DoctorBooking = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedDoctor) return;
+    if (!checkLogin()) return;
+
     try {
       setLoading(true);
 
@@ -93,7 +119,6 @@ const DoctorBooking = () => {
         doctorId: selectedDoctor._id,
       };
 
-      // ✅ DEBUG — browser console mein dekho type ja rahi hai ya nahi
       console.log("=== BOOKING PAYLOAD ===");
       console.log("type:", payload.type);
       console.log("full payload:", payload);
@@ -130,6 +155,7 @@ const DoctorBooking = () => {
           myVideo={myVideo}
           remoteVideo={remoteVideo}
           remoteStream={callState.remoteStream}
+          myStream={callState.myStream}
           callerName={selectedDoctor?.name}
           callAccepted={callState.callAccepted}
           callType={callState.callType}
