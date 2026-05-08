@@ -11,7 +11,8 @@ const useCall = (currentUserId) => {
     caller: null,
     incomingCall: null,
     callType: "video",
-    remoteStream: null, // NEW — stream state mein rakho
+    remoteStream: null,
+    myStream: null, // ✅ NEW — apna stream state mein rakho
   });
 
   const myVideo = useRef(null);
@@ -19,6 +20,7 @@ const useCall = (currentUserId) => {
   const peerRef = useRef(null);
   const streamRef = useRef(null);
 
+  // ✅ Android Chrome mein mic hardware muted hota hai initially
   const getUnmutedStream = async (callType) => {
     const firstStream = await navigator.mediaDevices.getUserMedia({
       video: callType === "video",
@@ -146,15 +148,13 @@ const useCall = (currentUserId) => {
       const stream = await getUnmutedStream(callType);
       streamRef.current = stream;
 
-      if (callType === "video" && myVideo.current) {
-        myVideo.current.srcObject = stream;
-      }
-
+      // ✅ myStream state mein save karo — CallScreen useEffect se attach karega
       setCallState((prev) => ({
         ...prev,
         isCalling: true,
         callType,
         caller: { id: doctorId, name: doctorName },
+        myStream: stream,
       }));
 
       socket.emit("get_peer_id", { userId: doctorId });
@@ -183,7 +183,6 @@ const useCall = (currentUserId) => {
           console.log("Audio tracks:", remoteStream.getAudioTracks());
           console.log("Audio enabled:", remoteStream.getAudioTracks()[0]?.enabled);
 
-          // ✅ ref + state dono mein save karo
           if (remoteVideo.current) remoteVideo.current.srcObject = remoteStream;
           setCallState((prev) => ({
             ...prev,
@@ -205,28 +204,21 @@ const useCall = (currentUserId) => {
       const stream = await getUnmutedStream(callType);
       streamRef.current = stream;
 
-      if (callType === "video" && myVideo.current) {
-        myVideo.current.srcObject = stream;
-      }
-
       const call = callState.incomingCall;
 
-      // ✅ Pehle event listen karo, phir answer
       call.on("stream", (remoteStream) => {
         console.log("=== DOCTOR RECEIVED PATIENT STREAM ===");
         console.log("Audio tracks:", remoteStream.getAudioTracks());
         console.log("Audio enabled:", remoteStream.getAudioTracks()[0]?.enabled);
 
-        // ✅ ref + state dono mein save karo
         if (remoteVideo.current) remoteVideo.current.srcObject = remoteStream;
         setCallState((prev) => ({
           ...prev,
-          remoteStream, // ← CallScreen directly yahan se stream lega
+          remoteStream,
         }));
       });
 
       call.on("close", () => endCall());
-
       call.answer(stream);
 
       console.log("=== DOCTOR STREAM SENDING ===");
@@ -235,11 +227,13 @@ const useCall = (currentUserId) => {
 
       socket.emit("call:accept", { callerId: callState.caller?.id });
 
+      // ✅ myStream state mein save karo
       setCallState((prev) => ({
         ...prev,
         callAccepted: true,
         callType,
         isReceivingCall: false,
+        myStream: stream,
       }));
     } catch (err) {
       console.error(err);
@@ -272,6 +266,7 @@ const useCall = (currentUserId) => {
       incomingCall: null,
       callType: "video",
       remoteStream: null,
+      myStream: null,
     });
   };
 

@@ -14,9 +14,17 @@ const bookingSchema = new mongoose.Schema({
   address: String,
   phone: String,
   price: Number,
+
+  // ✅ NEW — user ne kya book kiya: Call, Video, Home Visit
+  type: {
+    type: String,
+    enum: ["Call", "Video", "Home Visit"],
+    default: "Call",
+  },
+
   status: {
     type: String,
-    enum: ["pending", "accepted", "completed", "cancelled"], // ✅ accepted add kiya
+    enum: ["pending", "accepted", "completed", "cancelled"],
     default: "pending",
   },
   review: {

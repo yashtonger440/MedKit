@@ -15,15 +15,18 @@ const getToken = (req) => {
 router.post("/", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
-    const { date, time, service, address, phone, price } = req.body;
+
+    // ✅ type bhi destructure karo
+    const { date, time, service, address, phone, price, type } = req.body;
 
     console.log("service received:", service);
+    console.log("type received:", type);
 
     // Service se matching doctor dhundo
     const doctor = await User.findOne({
       role: "doctor",
       status: "approved",
-      specialization: { $regex: service, $options: "i" } // case-insensitive match
+      specialization: { $regex: service, $options: "i" },
     });
 
     console.log("Doctor found:", doctor);
@@ -40,8 +43,9 @@ router.post("/", async (req, res) => {
       address,
       phone,
       price,
+      type: type || "Call",
       user: decoded.id,
-      doctor: doctor._id, // auto-assign
+      doctor: doctor._id,
       status: "pending",
     });
 
@@ -67,10 +71,9 @@ router.get("/my", async (req, res) => {
       .sort({ createdAt: -1 });
 
     res.json(bookings);
-
   } catch (err) {
-    console.log("REAL ERROR:", err);   // <-- MUST print
-    res.status(500).json({ error: err.message });  // <-- change message
+    console.log("REAL ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -80,7 +83,7 @@ router.get("/doctor", async (req, res) => {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
 
     const bookings = await Booking.find({ doctor: decoded.id })
-      .populate("user", "name email phone") // show patient info
+      .populate("user", "name email phone")
       .sort({ createdAt: -1 });
 
     res.json(bookings);
@@ -98,7 +101,6 @@ router.put("/:id/status", async (req, res) => {
     const booking = await Booking.findById(req.params.id);
     if (!booking) return res.status(404).json({ message: "Booking not found" });
 
-    // Only the assigned doctor can update
     if (booking.doctor.toString() !== decoded.id) {
       return res.status(403).json({ message: "Not authorized" });
     }

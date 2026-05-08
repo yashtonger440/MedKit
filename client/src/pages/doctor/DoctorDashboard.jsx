@@ -180,6 +180,7 @@ const DoctorDashboard = () => {
           myVideo={myVideo}
           remoteVideo={remoteVideo}
           remoteStream={callState.remoteStream}
+          myStream={callState.myStream}
           callerName={callState.caller?.name}
           callAccepted={callState.callAccepted}
           callType={callState.callType}

@@ -22,185 +22,193 @@ const CallScreen = ({
 
   // myStream se apna video attach karo
   useEffect(() => {
-    if (!myStream || !myVideo?.current) return;
+    if (!myStream) return;
+    if (!myVideo?.current) return;
     myVideo.current.srcObject = myStream;
   }, [myStream]);
 
   // Call duration timer
   useEffect(() => {
     if (!callAccepted) return;
-    const interval = setInterval(() => setDuration((p) => p + 1), 1000);
+    const interval = setInterval(() => {
+      setDuration((prev) => prev + 1);
+    }, 1000);
     return () => clearInterval(interval);
   }, [callAccepted]);
 
-  const formatTime = (s) => {
-    const m = Math.floor(s / 60).toString().padStart(2, "0");
-    const sec = (s % 60).toString().padStart(2, "0");
-    return `${m}:${sec}`;
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
   };
 
-  // Audio remoteStream attach
+  // Audio call ke liye remoteStream attach karo
   useEffect(() => {
-    if (callType !== "audio" || !remoteStream || !audioRef.current) return;
+    if (callType !== "audio") return;
+    if (!remoteStream) return;
+    if (!audioRef.current) return;
     audioRef.current.srcObject = remoteStream;
-    audioRef.current.play().catch((e) => {
-      if (e.name !== "AbortError") console.error("Audio error:", e);
-    });
+    audioRef.current
+      .play()
+      .then(() => console.log("✅ Audio playing successfully"))
+      .catch((e) => {
+        if (e.name !== "AbortError") console.error("Audio error:", e);
+      });
   }, [remoteStream, callType]);
 
-  // Video remoteStream attach
+  // Video call ke liye remoteVideo ref pe stream lagao
   useEffect(() => {
-    if (callType !== "video" || !remoteStream || !remoteVideo?.current) return;
+    if (callType !== "video") return;
+    if (!remoteStream) return;
+    if (!remoteVideo?.current) return;
     remoteVideo.current.srcObject = remoteStream;
   }, [remoteStream, callType]);
 
-  // ✅ myStream directly use karo — myVideo.current?.srcObject null hota tha
   const toggleMute = () => {
-    if (!myStream) return;
-    const tracks = myStream.getAudioTracks();
-    if (!tracks.length) return;
-    const newMuted = !muted;
-    tracks.forEach((t) => (t.enabled = !newMuted));
-    setMuted(newMuted);
+    const stream = myVideo.current?.srcObject;
+    if (stream) {
+      stream.getAudioTracks().forEach((t) => (t.enabled = !t.enabled));
+      setMuted(!muted);
+    }
   };
 
   const toggleVideo = () => {
-    if (!myStream) return;
-    const tracks = myStream.getVideoTracks();
-    if (!tracks.length) return;
-    const newVideoOff = !videoOff;
-    tracks.forEach((t) => (t.enabled = !newVideoOff));
-    setVideoOff(newVideoOff);
+    const stream = myVideo.current?.srcObject;
+    if (stream) {
+      stream.getVideoTracks().forEach((t) => (t.enabled = !t.enabled));
+      setVideoOff(!videoOff);
+    }
   };
 
+  // ✅ FIX — React Portal se document.body mein render karo
+  // WHY: Sidebar ka md:ml-60 aur z-index CallScreen ko clip kar raha tha desktop pe
+  // Portal se CallScreen kisi bhi parent div ke CSS se affect nahi hogi
+  // Yeh bilkul alag DOM node mein render hogi — pure fullscreen
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex flex-col bg-gray-900">
-
-      {/* ── Top Bar ── */}
-      <div className="flex items-center justify-between px-6 py-4 bg-black/30">
-        <p className="text-white font-semibold text-lg">{callerName}</p>
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 99999,
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#111827",
+      }}
+    >
+      {/* Top Bar */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 24px", backgroundColor: "rgba(0,0,0,0.3)" }}>
+        <p style={{ color: "white", fontWeight: 600, fontSize: "18px" }}>{callerName}</p>
         {callAccepted && (
-          <div className="flex items-center gap-2 bg-green-500/20 border border-green-500/40 px-3 py-1 rounded-full">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-green-300 text-sm font-mono font-medium">
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(34,197,94,0.2)", border: "1px solid rgba(34,197,94,0.4)", padding: "4px 12px", borderRadius: "999px" }}>
+            <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#4ade80", animation: "pulse 2s infinite" }} />
+            <span style={{ color: "#86efac", fontSize: "14px", fontFamily: "monospace", fontWeight: 500 }}>
               {formatTime(duration)}
             </span>
           </div>
         )}
       </div>
 
-      {/* ── Main Area ── */}
-      <div className="flex-1 relative overflow-hidden">
+      {/* Main Area */}
+      <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
         {callType === "audio" ? (
-
-          /* Audio Call UI */
-          <div className="w-full h-full flex flex-col items-center justify-center">
-            <div className={`w-32 h-32 rounded-full flex items-center justify-center text-white text-5xl font-bold mb-6 transition-colors duration-300 ${muted ? "bg-gray-500" : "bg-purple-500"}`}>
+          <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: "128px", height: "128px", borderRadius: "50%", backgroundColor: "#a855f7", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: "48px", fontWeight: 700, marginBottom: "24px" }}>
               {callerName?.[0]?.toUpperCase() || "D"}
             </div>
-            <p className="text-white text-2xl font-semibold">{callerName}</p>
-            <p className="text-gray-400 mt-2">
-              {callAccepted ? (muted ? "🔇 Muted" : "🔊 Audio Call Connected") : "Calling..."}
+            <p style={{ color: "white", fontSize: "24px", fontWeight: 600 }}>{callerName}</p>
+            <p style={{ color: "#9ca3af", marginTop: "8px" }}>
+              {callAccepted ? "🔊 Audio Call Connected" : "Calling..."}
             </p>
-            <audio ref={audioRef} autoPlay playsInline className="hidden" />
+            <audio ref={audioRef} autoPlay playsInline style={{ display: "none" }} />
           </div>
-
         ) : (
-
-          /* Video Call UI */
           <>
             {callAccepted ? (
-              <video
-                ref={remoteVideo}
-                autoPlay
-                playsInline
-                className="w-full h-full object-cover"
-              />
+              <video ref={remoteVideo} autoPlay playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center">
-                <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold mb-4 animate-pulse">
+              <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: "96px", height: "96px", borderRadius: "50%", backgroundColor: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: "36px", fontWeight: 700, marginBottom: "16px" }}>
                   {callerName?.[0]?.toUpperCase() || "D"}
                 </div>
-                <p className="text-white text-xl font-semibold">{callerName}</p>
-                <p className="text-gray-400 mt-2 animate-pulse">Calling...</p>
+                <p style={{ color: "white", fontSize: "20px", fontWeight: 600 }}>{callerName}</p>
+                <p style={{ color: "#9ca3af", marginTop: "8px" }}>Calling...</p>
               </div>
             )}
 
-            {/* My Video — corner */}
-            <div className="absolute bottom-24 right-4 w-32 h-44 rounded-2xl overflow-hidden border-2 border-white shadow-lg z-10">
-              {videoOff ? (
-                <div className="w-full h-full bg-gray-700 flex flex-col items-center justify-center gap-2">
-                  <FaVideoSlash size={24} className="text-gray-400" />
-                  <span className="text-gray-400 text-xs">Camera Off</span>
-                </div>
-              ) : (
-                <video
-                  ref={myVideo}
-                  autoPlay
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              )}
+            {/* My Video corner */}
+            <div style={{ position: "absolute", bottom: "96px", right: "16px", width: "128px", height: "176px", borderRadius: "16px", overflow: "hidden", border: "2px solid white", boxShadow: "0 10px 25px rgba(0,0,0,0.5)", zIndex: 10 }}>
+              <video ref={myVideo} autoPlay muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
           </>
         )}
       </div>
 
-      {/* ── Controls ── */}
-      <div className="bg-gray-900/95 backdrop-blur-sm px-8 py-5 flex items-center justify-center gap-8 border-t border-gray-700 min-h-[88px]">
-
+      {/* ✅ Controls — inline styles use kiye */}
+      {/* WHY: Tailwind classes parent ke CSS se override ho sakti thi */}
+      {/* Inline styles guaranteed kaam karti hain — koi conflict nahi */}
+      <div style={{
+        backgroundColor: "rgba(31,41,55,0.97)",
+        backdropFilter: "blur(8px)",
+        padding: "20px 32px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "24px",
+        borderTop: "1px solid rgba(75,85,99,0.5)",
+        minHeight: "88px",
+      }}>
         {/* Mute Button */}
-        <div className="flex flex-col items-center gap-1.5">
-          <button
-            onClick={toggleMute}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 border-2
-              ${muted
-                ? "bg-red-500 border-red-300 shadow-lg shadow-red-500/40 scale-95"
-                : "bg-gray-600 border-gray-500 hover:bg-gray-500"
-              }`}
-          >
-            {muted
-              ? <FaMicrophoneSlash size={20} className="text-white" />
-              : <FaMicrophone size={20} className="text-white" />
-            }
-          </button>
-          <span className={`text-xs ${muted ? "text-red-300" : "text-gray-400"}`}>
-            {muted ? "Unmute" : "Mute"}
-          </span>
-        </div>
+        <button
+          onClick={toggleMute}
+          style={{
+            width: "56px", height: "56px", borderRadius: "50%",
+            backgroundColor: muted ? "#ef4444" : "#4b5563",
+            border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "all 0.2s",
+          }}
+        >
+          {muted
+            ? <FaMicrophoneSlash size={20} color="white" />
+            : <FaMicrophone size={20} color="white" />
+          }
+        </button>
 
         {/* End Call Button */}
-        <div className="flex flex-col items-center gap-1.5">
-          <button
-            onClick={onEndCall}
-            className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all duration-200 shadow-lg shadow-red-500/40 hover:scale-105"
-          >
-            <FaPhone size={22} className="text-white" style={{ transform: "rotate(135deg)" }} />
-          </button>
-          <span className="text-xs text-red-300">End Call</span>
-        </div>
+        <button
+          onClick={onEndCall}
+          style={{
+            width: "64px", height: "64px", borderRadius: "50%",
+            backgroundColor: "#ef4444",
+            border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "all 0.2s",
+            boxShadow: "0 8px 25px rgba(239,68,68,0.4)",
+          }}
+        >
+          <FaPhone size={22} color="white" style={{ transform: "rotate(135deg)" }} />
+        </button>
 
         {/* Video Toggle */}
         {callType === "video" && (
-          <div className="flex flex-col items-center gap-1.5">
-            <button
-              onClick={toggleVideo}
-              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                ${videoOff
-                  ? "bg-red-500 border-red-300 shadow-lg shadow-red-500/40 scale-95"
-                  : "bg-gray-600 border-gray-500 hover:bg-gray-500"
-                }`}
-            >
-              {videoOff
-                ? <FaVideoSlash size={20} className="text-white" />
-                : <FaVideo size={20} className="text-white" />
-              }
-            </button>
-            <span className={`text-xs ${videoOff ? "text-red-300" : "text-gray-400"}`}>
-              {videoOff ? "Start Video" : "Stop Video"}
-            </span>
-          </div>
+          <button
+            onClick={toggleVideo}
+            style={{
+              width: "56px", height: "56px", borderRadius: "50%",
+              backgroundColor: videoOff ? "#ef4444" : "#4b5563",
+              border: "none", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "all 0.2s",
+            }}
+          >
+            {videoOff
+              ? <FaVideoSlash size={20} color="white" />
+              : <FaVideo size={20} color="white" />
+            }
+          </button>
         )}
       </div>
     </div>,
