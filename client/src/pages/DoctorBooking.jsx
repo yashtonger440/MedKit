@@ -374,22 +374,22 @@ const DoctorBooking = () => {
                   />
                 </div>
 
-                <input type="text" placeholder="📞 Phone Number" required
+                {/* <input type="text" placeholder="📞 Phone Number" required
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   className="w-full p-3 rounded-xl bg-gray-100 outline-none"
-                />
+                /> */}
 
                 <textarea placeholder="📍 Enter Address" required rows={2}
                   onChange={(e) => setForm({ ...form, address: e.target.value })}
                   className="w-full p-3 rounded-xl bg-gray-100 outline-none resize-none"
                 />
 
-                <div className="flex justify-between items-center bg-blue-50 p-3 rounded-xl">
+                {/* <div className="flex justify-between items-center bg-blue-50 p-3 rounded-xl">
                   <span className="text-sm text-gray-600">Consultation Fee</span>
                   <span className="text-blue-600 font-bold text-lg">
                     ₹{selectedDoctor?.fee || selectedService?.price}
                   </span>
-                </div>
+                </div> */}
 
                 <button type="submit" disabled={loading}
                   className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold transition duration-300 shadow-md disabled:opacity-60"

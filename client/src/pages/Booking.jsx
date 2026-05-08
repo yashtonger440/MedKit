@@ -177,7 +177,7 @@ const Booking = () => {
               />
 
               {/* PHONE */}
-              {/* <input
+              <input
                 type="text"
                 name="phone"
                 value={form.phone}
@@ -185,7 +185,7 @@ const Booking = () => {
                 placeholder="Phone number"
                 className="w-full p-3 rounded-xl bg-white/80 shadow-sm outline-none focus:ring-2 focus:ring-blue-400"
                 required
-              /> */}
+              />
 
               {/* NOTES */}
               <textarea
