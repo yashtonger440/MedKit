@@ -4,20 +4,52 @@ import {
   FaVideo, FaVideoSlash, FaPhone
 } from "react-icons/fa";
 
-// ✅ remoteStream prop directly receive karo — ref polling ki zaroorat nahi
-const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName, callAccepted, callType }) => {
+const CallScreen = ({
+  myVideo,
+  remoteVideo,
+  remoteStream,
+  myStream,
+  onEndCall,
+  callerName,
+  callAccepted,
+  callType,
+}) => {
   const [muted, setMuted] = useState(false);
   const [videoOff, setVideoOff] = useState(false);
+  const [duration, setDuration] = useState(0); // ✅ Timer state — seconds mein
   const audioRef = useRef(null);
 
-  // ✅ FIX — remoteStream state se aata hai, ref se nahi
-  // Jaise hi remoteStream available ho, audio element pe attach karo
+  // ✅ CHANGE 1 — myStream se apna video attach karo
+  useEffect(() => {
+    if (!myStream) return;
+    if (!myVideo?.current) return;
+    myVideo.current.srcObject = myStream;
+  }, [myStream]);
+
+  // ✅ CHANGE 2 — Call duration timer
+  useEffect(() => {
+    if (!callAccepted) return;
+
+    const interval = setInterval(() => {
+      setDuration((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval); // cleanup
+  }, [callAccepted]);
+
+  // ✅ Timer ko MM:SS format mein convert karo
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
+  // ✅ CHANGE 3 — Audio call ke liye remoteStream attach karo
   useEffect(() => {
     if (callType !== "audio") return;
     if (!remoteStream) return;
     if (!audioRef.current) return;
 
-    console.log("✅ remoteStream mila — audio attach kar raha hoon");
     audioRef.current.srcObject = remoteStream;
     audioRef.current
       .play()
@@ -25,15 +57,13 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
       .catch((e) => {
         if (e.name !== "AbortError") console.error("Audio error:", e);
       });
-
-  }, [remoteStream, callType]); // remoteStream change hone pe trigger
+  }, [remoteStream, callType]);
 
   // ✅ Video call ke liye remoteVideo ref pe stream lagao
   useEffect(() => {
     if (callType !== "video") return;
     if (!remoteStream) return;
     if (!remoteVideo?.current) return;
-
     remoteVideo.current.srcObject = remoteStream;
   }, [remoteStream, callType]);
 
@@ -54,9 +84,26 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 z-50 flex flex-col">
+    // ✅ CHANGE 4 — poora screen fixed hai
+    <div className="fixed inset-0 bg-gray-900 z-[999] flex flex-col">
 
-      <div className="flex-1 relative">
+      {/* ── Top Bar — caller name + timer ── */}
+      <div className="flex items-center justify-between px-6 py-4 bg-black/30">
+        <p className="text-white font-semibold text-lg">{callerName}</p>
+
+        {/* ✅ CHANGE 5 — Timer display */}
+        {callAccepted && (
+          <div className="flex items-center gap-2 bg-green-500/20 border border-green-500/40 px-3 py-1 rounded-full">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-green-300 text-sm font-mono font-medium">
+              {formatTime(duration)}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* ── Main Video/Audio Area ── */}
+      <div className="flex-1 relative overflow-hidden">
         {callType === "audio" ? (
           <div className="w-full h-full flex flex-col items-center justify-center">
             <div className="w-32 h-32 rounded-full bg-purple-500 flex items-center justify-center text-white text-5xl font-bold mb-6">
@@ -66,8 +113,6 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
             <p className="text-gray-400 mt-2">
               {callAccepted ? "🔊 Audio Call Connected" : "Calling..."}
             </p>
-
-            {/* ✅ Sirf audio element — koi hidden video nahi */}
             <audio
               ref={audioRef}
               autoPlay
@@ -77,6 +122,7 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
           </div>
         ) : (
           <>
+            {/* Remote Video — full screen */}
             {callAccepted ? (
               <video
                 ref={remoteVideo}
@@ -86,7 +132,7 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
               />
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold mb-4">
+                <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold mb-4 animate-pulse">
                   {callerName?.[0]?.toUpperCase() || "D"}
                 </div>
                 <p className="text-white text-xl font-semibold">{callerName}</p>
@@ -94,8 +140,9 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
               </div>
             )}
 
-            {/* My Video corner — muted ZAROORI (echo avoid) */}
-            <div className="absolute bottom-4 right-4 w-32 h-44 rounded-2xl overflow-hidden border-2 border-white shadow-lg">
+            {/* ✅ My Video — corner mein */}
+            {/* WHY: muted={true} apni awaaz echo avoid karne ke liye */}
+            <div className="absolute bottom-24 right-4 w-32 h-44 rounded-2xl overflow-hidden border-2 border-white shadow-lg z-10">
               <video
                 ref={myVideo}
                 autoPlay
@@ -108,12 +155,14 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
         )}
       </div>
 
-      {/* Controls */}
-      <div className="bg-gray-800 px-8 py-6 flex items-center justify-center gap-6">
+      {/* ✅ CHANGE 6 — Controls bottom pe fixed hain */}
+      <div className="bg-gray-800/95 backdrop-blur-sm px-8 py-5 flex items-center justify-center gap-6 border-t border-gray-700">
+
+        {/* Mute Button */}
         <button
           onClick={toggleMute}
-          className={`w-14 h-14 rounded-full flex items-center justify-center transition ${
-            muted ? "bg-red-500" : "bg-gray-600 hover:bg-gray-500"
+          className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+            muted ? "bg-red-500 scale-95" : "bg-gray-600 hover:bg-gray-500"
           }`}
         >
           {muted
@@ -122,18 +171,20 @@ const CallScreen = ({ myVideo, remoteVideo, remoteStream, onEndCall, callerName,
           }
         </button>
 
+        {/* End Call Button */}
         <button
           onClick={onEndCall}
-          className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition"
+          className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all hover:scale-105 shadow-lg shadow-red-500/30"
         >
           <FaPhone size={22} className="text-white" style={{ transform: "rotate(135deg)" }} />
         </button>
 
+        {/* Video Toggle — sirf video call mein */}
         {callType === "video" && (
           <button
             onClick={toggleVideo}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition ${
-              videoOff ? "bg-red-500" : "bg-gray-600 hover:bg-gray-500"
+            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+              videoOff ? "bg-red-500 scale-95" : "bg-gray-600 hover:bg-gray-500"
             }`}
           >
             {videoOff
