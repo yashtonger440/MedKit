@@ -37,13 +37,13 @@ export default function Navbar() {
     <nav
       className={`h-18.75 fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/50 backdrop-blur-xl shadow-lg`}
     >
-      <div className="max-w-7xl mx-auto px-1 py-1 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 py-1 flex justify-between items-center">
         <Link to="/">
           <img className="w-38 h-18 " src="/images/logo/logo.png" alt="logo" />
         </Link>
 
         <ul
-          className={`hidden md:flex gap-11 pl-120 font-medium transition text-gray-800`}
+          className={`hidden md:flex gap-10 pl-120 font-medium transition text-gray-800`}
         >
           {menuItems.map((item, i) => (
             <li key={i}>

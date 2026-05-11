@@ -65,7 +65,7 @@ export default function WoundCare() {
             )}
 
             {/* Icon */}
-            <div className="text-3xl text-blue-500 group-hover:scale-110 transition">
+            <div className="text-3xl text-blue-500 transition">
               <FaBandAid />
             </div>
 

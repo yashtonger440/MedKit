@@ -10,7 +10,7 @@ import Ambulance from '../components/Ambulance'
 import Doctors from '../components/Doctors'
 import ParentsCare from '../components/ParentsCare'
 import DietitianSection from '../components/DietitianSection'
-import BookingSection from '../components/BookingSection'
+// import BookingSection from '../components/BookingSection'
 import JoinMission from '../components/JoinMission'
 import Coverage from '../components/Coverage'
 import Footer from '../components/Footer'
@@ -29,7 +29,7 @@ function Home() {
       <Doctors />
       <ParentsCare />
       <DietitianSection />
-      <BookingSection />
+      {/* <BookingSection /> */}
       <JoinMission />
       <Reviews />
       <Coverage />

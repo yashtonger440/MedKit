@@ -23,6 +23,7 @@ import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 function App() {
   return (
     <>
+    <div className="overflow-x-hidden w-full">
     <ScrollManager />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -51,6 +52,7 @@ function App() {
          {/* Protected Routes */}
         <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>
       </Routes>
+      </div>
     </>
   );
 }
