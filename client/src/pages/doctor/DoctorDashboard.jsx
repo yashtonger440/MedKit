@@ -373,7 +373,7 @@ const DoctorDashboard = () => {
                         </span>
                       </p>
 
-                      {/* ✅ Booking type badge — doctor ko pata chale patient ne kya book kiya */}
+                      {/* Booking type badge — doctor ko pata chale patient ne kya book kiya */}
                       {b.type && (
                         <div className="pt-1">
                           {bookingTypeBadge(b.type)}

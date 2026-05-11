@@ -36,8 +36,12 @@ export default function WoundCare() {
 
       {/* Heading */}
       <div className="text-center max-w-2xl mx-auto px-6">
+        <span className="text-blue-700 font-bold tracking-widest text-xs uppercase">
+          Wound Care
+        </span>
         <h2 className="text-4xl font-bold text-gray-800">
-          🩹 Dressing & Injury Management
+          {/* 🩹  */}
+          Dressing & Injury Management
         </h2>
         <p className="mt-4 text-slate-500">
           Professional wound care, burn treatment, and plaster services at your doorstep.
