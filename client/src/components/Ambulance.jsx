@@ -14,7 +14,7 @@ export default function Ambulance() {
         <div className="flex justify-center relative">
           
           {/* Glow Circle */}
-          <div className="absolute w-80 h-80 bg-white/20 backdrop-blur-lg rounded-full"></div>
+          {/* <div className="absolute w-80 h-80 bg-white/20 backdrop-blur-lg rounded-full"></div> */}
 
           <img
             src="/images/ambulance.jpg"

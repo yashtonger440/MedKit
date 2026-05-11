@@ -87,7 +87,7 @@ export default function Hero() {
         <div className="flex justify-center relative">
 
           {/* Glass Circle */}
-          <div className="absolute w-80 h-80 bg-white/20 backdrop-blur-lg rounded-full"></div>
+          {/* <div className="absolute w-80 h-80 bg-white/20 backdrop-blur-lg rounded-full"></div> */}
 
           <img
             src="https://plus.unsplash.com/premium_photo-1681843126728-04eab730febe"
