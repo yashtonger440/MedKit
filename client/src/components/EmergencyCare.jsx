@@ -66,7 +66,8 @@ const EmergencyCare = () => {
         </span>
         <h2 className="flex items-center justify-center gap-3 text-3xl md:text-4xl font-bold text-slate-800 mt-4">
           {/* <span className="text-4xl">🐍</span>  */}
-          Bite & Emergency <span className="text-red-500">Injection Care</span>
+          Bite & Emergency Injection Care
+          {/* Bite & Emergency <span className="text-red-500">Injection Care</span> */}
         </h2>
         <p className="text-slate-500 mt-4 max-w-2xl mx-auto leading-relaxed">
           Immediate professional response for animal bite emergencies. Follow these guidelines and seek help right away.
