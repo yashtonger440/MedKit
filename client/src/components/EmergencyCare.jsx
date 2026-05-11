@@ -59,7 +59,7 @@ const EmergencyCare = () => {
   ];
 
   return (
-    <section className="py-16 px-6 max-w-7xl mx-auto font-sans">
+    <section className="py-20 px-10 bg-linear-to-b from-white to-blue-50">
       <div className="text-center mb-12">
         <span className="text-red-500 font-bold tracking-widest text-xs uppercase">
           Emergency Care
@@ -74,7 +74,7 @@ const EmergencyCare = () => {
       </div>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white">
         {emergencyServices.map((service) => (
           <div
             key={service.id}

@@ -22,8 +22,8 @@ function Home() {
       <Navbar />
       <Hero />
       <ServicesPreview />
-      <EmergencyCare />
       <WoundCare />
+      <EmergencyCare />
       <DoctorCall />
       <Ambulance />
       <Doctors />
