@@ -40,13 +40,16 @@ const DoctorBooking = () => {
   const [loading, setLoading] = useState(false);
   const [confirmedBookings, setConfirmedBookings] = useState([]);
 
+  // ✅ NEW: Report file state
+  const [reportFile, setReportFile] = useState(null);
+
   // ✅ Token check
   const token = localStorage.getItem("token");
   const userId = token
     ? JSON.parse(atob(token.split(".")[1] || "e30="))?.id
     : null;
 
-  // ✅ Login check helper — bina login ke kuch bhi nahi hoga
+  // ✅ Login check helper
   const checkLogin = () => {
     if (!token) {
       alert("Please login your account first");
@@ -63,7 +66,6 @@ const DoctorBooking = () => {
     return booking?.type || null;
   };
 
-  // ✅ Service click pe login check
   const handleServiceClick = async (svc) => {
     if (!checkLogin()) return;
 
@@ -80,7 +82,6 @@ const DoctorBooking = () => {
     }
   };
 
-  // ✅ Book Now pe login check
   const handleBookNow = (doctor) => {
     if (!checkLogin()) return;
     setSelectedDoctor(doctor);
@@ -88,7 +89,6 @@ const DoctorBooking = () => {
     setBookingOpen(true);
   };
 
-  // ✅ Video Call pe login check
   const handleVideoCall = (doctor) => {
     if (!checkLogin()) return;
     setSelectedDoctor(doctor);
@@ -96,7 +96,6 @@ const DoctorBooking = () => {
     initiateCall(doctor._id, doctor.name, "video");
   };
 
-  // Audio Call pe login check
   const handleAudioCall = (doctor) => {
     if (!checkLogin()) return;
     setSelectedDoctor(doctor);
@@ -104,6 +103,29 @@ const DoctorBooking = () => {
     initiateCall(doctor._id, doctor.name, "audio");
   };
 
+  // NEW: File validation handler
+  const handleReportChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Only allow images and PDF
+    const allowed = ["image/jpeg", "image/png", "image/jpg", "application/pdf"];
+    if (!allowed.includes(file.type)) {
+      alert("Only JPG, PNG or PDF files are allowed");
+      e.target.value = ""; // reset input
+      return;
+    }
+
+    // Max 5MB check
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File size must be under 5MB");
+      e.target.value = "";
+      return;
+    }
+    setReportFile(file);
+  };
+
+  // UPDATED: handleSubmit now uses FormData to support file upload
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedDoctor) return;
@@ -112,18 +134,29 @@ const DoctorBooking = () => {
     try {
       setLoading(true);
 
-      const payload = {
-        service: selectedService.specialization,
-        ...form,
-        price: selectedDoctor.fee || selectedService.price,
-        doctorId: selectedDoctor._id,
-      };
+      // Use FormData instead of plain JSON object — required for file upload
+      const formData = new FormData();
+      formData.append("service", selectedService.specialization);
+      formData.append("date", form.date);
+      formData.append("time", form.time);
+      formData.append("phone", form.phone);
+      formData.append("address", form.address);
+      formData.append("type", form.type);
+      formData.append("price", selectedDoctor.fee || selectedService.price);
+      formData.append("doctorId", selectedDoctor._id);
+
+      // Only append file if user selected one (report is optional)
+      if (reportFile) {
+        formData.append("report", reportFile);
+      }
 
       console.log("=== BOOKING PAYLOAD ===");
-      console.log("type:", payload.type);
-      console.log("full payload:", payload);
+      console.log("type:", form.type);
+      console.log("report:", reportFile?.name || "No report");
 
-      await API.post("/bookings", payload);
+      await API.post("/bookings", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       setConfirmedBookings((prev) => [
         ...prev.filter((b) => b.doctorId !== selectedDoctor._id),
@@ -132,6 +165,7 @@ const DoctorBooking = () => {
 
       alert("Booking successful!");
       setBookingOpen(false);
+      setReportFile(null); // Reset file after successful booking
 
       if (form.type === "Call" || form.type === "Video") {
         setPopupOpen(true);
@@ -195,7 +229,7 @@ const DoctorBooking = () => {
 
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800"> 
                   {selectedService?.name} Doctors
                 </h2>
                 <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
@@ -321,8 +355,9 @@ const DoctorBooking = () => {
 
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white">
               <h2 className="text-xl font-bold text-gray-800">Book Appointment</h2>
+              {/* Also reset reportFile when closing popup via X button */}
               <button
-                onClick={() => setBookingOpen(false)}
+                onClick={() => { setBookingOpen(false); setReportFile(null); }}
                 className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200"
               >
                 <FaTimes size={16} className="text-gray-600" />
@@ -374,22 +409,60 @@ const DoctorBooking = () => {
                   />
                 </div>
 
-                {/* <input type="text" placeholder="📞 Phone Number" required
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-gray-100 outline-none"
-                /> */}
-
                 <textarea placeholder="📍 Enter Address" required rows={2}
                   onChange={(e) => setForm({ ...form, address: e.target.value })}
                   className="w-full p-3 rounded-xl bg-gray-100 outline-none resize-none"
                 />
 
-                {/* <div className="flex justify-between items-center bg-blue-50 p-3 rounded-xl">
-                  <span className="text-sm text-gray-600">Consultation Fee</span>
-                  <span className="text-blue-600 font-bold text-lg">
-                    ₹{selectedDoctor?.fee || selectedService?.price}
-                  </span>
-                </div> */}
+                {/* Report Upload Field */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-500">
+                    📎 Upload Medical Report{" "}
+                    <span className="text-gray-400 font-normal">(Optional)</span>
+                  </label>
+
+                  {/* Clicking this styled label triggers the hidden file input */}
+                  <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-blue-200 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition-all">
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      onChange={handleReportChange}
+                      className="hidden"
+                    />
+
+                    {reportFile ? (
+                      // Show file preview once selected
+                      <div className="flex items-center gap-2 px-4 w-full">
+                        <span className="text-2xl shrink-0">
+                          {reportFile.type === "application/pdf" ? "📄" : "🖼️"}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-700 truncate">
+                            {reportFile.name}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            {(reportFile.size / 1024).toFixed(1)} KB
+                          </p>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={(e) => { e.preventDefault(); setReportFile(null); }}
+                          className="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition shrink-0"
+                        >
+                          <FaTimes size={10} />
+                        </button>
+                      </div>
+                    ) : (
+                      // Default upload prompt
+                      <div className="text-center px-4">
+                        {/* <p className="text-2xl mb-1">📁</p> */}
+                        <p className="text-sm text-blue-500 font-medium">Click to upload report</p>
+                        <p className="text-xs text-gray-400 mt-0.5">JPG, PNG or PDF · Max 5MB</p>
+                      </div>
+                    )}
+                  </label>
+                </div>
 
                 <button type="submit" disabled={loading}
                   className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold transition duration-300 shadow-md disabled:opacity-60"

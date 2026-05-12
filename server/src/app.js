@@ -17,8 +17,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/admin", adminRoutes);
 app.use("/api", doctorRoutes);
 
-app.get("/", (req,res) => {
-    res.send("API Running");
+app.get("/", (req, res) => {
+  res.send("API Running");
 });
 
 export default app;

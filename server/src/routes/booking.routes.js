@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
 
-    // ✅ type bhi destructure karo
+    // type bhi destructure karo
     const { date, time, service, address, phone, price, type } = req.body;
 
     console.log("service received:", service);

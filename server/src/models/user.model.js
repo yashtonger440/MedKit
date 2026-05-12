@@ -4,8 +4,8 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  phone: String, // ← ADD: missing tha, dashboard mein use ho raha hai
-
+  phone: String,
+  
   role: {
     type: String,
     enum: ["user", "doctor", "admin"],
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   // Doctor specific fields
   specialization: String,
   experience: Number,
-  fee: Number,           // ← ADD: booking mein price chahiye hoga
+  fee: Number,
   profileImage: String,
   certificate: String,
 
@@ -24,6 +24,6 @@ const userSchema = new mongoose.Schema({
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
-}, { timestamps: true }); // ← ADD: createdAt/updatedAt useful hoga
+}, { timestamps: true });
 
 export default mongoose.model("User", userSchema);

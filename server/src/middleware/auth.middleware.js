@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env.js";
 import User from "../models/user.model.js";
 
-// ✅ Existing — as it is rakho
 export const isAdmin = (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -19,7 +18,6 @@ export const isAdmin = (req, res, next) => {
   }
 };
 
-// ✅ NEW — ye add karo
 export const protect = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -37,10 +35,10 @@ export const protect = async (req, res, next) => {
   }
 };
 
-// ✅ NEW — Doctor only access
+// Doctor access only middleware
 export const isDoctor = (req, res, next) => {
   if (req.user?.role !== "doctor") {
-    return res.status(403).json({ message: "Doctor access only" });
+    return res.status(403).json({ message: "Doctor access only allowed" });
   }
   next();
 };
