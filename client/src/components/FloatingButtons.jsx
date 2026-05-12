@@ -16,7 +16,6 @@ const FloatingButtons = () => {
     const encoded = encodeURIComponent(WHATSAPP_MESSAGE);
     window.open(`https://wa.me/${PHONE_NUMBER}?text=${encoded}`, "_blank");
   };
-  
 
   return (
     <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-3">
