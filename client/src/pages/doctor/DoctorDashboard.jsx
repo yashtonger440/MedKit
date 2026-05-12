@@ -8,7 +8,6 @@ import {
 import { FaPhone, FaPhoneSlash, FaVideo, FaHome, FaHistory, FaTimes, FaFileMedical } from "react-icons/fa";
 import useCall from "../../hooks/useCall";
 import CallScreen from "../../components/CallScreen";
-import { m } from "framer-motion";
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
@@ -26,6 +25,10 @@ const DoctorDashboard = () => {
   const [historyPopup, setHistoryPopup] = useState(false);
   const [selectedUserHistory, setSelectedUserHistory] = useState([]);
   const [selectedUserName, setSelectedUserName] = useState("");
+
+  // ✅ NEW: tracks which history card's prescription is expanded inside popup
+  // { [bookingId]: true/false }
+  const [historyPrescOpen, setHistoryPrescOpen] = useState({});
 
   // ── Report Viewer popup ──
   const [reportPopup, setReportPopup] = useState(false);
@@ -120,6 +123,8 @@ const DoctorDashboard = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Prescription saved successfully!");
+      // ✅ Refresh bookings so history popup also shows updated prescription immediately
+      fetchBookings();
     } catch (err) {
       console.log(err);
       alert("Failed to save prescription.");
@@ -134,7 +139,13 @@ const DoctorDashboard = () => {
   const handleViewHistory = (userId, userName) => {
     setSelectedUserHistory(getUserBookings(userId));
     setSelectedUserName(userName);
+    setHistoryPrescOpen({}); // ✅ reset all open panels when opening history popup
     setHistoryPopup(true);
+  };
+
+  // ✅ NEW: toggle prescription panel inside history popup
+  const toggleHistoryPresc = (id) => {
+    setHistoryPrescOpen((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   // ── Report viewer ──
@@ -203,7 +214,7 @@ const DoctorDashboard = () => {
       default:          return "bg-gray-100 text-gray-600";
     }
   };
-  
+
   const getInitials = (name) =>
     name ? name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) : "?";
 
@@ -215,7 +226,6 @@ const DoctorDashboard = () => {
       b.address?.toLowerCase().includes(search.toLowerCase())
     );
 
-  // Helper to check if booking has a report attached
   const hasReport = (b) => b.reportUrl || b.reportFile || b.report;
   const getReportUrl = (b) => b.reportUrl || b.reportFile || b.report;
 
@@ -269,40 +279,180 @@ const DoctorDashboard = () => {
       {historyPopup && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto">
+
+            {/* Header */}
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <div>
                 <h2 className="text-xl font-bold text-gray-800">{selectedUserName} ki History</h2>
                 <p className="text-sm text-gray-500 mt-0.5">{selectedUserHistory.length} total appointments</p>
               </div>
-              <button onClick={() => setHistoryPopup(false)}
+              <button
+                onClick={() => setHistoryPopup(false)}
                 className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
               >
                 <FaTimes size={16} className="text-gray-600" />
               </button>
             </div>
-            <div className="p-6 space-y-3">
+
+            {/* History List */}
+            <div className="p-6 space-y-4">
               {selectedUserHistory.map((b) => (
-                <div key={b._id} className="p-4 rounded-2xl border border-gray-100 bg-gray-50 hover:bg-white transition-all">
-                  <div className="flex items-start justify-between gap-3 flex-wrap">
-                    <div className="space-y-1.5">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-semibold text-gray-800 text-sm">{b.service}</p>
-                        {bookingTypeBadge(b.type)}
+                <div
+                  key={b._id}
+                  className="rounded-2xl border border-gray-100 bg-gray-50 overflow-hidden"
+                >
+                  {/* ── Basic booking info ── */}
+                  <div className="p-4">
+                    <div className="flex items-start justify-between gap-3 flex-wrap">
+                      <div className="space-y-1.5 flex-1">
+
+                        {/* Service + type badge */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="font-semibold text-gray-800 text-sm">{b.service}</p>
+                          {bookingTypeBadge(b.type)}
+                        </div>
+
+                        {/* Date */}
+                        <p className="text-xs text-gray-500">
+                          📅{" "}
+                          {new Date(b.date).toLocaleDateString("en-IN", {
+                            day: "numeric", month: "short", year: "numeric",
+                          })}{" "}
+                          {new Date(b.date).toLocaleTimeString("en-IN", {
+                            hour: "2-digit", minute: "2-digit", hour12: true,
+                          })}
+                        </p>
+
+                        {b.address && <p className="text-xs text-gray-500">📍 {b.address}</p>}
+                        {b.phone   && <p className="text-xs text-gray-500">📞 {b.phone}</p>}
+
+                        {/* Report uploaded badge */}
+                        {hasReport(b) && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-teal-50 text-teal-600 border border-teal-200">
+                            <FaFileMedical size={9} /> Report Uploaded
+                          </span>
+                        )}
                       </div>
-                      <p className="text-xs text-gray-500">
-                        📅 {new Date(b.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}{" "}
-                        {new Date(b.date).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true })}
-                      </p>
-                      {b.address && <p className="text-xs text-gray-500">📍 {b.address}</p>}
-                      {b.phone   && <p className="text-xs text-gray-500">📞 {b.phone}</p>}
-                    </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${badgeStyle(b.status)}`}>
-                        {b.status}
-                      </span>
-                      <p className="text-sm font-bold text-gray-800">₹{b.price}</p>
+
+                      {/* Status + Price */}
+                      <div className="flex flex-col items-end gap-2 shrink-0">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${badgeStyle(b.status)}`}>
+                          {b.status}
+                        </span>
+                        <p className="text-sm font-bold text-gray-800">₹{b.price}</p>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Prescription section inside each history card */}
+                  {/* Shows if doctor wrote a prescription for this past booking */}
+                  {(b.prescription?.notes || b.prescription?.medicines?.length > 0) ? (
+                    <div className="border-t border-gray-200">
+
+                      {/* Toggle button */}
+                      <button
+                        onClick={() => toggleHistoryPresc(b._id)}
+                        className="w-full flex items-center justify-between px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 transition-all"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Pill size={12} className="text-indigo-500" />
+                          <span className="text-xs font-semibold text-indigo-700">
+                            Prescription Written
+                          </span>
+                          {/* Medicine count badge */}
+                          {b.prescription?.medicines?.length > 0 && (
+                            <span className="px-1.5 py-0.5 rounded-full bg-indigo-200 text-indigo-700 text-xs font-bold">
+                              {b.prescription.medicines.length} medicine{b.prescription.medicines.length > 1 ? "s" : ""}
+                            </span>
+                          )}
+                        </div>
+                        {historyPrescOpen[b._id]
+                          ? <ChevronUp size={13} className="text-indigo-500" />
+                          : <ChevronDown size={13} className="text-indigo-500" />
+                        }
+                      </button>
+
+                      {/* Expanded prescription content */}
+                      {historyPrescOpen[b._id] && (
+                        <div className="px-4 py-4 bg-indigo-50/40 space-y-3">
+
+                          {/* Prescription written date */}
+                          {b.prescription?.createdAt && (
+                            <p className="text-xs text-gray-400">
+                              📝 Written on{" "}
+                              {new Date(b.prescription.createdAt).toLocaleDateString("en-IN", {
+                                day: "numeric", month: "short", year: "numeric",
+                              })}
+                            </p>
+                          )}
+
+                          {/* Doctor's notes */}
+                          {b.prescription?.notes && (
+                            <div className="bg-white rounded-xl p-3 border border-indigo-100">
+                              <p className="text-xs font-semibold text-gray-500 mb-1.5">
+                                📋 Notes / Observations
+                              </p>
+                              <p className="text-sm text-gray-700 leading-relaxed">
+                                {b.prescription.notes}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Medicines list */}
+                          {b.prescription?.medicines?.length > 0 && (
+                            <div className="bg-white rounded-xl p-3 border border-indigo-100">
+                              <p className="text-xs font-semibold text-gray-500 mb-2">
+                                💊 Medicines Prescribed
+                              </p>
+                              <div className="space-y-2">
+                                {b.prescription.medicines.map((med, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="flex items-center gap-2 p-2 rounded-lg bg-indigo-50 border border-indigo-100 flex-wrap"
+                                  >
+                                    {/* Number */}
+                                    <span className="w-5 h-5 rounded-full bg-indigo-200 text-indigo-700 text-xs font-bold flex items-center justify-center shrink-0">
+                                      {idx + 1}
+                                    </span>
+
+                                    {/* Name */}
+                                    <span className="text-sm font-semibold text-gray-800 flex-1 min-w-0">
+                                      {med.name}
+                                    </span>
+
+                                    {/* Dose */}
+                                    {med.dose && (
+                                      <span className="text-xs px-2 py-0.5 rounded-full bg-white border border-indigo-200 text-indigo-600 shrink-0">
+                                        {med.dose}
+                                      </span>
+                                    )}
+
+                                    {/* Duration */}
+                                    {med.duration && (
+                                      <span className="text-xs text-gray-500 shrink-0">
+                                        for {med.duration}
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    // Show this when booking is completed but no prescription was written
+                    b.status === "completed" && (
+                      <div className="border-t border-gray-200 px-4 py-2.5 bg-gray-50">
+                        <p className="text-xs text-gray-400 flex items-center gap-1.5">
+                          <Pill size={10} /> No prescription was written for this visit
+                        </p>
+                      </div>
+                    )
+                  )}
+
                 </div>
               ))}
             </div>
@@ -314,7 +464,6 @@ const DoctorDashboard = () => {
       {reportPopup && selectedReport && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-            {/* Header */}
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center">
@@ -331,32 +480,25 @@ const DoctorDashboard = () => {
                 <FaTimes size={16} className="text-gray-600" />
               </button>
             </div>
-
-            {/* Report Content */}
             <div className="p-6">
               {hasReport(selectedReport) ? (
                 <div className="space-y-4">
-                  {/* If it's an image */}
                   {/\.(jpg|jpeg|png|gif|webp)$/i.test(getReportUrl(selectedReport)) && (
                     <img
-                      src={getReportUrl(selectedReport)}
+                      src={`${import.meta.env.VITE_API_URL}${getReportUrl(selectedReport)}`}
                       alt="Patient Report"
                       className="w-full rounded-2xl border border-gray-200 object-contain max-h-[60vh]"
                     />
                   )}
-
-                  {/* If it's a PDF */}
                   {/\.pdf$/i.test(getReportUrl(selectedReport)) && (
                     <iframe
-                      src={getReportUrl(selectedReport)}
+                      src={`${import.meta.env.VITE_API_URL}${getReportUrl(selectedReport)}`}
                       title="Patient Report PDF"
                       className="w-full h-[60vh] rounded-2xl border border-gray-200"
                     />
                   )}
-
-                  {/* Fallback download link */}
                   <a
-                    href={getReportUrl(selectedReport)}
+                    href={`${import.meta.env.VITE_API_URL}${getReportUrl(selectedReport)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-50 text-teal-700 rounded-xl text-sm font-medium hover:bg-teal-100 transition-all border border-teal-200"
@@ -508,9 +650,9 @@ const DoctorDashboard = () => {
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className="font-semibold text-gray-800 text-base">{b.user?.name}</p>
                           {isNewUser ? (
-                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-600">🆕 New Patient</span>
+                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-600"> New Patient </span>
                           ) : (
-                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-600">✅ Existing Patient</span>
+                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-600"> Existing Patient </span>
                           )}
                         </div>
 
@@ -567,7 +709,7 @@ const DoctorDashboard = () => {
 
                         {b.status === "accepted" && (
                           <>
-                            {/* ✅ View Report Button */}
+                            {/* View Report Button */}
                             <button
                               onClick={() => handleViewReport(b)}
                               className={`px-4 py-1.5 rounded-lg text-sm transition-all flex items-center gap-1.5 justify-center
@@ -580,7 +722,7 @@ const DoctorDashboard = () => {
                               {hasReport(b) ? "View Report" : "No Report"}
                             </button>
 
-                            {/* ✅ Write Prescription Button (toggle) */}
+                            {/* Write Prescription Button */}
                             <button
                               onClick={() => togglePrescriptionPanel(b._id)}
                               className="px-4 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 rounded-lg text-sm transition-all flex items-center gap-1.5 justify-center"
@@ -625,7 +767,7 @@ const DoctorDashboard = () => {
                     </div>
                   </div>
 
-                  {/* ✅ Prescription Panel — shown inline below card when toggled */}
+                  {/* Prescription Panel — inline below card */}
                   {b.status === "accepted" && presc.open && (
                     <div className="mt-5 border-t border-gray-100 pt-5">
                       <div className="bg-indigo-50 rounded-2xl p-5 space-y-5">

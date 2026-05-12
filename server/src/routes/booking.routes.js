@@ -3,6 +3,7 @@ import Booking from "../models/booking.model.js";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env.js";
+import { uploadReport } from "../middleware/upload.js";
 
 const router = express.Router();
 
@@ -11,23 +12,29 @@ const getToken = (req) => {
   return auth?.startsWith("Bearer ") ? auth.split(" ")[1] : auth;
 };
 
-// CREATE BOOKING — service ke basis pe doctor auto-assign
-router.post("/", async (req, res) => {
+router.post("/", uploadReport.single("report"), async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
 
-    // type bhi destructure karo
-    const { date, time, service, address, phone, price, type } = req.body;
+    // NOTE: req.body now comes from FormData (not JSON) because frontend
+    // switched to multipart/form-data to support file upload
+    const { date, time, service, address, phone, price, type, doctorId } = req.body;
 
     console.log("service received:", service);
     console.log("type received:", type);
+    console.log("report file:", req.file?.filename || "No report uploaded");
 
-    // Service se matching doctor dhundo
-    const doctor = await User.findOne({
-      role: "doctor",
-      status: "approved",
-      specialization: { $regex: service, $options: "i" },
-    });
+    let doctor;
+
+    if (doctorId) {
+      doctor = await User.findById(doctorId);
+    } else {
+      doctor = await User.findOne({
+        role: "doctor",
+        status: "approved",
+        specialization: { $regex: service, $options: "i" },
+      });
+    }
 
     console.log("Doctor found:", doctor);
 
@@ -47,6 +54,9 @@ router.post("/", async (req, res) => {
       user: decoded.id,
       doctor: doctor._id,
       status: "pending",
+
+      // save report file path if user uploaded one, else null
+      reportUrl: req.file ? `/uploads/reports/${req.file.filename}` : null,
     });
 
     res.json(booking);
@@ -56,7 +66,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET MY BOOKINGS (user sees their bookings with doctor info + status)
 router.get("/my", async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -68,6 +77,7 @@ router.get("/my", async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const bookings = await Booking.find({ user: decoded.id })
+      .populate("doctor", "name specialization profileImage") // get doctor info
       .sort({ createdAt: -1 });
 
     res.json(bookings);
@@ -77,7 +87,7 @@ router.get("/my", async (req, res) => {
   }
 });
 
-// GET DOCTOR'S BOOKINGS (doctor sees requests sent to them)
+// GET DOCTOR'S BOOKINGS — doctor sees requests sent to them
 router.get("/doctor", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
@@ -92,7 +102,7 @@ router.get("/doctor", async (req, res) => {
   }
 });
 
-// UPDATE STATUS (doctor accepts/rejects/completes)
+// UPDATE STATUS — doctor accepts/rejects/completes
 router.put("/:id/status", async (req, res) => {
   try {
     const decoded = jwt.verify(getToken(req), JWT_SECRET);
@@ -114,7 +124,7 @@ router.put("/:id/status", async (req, res) => {
   }
 });
 
-// GET ALL APPROVED DOCTORS (for booking form dropdown)
+// GET ALL APPROVED DOCTORS 
 router.get("/doctors", async (req, res) => {
   try {
     const doctors = await User.find({ role: "doctor", status: "approved" })
@@ -122,6 +132,64 @@ router.get("/doctors", async (req, res) => {
     res.json(doctors);
   } catch (err) {
     res.status(500).json({ message: "Error fetching doctors" });
+  }
+});
+
+// SAVE PRESCRIPTION — doctor writes notes + medicines
+router.post("/:id/prescription", async (req, res) => {
+  try {
+    const decoded = jwt.verify(getToken(req), JWT_SECRET);
+    const { notes, medicines } = req.body;
+
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).json({ message: "Booking not found" });
+
+    // Only the assigned doctor can write prescription for this booking
+    if (booking.doctor.toString() !== decoded.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    // Save prescription inside the booking document
+    booking.prescription = {
+      notes,
+      medicines,
+      createdAt: new Date(),
+    };
+
+    await booking.save();
+
+    res.json({ message: "Prescription saved successfully", prescription: booking.prescription });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to save prescription" });
+  }
+});
+
+// GET PRESCRIPTION — user reads doctor's prescription
+router.get("/:id/prescription", async (req, res) => {
+  try {
+    const decoded = jwt.verify(getToken(req), JWT_SECRET);
+
+    const booking = await Booking.findById(req.params.id)
+      .populate("doctor", "name specialization profileImage");
+
+    if (!booking) return res.status(404).json({ message: "Booking not found" });
+
+    // Only the booking's user or doctor can read the prescription
+    const isUser = booking.user.toString() === decoded.id;
+    const isDoctor = booking.doctor._id.toString() === decoded.id;
+
+    if (!isUser && !isDoctor) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    res.json({
+      prescription: booking.prescription,
+      doctor: booking.doctor, // so user knows which doctor wrote it
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to fetch prescription" });
   }
 });
 

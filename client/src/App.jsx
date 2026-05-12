@@ -19,6 +19,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import ElderlyCarePlans from "./pages/ElderlyCare";
 import AdminBookings from "./pages/admin/AdminBookings";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
+import FloatingButtons from "./components/FloatingButtons";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
          {/* Protected Routes */}
         <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>
       </Routes>
+      <FloatingButtons />
       </div>
     </>
   );

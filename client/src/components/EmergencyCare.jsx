@@ -129,7 +129,7 @@ const EmergencyCare = () => {
       <div className="mt-10 flex items-center justify-center gap-3 bg-slate-800 text-white rounded-2xl px-8 py-5">
         <Phone className="w-5 h-5 text-cyan-400 shrink-0" />
         <p className="text-sm text-slate-300">
-          In case of emergency, <span className="text-white font-semibold">call our experts immediately on 981825XXXX</span> — our team is available to assist you right away.
+          In case of emergency, <span className="text-white font-semibold">call our experts immediately on 9818185270</span> — our team is available to assist you right away.
         </p>
       </div>
     </section>

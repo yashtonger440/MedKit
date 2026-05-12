@@ -15,7 +15,7 @@ const bookingSchema = new mongoose.Schema({
   phone: String,
   price: Number,
 
-  // ✅ NEW — user ne kya book kiya: Call, Video, Home Visit
+  // user ne kya book kiya: Call, Video, Home Visit
   type: {
     type: String,
     enum: ["Call", "Video", "Home Visit"],
@@ -27,10 +27,37 @@ const bookingSchema = new mongoose.Schema({
     enum: ["pending", "accepted", "completed", "cancelled"],
     default: "pending",
   },
+
   review: {
     rating: Number,
     comment: String,
   },
+
+  // stores the uploaded report file path
+  reportUrl: {
+    type: String,
+    default: null,
+  },
+
+  // stores doctor's prescription after consultation
+  prescription: {
+    notes: {
+      type: String,
+      default: "",
+    },
+    medicines: [
+      {
+        name:     { type: String },
+        dose:     { type: String },
+        duration: { type: String },
+      }
+    ],
+    createdAt: {
+      type: Date,
+      default: null,
+    },
+  },
+
 }, { timestamps: true });
 
 export default mongoose.model("Booking", bookingSchema);

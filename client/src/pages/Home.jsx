@@ -15,6 +15,7 @@ import JoinMission from '../components/JoinMission'
 import Coverage from '../components/Coverage'
 import Footer from '../components/Footer'
 import Reviews from '../components/Reviews'
+import FAQ from '../components/FAQ'
 
 function Home() {
   return (
@@ -32,6 +33,7 @@ function Home() {
       {/* <BookingSection /> */}
       <JoinMission />
       <Reviews />
+      <FAQ />
       <Coverage />
       <Footer />
     </div>
