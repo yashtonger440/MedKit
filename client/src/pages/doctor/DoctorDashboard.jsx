@@ -203,7 +203,7 @@ const DoctorDashboard = () => {
       default:          return "bg-gray-100 text-gray-600";
     }
   };
-
+  
   const getInitials = (name) =>
     name ? name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) : "?";
 

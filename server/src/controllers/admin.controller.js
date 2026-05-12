@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import Booking from "../models/booking.model.js";
 
-// Get Dashboard Stats
+// Get Dashboard Stats (total users, doctors, bookings)
 export const getAdminStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: "user" });
