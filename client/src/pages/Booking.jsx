@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
@@ -13,9 +13,10 @@ import {
 
 const Booking = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [form, setForm] = useState({
-    service: "Injection at Home",
+    service: location.state?.service || "Injection at Home",
     date: "",
     time: "",
     address: "",
@@ -29,14 +30,13 @@ const Booking = () => {
     { name: "Injection at Home", price: 120 },
     { name: "IV Drip Administration", price: 300 },
     { name: "ECG Test at Home", price: 400 },
+    { name: "Nurse Visit at Home", price: 699 },
     { name: "Physiotherapy", price: 500 },
     { name: "BP & Sugar Check", price: 199 },
     { name: "Blood Test at Home", price: 499 },
-    { name: "Dog Bite injection", price: 300 },
-    { name: "Snake Bite", price: 500 },
     { name: "Minor Dressing", price: 200 },
     { name: "Major Dressing", price: 400 },
-    { name: "Burn dressing", price: 300 },
+    { name: "Burn Dressing", price: 300 },
     { name: "Plaster Application", price: 600 },
     { name: "Plaster Removal", price: 300 },
   ];

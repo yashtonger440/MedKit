@@ -91,6 +91,10 @@ export default function WoundCare() {
             {/* CTA */}
             <Link
               to="/booking"
+              state = {{
+                service: service.title,
+                price: service.price,
+              }}
               className="mt-5 inline-block w-full text-center bg-linear-to-r from-blue-500 to-cyan-400 text-white py-2 rounded-lg font-medium hover:scale-105 transition"
             >
               Book Now

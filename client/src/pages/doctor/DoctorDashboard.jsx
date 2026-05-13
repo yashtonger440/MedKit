@@ -143,7 +143,7 @@ const DoctorDashboard = () => {
     setHistoryPopup(true);
   };
 
-  // ✅ NEW: toggle prescription panel inside history popup
+  // NEW: toggle prescription panel inside history popup
   const toggleHistoryPresc = (id) => {
     setHistoryPrescOpen((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -556,7 +556,7 @@ const DoctorDashboard = () => {
             <button className="md:hidden text-gray-600" onClick={() => setSidebarOpen(!sidebarOpen)}>
               {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
-            <h2 className="text-base font-semibold text-gray-700 hidden md:block">Welcome, {doctorName}</h2>
+            <h2 className="text-base font-semibold text-gray-700 hidden md:block">Welcome, DR. {doctorName}</h2>
           </div>
           <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}
