@@ -9,14 +9,14 @@ const router = express.Router();
 
 // signup part
 router.post("/signup", async (req,res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, } = req.body;
 
     const exists = await User.findOne({email});
     if(exists) return res.json({message: "User exists"});
 
     const hashed = await bcrypt.hash(password, 10);
 
-    await User.create({ name, email, password: hashed });
+    await User.create({ name, email, password: hashed, phone, role: "user" });
 
     res.json({ message: "Signup success"});
 });

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [user, setUser] = useState(null);
   const [image, setImage] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const navigate = useNavigate();
 
   const [editData, setEditData] = useState({
     name: "",
@@ -77,6 +79,13 @@ function Profile() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-100 via-cyan-100 to-blue-200 flex justify-center items-center px-4 py-10">
+
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-5 left-5 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100"
+      >
+        ← Home
+      </button>
 
       <div className="bg-white/70 backdrop-blur-xl shadow-2xl rounded-3xl p-8 w-full max-w-md text-center border border-white/40">
 

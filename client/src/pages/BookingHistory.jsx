@@ -5,12 +5,15 @@ import {
   FaChevronDown, FaChevronUp, FaClock,
   FaMapMarkerAlt, FaPhone, FaVideo, FaHome,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const BookingHistory = () => {
   const [bookings, setBookings]     = useState([]);
   const [loading, setLoading]       = useState(true);
+  
+   const navigate = useNavigate();
 
-  // ✅ Tracks which booking's prescription panel is open
+  // Tracks which booking's prescription panel is open
   // { [bookingId]: true/false }
   const [openPrescriptions, setOpenPrescriptions] = useState({});
 
@@ -79,6 +82,13 @@ const BookingHistory = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-20">
+
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-5 left-5 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100"
+      >
+        ← Home
+      </button>
 
       <h1 className="text-3xl font-bold text-center mb-10">My Bookings</h1>
 

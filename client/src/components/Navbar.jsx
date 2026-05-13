@@ -149,19 +149,27 @@ export default function Navbar() {
               <div className="text-center font-medium">{user.name}</div>
 
               <Link
-                to="/profile"
-                onClick={() => setOpen(false)}
-                className="block text-center bg-gray-200 py-2 rounded-full"
-              >
-                Profile
-              </Link>
+  to="/profile"
+  onClick={() => setOpen(false)}
+  className="block text-center bg-gray-200 py-2 rounded-full"
+>
+  Profile
+</Link>
 
-              <button
-                onClick={handleLogout}
-                className="block w-full text-center bg-red-500 text-white py-2 rounded-full"
-              >
-                Logout
-              </button>
+<Link
+  to="/bookinghistory"
+  onClick={() => setOpen(false)}
+  className="block text-center bg-gray-200 py-2 rounded-full"
+>
+  Booking History
+</Link>
+
+<button
+  onClick={handleLogout}
+  className="block w-full text-center bg-red-500 text-white py-2 rounded-full"
+>
+  Logout
+</button>
             </>
           ) : (
             <Link

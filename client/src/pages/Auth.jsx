@@ -138,6 +138,7 @@ const Auth = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
 
                 {!isLogin && (
+                  <>
                   <input
                     type="text"
                     name="name"
@@ -146,6 +147,16 @@ const Auth = () => {
                     className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-400 outline-none"
                     required
                   />
+
+                  <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Mobile Number"
+                  onChange={handleChange}
+                  className="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-400 outline-none"
+                  required
+                />
+                </>
                 )}
 
                 <input
