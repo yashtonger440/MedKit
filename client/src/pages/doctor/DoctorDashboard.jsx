@@ -283,7 +283,7 @@ const DoctorDashboard = () => {
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <div>
-                <h2 className="text-xl font-bold text-gray-800">{selectedUserName} ki History</h2>
+                <h2 className="text-xl font-bold text-gray-800">{selectedUserName}'s History</h2>
                 <p className="text-sm text-gray-500 mt-0.5">{selectedUserHistory.length} total appointments</p>
               </div>
               <button
