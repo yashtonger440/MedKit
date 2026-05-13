@@ -42,3 +42,11 @@ export const isDoctor = (req, res, next) => {
   }
   next();
 };
+
+// Technician access only middleware
+export const isTechnician = (req, res, next) => {
+  if (req.user?.role !== "technician") {
+    return res.status(403).json({ message: "Technician access only" });
+  }
+  next();
+};

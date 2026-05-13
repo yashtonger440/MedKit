@@ -15,7 +15,7 @@ const Booking = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    service: "Doctor Consultation",
+    service: "Injection at Home",
     date: "",
     time: "",
     address: "",
@@ -26,9 +26,6 @@ const Booking = () => {
   const [loading, setLoading] = useState(false);
 
   const services = [
-    { name: "Doctor Consultation", price: 499 },
-    { name: "Ambulance Service", price: 1200 },
-    { name: "Emergency Care", price: 999 },
     { name: "Injection at Home", price: 120 },
     { name: "IV Drip Administration", price: 300 },
     { name: "ECG Test at Home", price: 400 },

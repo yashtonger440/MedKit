@@ -20,6 +20,9 @@ import ElderlyCarePlans from "./pages/ElderlyCare";
 import AdminBookings from "./pages/admin/AdminBookings";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import FloatingButtons from "./components/FloatingButtons";
+import TechnicianLogin from "./pages/technician/TechnicianLogin";
+import AdminTechnician from "./pages/admin/AdminTechnician";
+import TechnicianDashboard from "./pages/technician/TechnicianDashboard";
 
 function App() {
   return (
@@ -45,15 +48,19 @@ function App() {
         <Route path="/admin/doctors" element={<AdminDoctors />}/>
         <Route path="/admin/users" element={<AdminUsers />}/>
         <Route path="/admin/bookings" element={<AdminBookings />}/>
+        <Route path="/admin/technicians" element={<AdminTechnician />}/>
 
         {/* Doctor Dashboard */}
         <Route path="/doctor-login" element={<AuthDoctor />}/>
         <Route path="/doctor-dashboard" element={<DoctorDashboard />}/>
 
+        {/* Technician Dashboard */}
+        <Route path="/technician-login" element={<TechnicianLogin />}/>
+        <Route path="/technician-dashboard" element={<TechnicianDashboard />}/>
+
          {/* Protected Routes */}
         <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>
       </Routes>
-      <FloatingButtons />
       </div>
     </>
   );

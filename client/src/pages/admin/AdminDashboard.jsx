@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
-  Users, UserCheck, Calendar, Menu, X,
+  Users, UserCheck, Calendar, Stethoscope, Menu, X,
   LayoutDashboard, LogOut, User,
 } from "lucide-react";
 import {
@@ -60,12 +60,13 @@ const AdminDashboard = () => {
     navigate("/admin-login");
   };
 
-  const navItems = [
-    { label: "Dashboard", path: "/admin",          icon: <LayoutDashboard size={18} /> },
-    { label: "Doctors",   path: "/admin/doctors",  icon: <UserCheck size={18} /> },
-    { label: "Users",     path: "/admin/users",    icon: <Users size={18} /> },
-    { label: "Bookings",  path: "/admin/bookings", icon: <Calendar size={18} /> },
-  ];
+const navItems = [
+  { label: "Dashboard",    path: "/admin",                icon: <LayoutDashboard size={18} /> },
+  { label: "Doctors",      path: "/admin/doctors",        icon: <UserCheck size={18} /> },
+  { label: "Technicians",  path: "/admin/technicians",    icon: <Stethoscope size={18} /> }, // ✅ add
+  { label: "Users",        path: "/admin/users",          icon: <Users size={18} /> },
+  { label: "Bookings",     path: "/admin/bookings",       icon: <Calendar size={18} /> },
+];
 
   const isActive = (path) =>
     path === "/admin"
@@ -73,10 +74,11 @@ const AdminDashboard = () => {
       : location.pathname.startsWith(path);
 
   const statCards = [
-    { title: "Total Users",    value: stats.totalUsers,    icon: <Users size={24} />,     bg: "bg-blue-50",   text: "text-blue-600"   },
-    { title: "Total Doctors",  value: stats.totalDoctors,  icon: <UserCheck size={24} />, bg: "bg-green-50",  text: "text-green-600"  },
-    { title: "Total Bookings", value: stats.totalBookings, icon: <Calendar size={24} />,  bg: "bg-purple-50", text: "text-purple-600" },
-  ];
+  { title: "Total Users",        value: stats.totalUsers,        icon: <Users size={24} />,       bg: "bg-blue-50",   text: "text-blue-600"   },
+  { title: "Total Doctors",      value: stats.totalDoctors,      icon: <UserCheck size={24} />,   bg: "bg-green-50",  text: "text-green-600"  },
+  { title: "Total Technicians",  value: stats.totalTechnicians,  icon: <Stethoscope size={24} />, bg: "bg-purple-50", text: "text-purple-600" }, // ✅
+  { title: "Total Bookings",     value: stats.totalBookings,     icon: <Calendar size={24} />,    bg: "bg-orange-50", text: "text-orange-600" },
+];
 
   const pieData = [
     { name: "Users",   value: stats.totalUsers   },
@@ -86,10 +88,11 @@ const AdminDashboard = () => {
   const COLORS = ["#3b82f6", "#10b981"];
 
   const quickActions = [
-    { title: "Manage Doctors",  desc: "Approve or reject doctor registrations", path: "/admin/doctors"  },
-    { title: "Manage Users",    desc: "View and manage all users",               path: "/admin/users"    },
-    { title: "Manage Bookings", desc: "Track and manage appointments",           path: "/admin/bookings" },
-  ];
+  { title: "Manage Doctors",      desc: "Approve or reject doctor registrations",     path: "/admin/doctors"      },
+  { title: "Manage Technicians",  desc: "Approve or reject technician registrations", path: "/admin/technicians"  }, // ✅ add
+  { title: "Manage Users",        desc: "View and manage all users",                  path: "/admin/users"        },
+  { title: "Manage Bookings",     desc: "Track and manage appointments",              path: "/admin/bookings"     },
+];
 
   return (
     <div className="flex min-h-screen bg-gray-100">

@@ -7,11 +7,13 @@ export const getAdminStats = async (req, res) => {
     const totalUsers = await User.countDocuments({ role: "user" });
     const totalDoctors = await User.countDocuments({ role: "doctor" });
     const totalBookings = await Booking.countDocuments();
+    const totalTechnicians = await User.countDocuments({ role: "technician" });
 
     res.json({
       totalUsers,
       totalDoctors,
       totalBookings,
+      totalTechnicians,
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching stats" });
@@ -135,5 +137,45 @@ export const updateBookingStatus = async (req, res) => {
     res.json(updated);
   } catch (error) {
     res.status(500).json({ message: "Error updating booking status" });
+  }
+};
+
+// Get All Technicians
+export const getAllTechnicians = async (req, res) => {
+  try {
+    const technicians = await User.find({ role: "technician" }).select("-password");
+    res.json(technicians);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching technicians" });
+  }
+};
+
+// Approve Technician
+export const approveTechnician = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, { status: "approved" });
+    res.json({ message: "Technician approved" });
+  } catch (error) {
+    res.status(500).json({ message: "Error approving technician" });
+  }
+};
+
+// Reject Technician
+export const rejectTechnician = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, { status: "rejected" });
+    res.json({ message: "Technician rejected" });
+  } catch (error) {
+    res.status(500).json({ message: "Error rejecting technician" });
+  }
+};
+
+// Delete Technician
+export const deleteTechnician = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "Technician deleted" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting technician" });
   }
 };
