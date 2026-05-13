@@ -71,7 +71,7 @@ const Booking = () => {
     <>
       <Navbar />
 
-      <div className="min-h-screen mt-4 bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
+      <div className="min-h-screen mt-5 bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
 
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
 

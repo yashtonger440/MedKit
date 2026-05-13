@@ -197,7 +197,7 @@ const DoctorBooking = () => {
         />
       )}
 
-      <div className="min-h-screen bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 to-cyan-100 px-6 py-20 mt-5">
 
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800">Book a Doctor 👨‍⚕️</h1>

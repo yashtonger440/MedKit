@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Booking from "./pages/Booking";
 import Auth from "./pages/Auth"
@@ -24,11 +24,13 @@ import TechnicianLogin from "./pages/technician/TechnicianLogin";
 import AdminTechnician from "./pages/admin/AdminTechnician";
 import TechnicianDashboard from "./pages/technician/TechnicianDashboard";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
-    <>
     <div className="overflow-x-hidden w-full">
-    <ScrollManager />
+      <ScrollManager />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />}/>
@@ -58,12 +60,17 @@ function App() {
         <Route path="/technician-login" element={<TechnicianLogin />}/>
         <Route path="/technician-dashboard" element={<TechnicianDashboard />}/>
 
-         {/* Protected Routes */}
+        {/* Protected Routes */}
         <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>
       </Routes>
-      </div>
-    </>
+
+      {isHome && <FloatingButtons />}
+    </div>
   );
+}
+
+function App() {
+  return <AppContent />;
 }
 
 export default App;
