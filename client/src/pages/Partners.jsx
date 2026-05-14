@@ -52,7 +52,7 @@ export default function Partners() {
         </section>
 
         {/* PARTNER TYPES */}
-        <section className="max-w-7xl mx-auto px-6 py-16">
+        <section className="max-w-7xl mx-auto px-6 py-10">
 
           <h2 className="text-3xl font-bold text-center text-gray-800">
             Partner Opportunities

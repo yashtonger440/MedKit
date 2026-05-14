@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { FaWhatsapp, FaUserMd, FaLeaf, FaPhone, FaPhoneAlt } from "react-icons/fa";
 
 export default function DietitianSection() {
+  const message = encodeURIComponent("Hi, I would like to consult a dietitian. Please assist me with the booking process.");
   return (
     <section className="py-20 bg-linear-to-br from-green-50 to-emerald-100 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -51,7 +52,7 @@ export default function DietitianSection() {
           {/* CTA Buttons */}
           <div className="mt-8 flex gap-4 flex-wrap">
             <a
-              href="https://wa.me/919818185270"
+              href={`https://wa.me/919818185270?text=${message}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 transition"

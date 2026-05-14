@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
     socket.emit("peer_id_response", { peerId: userPeerIds[userId] || null });
   });
 
-  // callType aur callerPeerId add kiya
+  // callType aur callerPeerId 
   socket.on("call:initiate", ({ callerId, callerPeerId, doctorId, callerName, callType }) => {
     const doctorSocket = onlineUsers[doctorId];
     if (doctorSocket) {

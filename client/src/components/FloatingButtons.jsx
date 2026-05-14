@@ -1,8 +1,8 @@
 import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { useState } from "react";
 
-const PHONE_NUMBER = "919818185270"; // +91 ke saath, + hata ke
-const WHATSAPP_MESSAGE = "Hi, I need some information regarding the services?";
+const PHONE_NUMBER = "919818185270";
+const WHATSAPP_MESSAGE = "Hi, I need assistance with your healthcare services. Please contact me as soon as possible.";
 
 const FloatingButtons = () => {
   const [callTooltip, setCallTooltip] = useState(false);

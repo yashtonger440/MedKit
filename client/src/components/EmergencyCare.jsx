@@ -8,8 +8,8 @@ const EmergencyCare = () => {
       id: 1,
       title: "Dog Bite Injection",
       description: "Anti-rabies vaccination & wound care for dog bites.",
-      icon: <FaSyringe className="w-6 h-6 text-cyan-500" />,
-      accent: "border-gray-100",
+      icon: <FaSyringe className="w-6 h-6 text-blue-500" />,
+      isUrgent: false,
       timeWindow: "Within 24 hours",
       timeColor: "text-amber-500",
       timeBg: "bg-amber-50",
@@ -25,8 +25,8 @@ const EmergencyCare = () => {
       id: 2,
       title: "Monkey Bite Injection",
       description: "Immediate injection & care for monkey bite injuries.",
-      icon: <FaSyringe className="w-6 h-6 text-cyan-500" />,
-      accent: "border-gray-100",
+      icon: <FaSyringe className="w-6 h-6 text-blue-500" />,
+      isUrgent: false,
       timeWindow: "Within 24 hours",
       timeColor: "text-amber-500",
       timeBg: "bg-amber-50",
@@ -43,7 +43,6 @@ const EmergencyCare = () => {
       title: "Snake Bite (Emergency)",
       description: "Emergency anti-venom & first-aid for snake bites.",
       icon: <ShieldAlert className="w-6 h-6 text-red-500" />,
-      accent: "border-red-200 bg-red-50/30",
       isUrgent: true,
       timeWindow: "IMMEDIATE",
       timeColor: "text-red-600",
@@ -60,42 +59,41 @@ const EmergencyCare = () => {
 
   return (
     <section className="py-20 px-10 bg-linear-to-b from-white to-blue-50">
-      <div className="text-center mb-12">
+      {/* Heading */}
+      <div className="text-center mb-12 max-w-2xl mx-auto px-6">
         <span className="text-red-500 font-bold tracking-widest text-xs uppercase">
           Emergency Care
         </span>
-        <h2 className="flex items-center justify-center gap-3 text-3xl md:text-4xl font-bold text-slate-800 mt-4">
-          {/* <span className="text-4xl">🐍</span>  */}
+        <h2 className="text-4xl font-bold text-gray-800 mt-4">
           Bite & Emergency Injection Care
-          {/* Bite & Emergency <span className="text-red-500">Injection Care</span> */}
         </h2>
-        <p className="text-slate-500 mt-4 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-slate-500 mt-4 leading-relaxed">
           Immediate professional response for animal bite emergencies. Follow these guidelines and seek help right away.
         </p>
       </div>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white">
+      <div className="mt-14 grid gap-8 px-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
         {emergencyServices.map((service) => (
           <div
             key={service.id}
-            className={`rounded-2xl border-2 p-8 transition-all hover:shadow-lg flex flex-col gap-5 ${service.accent}`}
+            className="group bg-white/70 backdrop-blur-lg p-6 rounded-2xl shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-2 border border-transparent hover:border-blue-200 flex flex-col gap-5"
           >
-            {/* Icon + Title */}
-            <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${service.isUrgent ? 'bg-red-100' : 'bg-cyan-100'}`}>
+            {/* Icon + Time Badge */}
+            <div className="flex justify-between items-center">
+              <div className={`text-3xl group-hover:scale-110 transition ${service.isUrgent ? 'text-red-500' : 'text-blue-500'}`}>
                 {service.icon}
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-slate-800 leading-tight">{service.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{service.description}</p>
+              <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${service.timeBg} ${service.timeColor}`}>
+                <Clock className="w-3.5 h-3.5" />
+                {service.timeWindow}
               </div>
             </div>
 
-            {/* Time Window Badge */}
-            <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${service.timeBg} w-fit`}>
-              <Clock className={`w-4 h-4 ${service.timeColor}`} />
-              <span className={`text-xs font-semibold ${service.timeColor}`}>{service.timeWindow}</span>
+            {/* Title + Description */}
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800">{service.title}</h3>
+              <p className="mt-1 text-gray-600 text-sm">{service.description}</p>
             </div>
 
             {/* Divider */}
@@ -126,10 +124,12 @@ const EmergencyCare = () => {
       </div>
 
       {/* Bottom CTA Banner */}
-      <div className="mt-10 flex items-center justify-center gap-3 bg-slate-800 text-white rounded-2xl px-8 py-5">
+      <div className="mt-10 max-w-7xl mx-auto flex items-center justify-center gap-3 bg-slate-800 text-white rounded-2xl px-8 py-5">
         <Phone className="w-5 h-5 text-cyan-400 shrink-0" />
         <p className="text-sm text-slate-300">
-          In case of emergency, <span className="text-white font-semibold">call our experts immediately on 9818185270</span> — our team is available to assist you right away.
+          In case of emergency,{" "}
+          <span className="text-white font-semibold">call our experts immediately on 9818185270</span>{" "}
+          — our team is available to assist you right away.
         </p>
       </div>
     </section>

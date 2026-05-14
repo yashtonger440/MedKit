@@ -1,8 +1,9 @@
 import { FaPhoneAlt, FaWhatsapp, FaAmbulance } from "react-icons/fa";
 
 export default function Ambulance() {
+  const message = encodeURIComponent("Hi, I need an ambulance immediately! Please send help to my location.");
   return (
-    <section className="py-20 bg-linear-to-r from-red-600 via-red-500 to-pink-500 text-white relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-r from-red-600 via-red-500 to-pink-500 text-white relative overflow-hidden">
       
       {/* Glow Effects */}
       <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl top-0 left-0"></div>
@@ -12,9 +13,6 @@ export default function Ambulance() {
 
         {/* LEFT IMAGE */}
         <div className="flex justify-center relative">
-          
-          {/* Glow Circle */}
-          {/* <div className="absolute w-80 h-80 bg-white/20 backdrop-blur-lg rounded-full"></div> */}
 
           <img
             src="/images/ambulance.jpg"
@@ -67,7 +65,7 @@ export default function Ambulance() {
             </a>
 
             <a
-              href="https://wa.me/919818185270"
+              href={`https://wa.me/919818185270?text=${message}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition"

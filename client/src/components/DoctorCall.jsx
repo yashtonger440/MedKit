@@ -1,6 +1,7 @@
 import { FaPhoneAlt, FaWhatsapp, FaUserMd } from "react-icons/fa";
 
 export default function DoctorCall() {
+  const message = encodeURIComponent("Hi, I would like to consult a doctor. Please assist me with the booking process.");
   return (
     <section className="py-20 bg-linear-to-b from-blue-50 to-white">
       
@@ -33,7 +34,7 @@ export default function DoctorCall() {
           <div className="mt-6 flex gap-4 flex-wrap">
             
             <a
-              href="https://wa.me/919818185270"
+              href={`https://wa.me/919818185270?text=${message}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-full hover:scale-105 transition"

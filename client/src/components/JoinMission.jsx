@@ -3,6 +3,7 @@ import {
   FaUserMd,
   FaAmbulance,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function JoinMission() {
   const partners = [
@@ -25,6 +26,8 @@ export default function JoinMission() {
       desc: "Register your ambulance with MedKit's emergency network in your area.",
     },
   ];
+
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 bg-gray-50 px-6">
@@ -125,7 +128,9 @@ export default function JoinMission() {
               </p>
 
               {/* BUTTON */}
-              <button className="mt-6 w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-medium hover:scale-105 transition">
+              <button
+                onClick={() => navigate("/partners")}
+                className="mt-6 w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-medium hover:scale-105 transition">
                 Join as Partner
               </button>
 

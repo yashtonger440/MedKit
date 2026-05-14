@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
   FaUser,
-  FaPhone,
+  FaPhoneAlt,
   FaBriefcase,
   FaMapMarkerAlt,
 } from "react-icons/fa";
@@ -23,26 +23,25 @@ export default function PartnerForm() {
 
   const [loading, setLoading] = useState(false);
 
-  // ✅ Get role from URL (optional pro feature)
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const role = params.get("role");
     if (role) {
       setForm((prev) => ({ ...prev, role }));
     }
-  }, [location.search]);
+  }, [location.service]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { 
     e.preventDefault();
 
     try {
       setLoading(true);
 
-      // 👉 yaha future me API call laga sakte ho
+      // yaha future me API call lagega to submit the form data
       console.log(form);
 
       alert("Application Submitted Successfully ✅");
@@ -76,7 +75,7 @@ export default function PartnerForm() {
           </div>
 
           {/* FORM CARD */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8">
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mt-10">
 
             <h1 className="text-3xl font-bold text-gray-800 text-center">
               Become a Partner 🤝
@@ -103,7 +102,7 @@ export default function PartnerForm() {
 
               {/* PHONE */}
               <div className="flex items-center bg-gray-100 p-3 rounded-xl focus-within:ring-2 focus-within:ring-blue-400">
-                <FaPhone className="text-gray-400 mr-2" />
+                <FaPhoneAlt className="text-gray-400 mr-2" />
                 <input
                   type="text"
                   name="phone"

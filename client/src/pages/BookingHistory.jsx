@@ -8,20 +8,30 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const BookingHistory = () => {
-  const [bookings, setBookings]     = useState([]);
-  const [loading, setLoading]       = useState(true);
-  
-   const navigate = useNavigate();
-
-  // Tracks which booking's prescription panel is open
-  // { [bookingId]: true/false }
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [openPrescriptions, setOpenPrescriptions] = useState({});
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
+        // Doctor bookings
         const res = await API.get("/bookings/my");
-        setBookings(res.data);
+
+        // Technician bookings
+        let techBookings = [];
+        try {
+          const techRes = await API.get("/technician/my-bookings");
+          techBookings = techRes.data;
+        } catch (_) { }
+
+        // Dono combine + sort by date
+        const combined = [...res.data, ...techBookings].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        setBookings(combined);
       } catch (err) {
         console.log("error object", err);
         console.log("BACKEND ERROR:", err.response?.data);
@@ -32,22 +42,19 @@ const BookingHistory = () => {
     fetchBookings();
   }, []);
 
-  // ✅ Toggle prescription panel open/close for a specific booking
   const togglePrescription = (id) => {
     setOpenPrescriptions((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // ✅ Status badge style helper
   const badgeStyle = (status) => {
     switch (status) {
       case "completed": return "bg-green-100 text-green-600";
-      case "cancelled":  return "bg-red-100 text-red-500";
-      case "accepted":   return "bg-blue-100 text-blue-600";
-      default:           return "bg-yellow-100 text-yellow-600";
+      case "cancelled": return "bg-red-100 text-red-500";
+      case "accepted": return "bg-blue-100 text-blue-600";
+      default: return "bg-yellow-100 text-yellow-600";
     }
   };
 
-  // ✅ Booking type badge
   const typeBadge = (type) => {
     switch (type?.toLowerCase()) {
       case "call":
@@ -101,19 +108,23 @@ const BookingHistory = () => {
               key={b._id}
               className="bg-white shadow-sm rounded-2xl overflow-hidden border border-gray-100"
             >
-              {/* ── Top Section: main booking info ── */}
               <div className="p-5 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
 
-                {/* Left — Service + Doctor + Date */}
+                {/* Left */}
                 <div className="space-y-2 flex-1">
 
-                  {/* Service name + type badge */}
                   <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="text-lg font-bold text-gray-800">{b.service}</h2>
                     {typeBadge(b.type)}
+                    {/* Technician booking badge */}
+                    {b.technician && !b.doctor && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-green-100 text-green-700">
+                        🏥 Home Service
+                      </span>
+                    )}
                   </div>
 
-                  {/* Doctor info — comes from .populate("doctor") in backend */}
+                  {/* Doctor info */}
                   {b.doctor && (
                     <div className="flex items-center gap-2">
                       <img
@@ -132,14 +143,44 @@ const BookingHistory = () => {
                     </div>
                   )}
 
+                  {/* Technician info */}
+                  {!b.doctor && (
+                    b.technician && b.status !== "pending" ? (
+                      // Technician ne accept kar liya
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={`https://ui-avatars.com/api/?name=${b.technician.name}&background=22c55e&color=fff`}
+                          alt={b.technician.name}
+                          className="w-7 h-7 rounded-full border border-green-100"
+                        />
+                        <div>
+                          <p className="text-sm font-medium text-gray-700">{b.technician.name}</p>
+                          <p className="text-xs text-gray-400">Technician • {b.technician.phone || "N/A"}</p>
+                        </div>
+                      </div>
+                    ) : (
+                      // Abhi kisi ne accept nahi kiya
+                      <div className="flex items-center gap-2 bg-yellow-50 border border-yellow-100 px-3 py-2 rounded-xl w-fit">
+                        <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse shrink-0" />
+                        <p className="text-xs font-medium text-yellow-700">
+                          Waiting for technician to accept...
+                        </p>
+                      </div>
+                    )
+                  )}
+
                   {/* Date + Address */}
                   <div className="flex flex-col gap-1">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5">
                       <FaClock size={11} className="text-gray-400" />
-                      {new Date(b.date).toLocaleString("en-IN", {
-                        day: "numeric", month: "short", year: "numeric",
-                        hour: "2-digit", minute: "2-digit", hour12: true,
-                      })}
+                      {/* Doctor bookings have Date object, technician bookings have string */}
+                      {b.doctor
+                        ? new Date(b.date).toLocaleString("en-IN", {
+                          day: "numeric", month: "short", year: "numeric",
+                          hour: "2-digit", minute: "2-digit", hour12: true,
+                        })
+                        : `${b.date} at ${b.time}`
+                      }
                     </p>
                     {b.address && (
                       <p className="text-sm text-gray-500 flex items-center gap-1.5">
@@ -149,7 +190,6 @@ const BookingHistory = () => {
                     )}
                   </div>
 
-                  {/* ✅ Report uploaded indicator */}
                   {b.reportUrl && (
                     <div className="flex items-center gap-1.5">
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-teal-50 text-teal-600 border border-teal-200">
@@ -168,12 +208,9 @@ const BookingHistory = () => {
                 </div>
               </div>
 
-              {/* ── Prescription Section ── */}
-              {/* Only show if doctor has written a prescription */}
-              {b.prescription?.notes || b.prescription?.medicines?.length > 0 ? (
+              {/* Prescription — only for doctor bookings */}
+              {b.doctor && (b.prescription?.notes || b.prescription?.medicines?.length > 0) ? (
                 <div className="border-t border-gray-100">
-
-                  {/* Toggle button */}
                   <button
                     onClick={() => togglePrescription(b._id)}
                     className="w-full flex items-center justify-between px-5 py-3 bg-indigo-50 hover:bg-indigo-100 transition-all"
@@ -190,19 +227,14 @@ const BookingHistory = () => {
                     }
                   </button>
 
-                  {/* Prescription content — shown when toggled open */}
                   {openPrescriptions[b._id] && (
                     <div className="px-5 py-4 bg-indigo-50/50 space-y-4">
-
-                      {/* Doctor info inside prescription */}
                       {b.doctor && (
                         <div className="flex items-center gap-2">
                           <FaUserMd size={13} className="text-indigo-400" />
                           <p className="text-xs text-gray-500">
                             Prescribed by{" "}
-                            <span className="font-semibold text-gray-700">
-                              {b.doctor.name}
-                            </span>
+                            <span className="font-semibold text-gray-700">{b.doctor.name}</span>
                             {b.prescription?.createdAt && (
                               <span className="text-gray-400 ml-1">
                                 · {new Date(b.prescription.createdAt).toLocaleDateString("en-IN", {
@@ -214,54 +246,32 @@ const BookingHistory = () => {
                         </div>
                       )}
 
-                      {/* Doctor's notes */}
                       {b.prescription?.notes && (
                         <div className="bg-white rounded-xl p-4 border border-indigo-100">
-                          <p className="text-xs font-semibold text-gray-500 mb-1.5">
-                            📋 Doctor's Notes
-                          </p>
-                          <p className="text-sm text-gray-700 leading-relaxed">
-                            {b.prescription.notes}
-                          </p>
+                          <p className="text-xs font-semibold text-gray-500 mb-1.5">📋 Doctor's Notes</p>
+                          <p className="text-sm text-gray-700 leading-relaxed">{b.prescription.notes}</p>
                         </div>
                       )}
 
-                      {/* Medicines list */}
                       {b.prescription?.medicines?.length > 0 && (
                         <div className="bg-white rounded-xl p-4 border border-indigo-100">
-                          <p className="text-xs font-semibold text-gray-500 mb-3">
-                            💊 Medicines
-                          </p>
+                          <p className="text-xs font-semibold text-gray-500 mb-3">💊 Medicines</p>
                           <div className="space-y-2">
                             {b.prescription.medicines.map((med, idx) => (
-                              <div
-                                key={idx}
-                                className="flex items-center gap-3 p-2.5 rounded-lg bg-indigo-50 border border-indigo-100"
-                              >
-                                {/* Medicine number */}
+                              <div key={idx} className="flex items-center gap-3 p-2.5 rounded-lg bg-indigo-50 border border-indigo-100">
                                 <span className="w-6 h-6 rounded-full bg-indigo-200 text-indigo-700 text-xs font-bold flex items-center justify-center shrink-0">
                                   {idx + 1}
                                 </span>
-
-                                {/* Medicine details */}
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-semibold text-gray-800">
-                                    {med.name}
-                                  </p>
+                                  <p className="text-sm font-semibold text-gray-800">{med.name}</p>
                                 </div>
-
-                                {/* Dose */}
                                 {med.dose && (
                                   <span className="text-xs px-2 py-0.5 rounded-full bg-white border border-indigo-200 text-indigo-600 shrink-0">
                                     {med.dose}
                                   </span>
                                 )}
-
-                                {/* Duration */}
                                 {med.duration && (
-                                  <span className="text-xs text-gray-500 shrink-0">
-                                    for {med.duration}
-                                  </span>
+                                  <span className="text-xs text-gray-500 shrink-0">for {med.duration}</span>
                                 )}
                               </div>
                             ))}
@@ -272,8 +282,7 @@ const BookingHistory = () => {
                   )}
                 </div>
               ) : (
-                // Show this when booking is accepted but no prescription yet
-                b.status === "accepted" && (
+                b.doctor && b.status === "accepted" && (
                   <div className="border-t border-gray-100 px-5 py-3 bg-gray-50">
                     <p className="text-xs text-gray-400 flex items-center gap-1.5">
                       <FaPills size={10} />
