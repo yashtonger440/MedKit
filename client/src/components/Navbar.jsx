@@ -131,7 +131,7 @@ export default function Navbar() {
           open ? "max-h-100 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="bg-white/90 backdrop-blur-xl px-6 py-4 space-y-4 shadow-lg">
+        <div className="bg-white/90 backdrop-blur-xl px-6 py-1 space-y-4 shadow-lg">
           {menuItems.map((item, i) => (
             <Link
               key={i}
