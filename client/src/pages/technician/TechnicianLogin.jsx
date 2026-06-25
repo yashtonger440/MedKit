@@ -49,8 +49,10 @@ const TechnicianLogin = () => {
           }
         );
 
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("role", res.data.user.role);
+        console.log("Login response:", res.data);
+        console.log("Token stored:", res.data.token);
+        
+        localStorage.setItem("technicianToken", res.data.token);
         localStorage.setItem("technicianName", res.data.user.name);
 
         navigate("/technician-dashboard");

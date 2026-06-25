@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
   Search, LayoutDashboard,
   LogOut, Menu, X, User,
 } from "lucide-react";
+import { FaHistory, FaTimes, FaPhoneAlt } from "react-icons/fa";
+import socket from "../../services/socket";
 
 const TechnicianDashboard = () => {
   const navigate = useNavigate();
@@ -14,16 +16,25 @@ const TechnicianDashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [newBookingAlert, setNewBookingAlert] = useState(false);
   const [stats, setStats] = useState({
     total: 0, pending: 0, accepted: 0, completed: 0,
   });
 
+  // History popup
+  const [historyPopup, setHistoryPopup] = useState(false);
+  const [selectedUserHistory, setSelectedUserHistory] = useState([]);
+  const [selectedUserName, setSelectedUserName] = useState("");
+
   const technicianName = localStorage.getItem("technicianName") || "Technician";
   const initials = technicianName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 
-  const fetchBookings = async () => {
+  const getToken = () => localStorage.getItem("technicianToken");
+
+  const fetchBookings = useCallback(async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
+      if (!token) return;
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/technician/bookings`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -39,20 +50,47 @@ const TechnicianDashboard = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
-  useEffect(() => { fetchBookings(); }, []);
+  useEffect(() => {
+    const technicianId = JSON.parse(
+      atob(getToken()?.split(".")[1] || "e30=")
+    )?.id;
+
+    fetchBookings();
+    const interval = setInterval(fetchBookings, 15000);
+
+    socket.emit("register", technicianId);
+    socket.on("new:booking", (booking) => {
+      setBookings(prev => {
+        const exists = prev.find(b => b._id === booking._id);
+        if (exists) return prev;
+        return [booking, ...prev];
+      });
+      setStats(prev => ({
+        ...prev,
+        total: prev.total + 1,
+        pending: prev.pending + 1,
+      }));
+      setNewBookingAlert(true);
+      setTimeout(() => setNewBookingAlert(false), 5000);
+    });
+
+    return () => {
+      clearInterval(interval);
+      socket.off("new:booking");
+    };
+  }, [fetchBookings]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.removeItem("technicianToken");
     localStorage.removeItem("technicianName");
     navigate("/technician-login");
   };
 
   const updateStatus = async (id, status) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       await axios.put(
         `${import.meta.env.VITE_API_URL}/api/technician/bookings/${id}/status`,
         { status },
@@ -60,12 +98,13 @@ const TechnicianDashboard = () => {
       );
       fetchBookings();
     } catch (err) {
-      console.log(err);
+      alert(err.response?.data?.message || "Something went wrong");
     }
   };
 
   const navItems = [
     { label: "Dashboard", path: "/technician-dashboard", icon: <LayoutDashboard size={18} /> },
+    { label: "Profile",   path: "/technician-profile",   icon: <User size={18} /> },
   ];
   const isActive = (path) => location.pathname === path;
 
@@ -82,6 +121,14 @@ const TechnicianDashboard = () => {
   const getInitials = (name) =>
     name ? name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) : "?";
 
+  const getUserBookings = (userId) => bookings.filter((b) => b.user?._id === userId);
+
+  const handleViewHistory = (userId, userName) => {
+    setSelectedUserHistory(getUserBookings(userId));
+    setSelectedUserName(userName);
+    setHistoryPopup(true);
+  };
+
   const filtered = bookings
     .filter((b) => filter === "all" ? true : b.status === filter)
     .filter((b) =>
@@ -93,7 +140,58 @@ const TechnicianDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
 
-      {/* ── Sidebar ── */}
+      {/* History Popup */}
+      {historyPopup && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">{selectedUserName}'s History</h2>
+                <p className="text-sm text-gray-500 mt-0.5">{selectedUserHistory.length} total bookings</p>
+              </div>
+              <button
+                onClick={() => setHistoryPopup(false)}
+                className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
+              >
+                <FaTimes size={16} className="text-gray-600" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              {selectedUserHistory.map((b) => (
+                <div key={b._id} className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                  <div className="flex items-start justify-between gap-3 flex-wrap">
+                    <div className="space-y-1 flex-1">
+                      <p className="font-semibold text-gray-800 text-sm">{b.service}</p>
+                      <p className="text-xs text-gray-500">📅 {b.date} at {b.time}</p>
+                      {b.address && <p className="text-xs text-gray-500">📍 {b.address}</p>}
+                      {b.phone   && <p className="text-xs text-gray-500">📞 {b.phone}</p>}
+                    </div>
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${badgeStyle(b.status)}`}>
+                        {b.status}
+                      </span>
+                      <p className="text-sm font-bold text-gray-800">₹{b.price}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* New Booking Alert */}
+      {newBookingAlert && (
+        <div className="fixed top-6 right-6 z-50 bg-green-500 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
+          <span className="text-xl">🔔</span>
+          <div>
+            <p className="font-semibold text-sm">New Booking Request!</p>
+            <p className="text-xs text-green-100">A patient needs your service</p>
+          </div>
+        </div>
+      )}
+
+      {/* Sidebar */}
       <aside className={`fixed top-0 left-0 h-full w-60 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
@@ -123,10 +221,9 @@ const TechnicianDashboard = () => {
         <div className="fixed inset-0 bg-black/30 z-30 md:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* ── Main Content ── */}
+      {/* Main Content */}
       <div className="flex-1 md:ml-60 flex flex-col min-h-screen">
 
-        {/* Topbar */}
         <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button className="md:hidden text-gray-600" onClick={() => setSidebarOpen(!sidebarOpen)}>
@@ -151,6 +248,12 @@ const TechnicianDashboard = () => {
                     <p className="text-xs text-gray-400">Technician</p>
                   </div>
                 </div>
+                <button
+                  onClick={() => { setProfileOpen(false); navigate("/technician-profile"); }}
+                  className="flex items-center gap-2 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+                >
+                  <User size={15} className="text-gray-400" /> View Profile
+                </button>
                 <button onClick={() => { setProfileOpen(false); handleLogout(); }}
                   className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-all"
                 >
@@ -195,9 +298,7 @@ const TechnicianDashboard = () => {
               {["all", "pending", "accepted", "completed", "cancelled"].map((f) => (
                 <button key={f} onClick={() => setFilter(f)}
                   className={`px-4 py-2 rounded-lg text-sm capitalize transition-all ${
-                    filter === f
-                      ? "bg-green-600 text-white"
-                      : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                    filter === f ? "bg-green-600 text-white" : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                   }`}
                 >
                   {f}
@@ -212,7 +313,11 @@ const TechnicianDashboard = () => {
               No bookings found
             </div>
           ) : (
-            filtered.map((b) => (
+            filtered.map((b) => {
+              const userVisits = getUserBookings(b.user?._id).length;
+              const isNewPatient = userVisits <= 1;
+
+              return (
               <div key={b._id} className="bg-white border border-gray-100 rounded-2xl p-5 mb-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between gap-4 flex-wrap">
 
@@ -222,7 +327,19 @@ const TechnicianDashboard = () => {
                       {getInitials(b.user?.name)}
                     </div>
                     <div className="space-y-1 min-w-0">
-                      <p className="font-semibold text-gray-800 text-base">{b.user?.name}</p>
+                      {!b.technician && b.status === "pending" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-600 animate-pulse">
+                          🔔 New Request
+                        </span>
+                      )}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-semibold text-gray-800 text-base">{b.user?.name}</p>
+                        {isNewPatient ? (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-600">New Patient</span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-600">Existing Patient</span>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-500">
                         Mobile: <span className="text-gray-700 font-medium">{b.phone || "N/A"}</span>
                       </p>
@@ -233,16 +350,27 @@ const TechnicianDashboard = () => {
                         Service: <span className="text-gray-700 font-medium">{b.service}</span>
                       </p>
                       <p className="text-sm text-gray-500">
-                        Date & Time:{" "}
-                        <span className="text-gray-700 font-medium">
-                          {b.date} at {b.time}
-                        </span>
+                        Date & Time: <span className="text-gray-700 font-medium">{b.date} at {b.time}</span>
                       </p>
                       {b.notes && (
                         <p className="text-sm text-gray-500">
                           Notes: <span className="text-gray-700 font-medium">{b.notes}</span>
                         </p>
                       )}
+
+                      {/* View History Button */}
+                      <button
+                        onClick={() => !isNewPatient && handleViewHistory(b.user?._id, b.user?.name)}
+                        disabled={isNewPatient}
+                        className={`mt-1 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all
+                          ${isNewPatient
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-green-50 text-green-600 hover:bg-green-100 cursor-pointer"
+                          }`}
+                      >
+                        <FaHistory size={10} />
+                        {isNewPatient ? "No History (New Patient)" : `View History (${userVisits} visits)`}
+                      </button>
                     </div>
                   </div>
 
@@ -258,30 +386,27 @@ const TechnicianDashboard = () => {
                         <>
                           <button onClick={() => updateStatus(b._id, "accepted")}
                             className="px-4 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm transition-all"
-                          >
-                            Accept
-                          </button>
+                          >Accept</button>
                           <button onClick={() => updateStatus(b._id, "cancelled")}
                             className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm transition-all"
-                          >
-                            Reject
-                          </button>
+                          >Reject</button>
                         </>
                       )}
+
+                      {/* Mark Complete + Call Patient */}
                       {b.status === "accepted" && (
                         <>
                           <button onClick={() => updateStatus(b._id, "completed")}
                             className="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-all"
+                          >Mark Complete</button>
+                          <a href={`tel:${b.phone}`}
+                            className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm transition-all flex items-center justify-center gap-1.5"
                           >
-                            Mark Complete
-                          </button>
-                          <button onClick={() => updateStatus(b._id, "cancelled")}
-                            className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm transition-all"
-                          >
-                            Cancel
-                          </button>
+                            <FaPhoneAlt size={11} /> Call Patient
+                          </a>
                         </>
                       )}
+
                       {(b.status === "completed" || b.status === "cancelled") && (
                         <span className="text-xs text-gray-400">No actions</span>
                       )}
@@ -290,7 +415,8 @@ const TechnicianDashboard = () => {
 
                 </div>
               </div>
-            ))
+              );
+            })
           )}
         </main>
       </div>

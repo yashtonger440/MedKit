@@ -6,28 +6,23 @@ export default function WoundCare() {
     {
       title: "Minor Dressing",
       desc: "Clean wound care & bandaging for minor injuries.",
-      price: "₹200",
     },
     {
       title: "Major Dressing",
       desc: "Professional wound care for deep or surgical wounds.",
-      price: "₹400",
       highlight: true,
     },
     {
       title: "Burn Dressing",
       desc: "Specialized burn care with medicated dressing.",
-      price: "₹300",
     },
     {
       title: "Plaster Application",
       desc: "Professional plaster/cast application at home.",
-      price: "₹600",
     },
     {
       title: "Plaster Removal",
       desc: "Safe plaster removal by trained technicians.",
-      price: "₹300",
     },
   ];
 
@@ -62,9 +57,9 @@ export default function WoundCare() {
                 <FaBandAid />
               </div>
 
-              <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+              {/* <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
                 {service.price}
-              </span>
+              </span> */}
             </div>
 
             {/* Title */}

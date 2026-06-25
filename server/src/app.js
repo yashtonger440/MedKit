@@ -11,11 +11,13 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true,
 }));
-app.use(express.json());
 
-app.use("/api", routes);                      // auth + booking + admin routes
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+app.use("/api", routes);
 app.use("/api", doctorRoutes);
-app.use("/api/technician", technicianRoutes); // Technician routes
+app.use("/api/technician", technicianRoutes);
 
 app.use("/uploads", express.static("uploads"));
 

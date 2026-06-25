@@ -4,9 +4,9 @@ import User from "../models/user.model.js";
 // Technician ke saare bookings
 export const getTechnicianBookings = async (req, res) => {
   try {
-    const bookings = await TechnicianBooking.find({ 
+    const bookings = await TechnicianBooking.find({
       $or: [
-        { technician: null, status: "pending"},
+        { technician: null, status: "pending" },
         { technician: req.user._id },
       ]
     })
@@ -46,7 +46,21 @@ export const updateBookingStatus = async (req, res) => {
 
       return res.json(booking);
     }
+    
+    if (status === "cancelled") {
+      const booking = await TechnicianBooking.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          status: "pending",
+        },
+        { status: "cancelled" },
+        { new: true }
+      ).populate("user", "name email phone");
 
+      if (!booking) return res.status(404).json({ message: "Booking not found" });
+      return res.json(booking);
+    }
+    
     // Complete ya cancel — sirf apni booking pe
     const booking = await TechnicianBooking.findOneAndUpdate(
       { _id: req.params.id, technician: req.user._id },
@@ -74,10 +88,10 @@ export const getTechnicianProfile = async (req, res) => {
 // Profile update
 export const updateTechnicianProfile = async (req, res) => {
   try {
-    const { name, phone, experience } = req.body;
+    const { name, phone, email, experience, address, specialization } = req.body;
     const updated = await User.findByIdAndUpdate(
       req.user._id,
-      { name, phone, experience },
+      { name, phone, email, experience, address, specialization },
       { new: true }
     ).select("-password");
     res.json(updated);
@@ -109,18 +123,43 @@ export const getTechnicianStats = async (req, res) => {
 // User technician booking create
 export const createTechnicianBooking = async (req, res) => {
   try {
-    const { service, address, phone, notes, price, date, time } = req.body;
+    const { service, address, phone, notes, price } = req.body;
 
+    // ✅ Current date/time auto set
+    const now = new Date();
+    const date = now.toLocaleDateString("en-IN");
+    const time = now.toLocaleTimeString("en-IN", {
+      hour: "2-digit", minute: "2-digit", hour12: true,
+    });
+
+    // ✅ Booking technician null (koi bhi accept kar sakta hai)
     const booking = await TechnicianBooking.create({
       user: req.user._id,
       technician: null,
-      service,
-      date,
-      time,
-      address,
-      phone,
-      notes,
-      price,
+      service, date, time,
+      address, phone, notes, price,
+    });
+
+    // ✅ Populate karo user info ke saath
+    const populatedBooking = await TechnicianBooking.findById(booking._id)
+      .populate("user", "name email phone");
+
+    // ✅ Saare online technicians ko notify karo
+    const io = req.app.get("io");
+    const onlineUsers = req.app.get("onlineUsers");
+
+    // Saare approved technicians dhundo
+    const technicians = await User.find({
+      role: "technician",
+      status: "approved",
+    }).select("_id");
+
+    // Har online technician ko notify karo
+    technicians.forEach(tech => {
+      const techSocketId = onlineUsers[tech._id.toString()];
+      if (techSocketId) {
+        io.to(techSocketId).emit("new:booking", populatedBooking);
+      }
     });
 
     res.status(201).json(booking);

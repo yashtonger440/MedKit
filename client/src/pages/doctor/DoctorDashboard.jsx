@@ -754,9 +754,9 @@ const DoctorDashboard = () => {
                             <button onClick={() => updateStatus(b._id, "completed")}
                               className="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-all"
                             >Complete</button>
-                            <button onClick={() => updateStatus(b._id, "cancelled")}
+                            {/* <button onClick={() => updateStatus(b._id, "cancelled")}
                               className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm transition-all"
-                            >Cancel</button>
+                            >Cancel</button> */}
                           </>
                         )}
 

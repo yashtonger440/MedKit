@@ -27,6 +27,9 @@ const io = new Server(httpServer, {
 const onlineUsers = {};
 const userPeerIds = {};
 
+app.set("io", io);
+app.set("onlineUsers", onlineUsers);
+
 io.on("connection", (socket) => {
   console.log("New socket connected:", socket.id);
 

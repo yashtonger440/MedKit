@@ -23,6 +23,7 @@ import FloatingButtons from "./components/FloatingButtons";
 import TechnicianLogin from "./pages/technician/TechnicianLogin";
 import AdminTechnician from "./pages/admin/AdminTechnician";
 import TechnicianDashboard from "./pages/technician/TechnicianDashboard";
+import TechnicianProfile from "./pages/technician/TechnicianProfile";
 
 function AppContent() {
   const location = useLocation();
@@ -59,6 +60,7 @@ function AppContent() {
         {/* Technician Dashboard */}
         <Route path="/technician-login" element={<TechnicianLogin />}/>
         <Route path="/technician-dashboard" element={<TechnicianDashboard />}/>
+        <Route path="/technician-profile" element={<TechnicianProfile />} />
 
         {/* Protected Routes */}
         <Route path="/doctor-dashboard" element={<ProtectedRoute role="doctor"></ProtectedRoute>}/>

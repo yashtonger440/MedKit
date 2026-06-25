@@ -10,12 +10,12 @@ import Ambulance from '../components/Ambulance'
 import Doctors from '../components/Doctors'
 import ParentsCare from '../components/ParentsCare'
 import DietitianSection from '../components/DietitianSection'
-// import BookingSection from '../components/BookingSection'
 import JoinMission from '../components/JoinMission'
 import Coverage from '../components/Coverage'
 import Footer from '../components/Footer'
 import Reviews from '../components/Reviews'
 import FAQ from '../components/FAQ'
+import PriceCalculator from '../components/PriceCalculator'
 
 function Home() {
   return (
@@ -24,13 +24,13 @@ function Home() {
       <Hero />
       <ServicesPreview />
       <WoundCare />
+      <ParentsCare />
+      <PriceCalculator />
       <EmergencyCare />
       <DoctorCall />
       <Ambulance />
       <Doctors />
-      <ParentsCare />
       <DietitianSection />
-      {/* <BookingSection /> */}
       <JoinMission />
       <Reviews />
       <FAQ />

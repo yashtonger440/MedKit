@@ -16,31 +16,26 @@ export default function Services() {
       icon: <FaSyringe />,
       title: "Injection at Home",
       desc: "Safe & sterile injections by certified nurses.",
-      price: "₹120",
     },
     {
       icon: <FaVial />,
       title: "IV Drip Administration",
       desc: "IV therapy for hydration, vitamins & medications.",
-      price: "₹300",
     },
     {
       icon: <FaHeartbeat />,
       title: "ECG Test at Home",
       desc: "Complete ECG with instant reports.",
-      price: "₹400",
     },
     {
       icon: <FaWalking />,
       title: "Physiotherapy",
       desc: "Professional therapy sessions at your home.",
-      price: "₹500",
     },
     {
       icon: <FaUserNurse />,
       title: "Nurse Visit at Home",
       desc: "Professional nurse support for elderly & recovery care.",
-      price: "₹699",
     },
   ];
 
@@ -73,9 +68,9 @@ export default function Services() {
                   {service.icon}
                 </div>
 
-                <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                {/* <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
                   {service.price}
-                </span>
+                </span> */}
               </div>
 
               {/* Title */}
