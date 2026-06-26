@@ -5,7 +5,6 @@ export default function ElderlyCarePlans() {
   const plans = [
     {
       name: "Basic Care",
-      price: "₹2,999",
       features: [
         "Weekly nurse visit",
         "BP & sugar monitoring",
@@ -16,7 +15,6 @@ export default function ElderlyCarePlans() {
     },
     {
       name: "Advanced Care",
-      price: "₹4,999",
       features: [
         "2 nurse visits per week",
         "Medicine assistance",
@@ -27,7 +25,6 @@ export default function ElderlyCarePlans() {
     },
     {
       name: "Premium Care",
-      price: "₹7,999",
       features: [
         "Daily monitoring",
         "Dedicated caregiver support",
@@ -108,19 +105,6 @@ export default function ElderlyCarePlans() {
             <h3 className="text-xl font-semibold text-center">
               {plan.name}
             </h3>
-
-            {/* PRICE */}
-            <div className="text-center mt-4">
-              <span className="text-3xl font-bold text-blue-600">
-                {plan.price}
-              </span>
-              <p className="text-gray-500 text-sm">/month</p>
-            </div>
-
-            {/* ALERT */}
-            <p className="text-center text-xs text-orange-500 mt-2">
-              ⚡ Limited slots available this week
-            </p>
 
             {/* FEATURES */}
             <ul className="mt-6 space-y-3 text-gray-600 text-sm">
