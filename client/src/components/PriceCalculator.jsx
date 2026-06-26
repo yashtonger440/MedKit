@@ -2,15 +2,15 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const SERVICES = [
-  { name: "Injection at Home",      basePrice: 150, icon: "💉" },
-  { name: "IV Drip Administration", basePrice: 499, icon: "🩸" },
-  { name: "ECG Test at Home",       basePrice: 349, icon: "🫀" },
-  { name: "Physiotherapy",          basePrice: 599, icon: "🦴" },
+  { name: "Injection at Home",      basePrice: 120, icon: "💉" },
+  { name: "IV Drip Administration", basePrice: 300, icon: "🩸" },
+  { name: "ECG Test at Home",       basePrice: 400, icon: "🫀" },
+  { name: "Physiotherapy",          basePrice: 500, icon: "🦴" },
   { name: "BP & Sugar Check",       basePrice: 199, icon: "🩺" },
-  { name: "Blood Test at Home",     basePrice: 299, icon: "🧪" },
-  { name: "Nurse Visit at Home",    basePrice: 399, icon: "👩‍⚕️" },
-  { name: "Minor Dressing",         basePrice: 179, icon: "🩹" },
-  { name: "Major Dressing",         basePrice: 349, icon: "🏥" },
+  { name: "Blood Test at Home",     basePrice: 499, icon: "🧪" },
+  { name: "Nurse Visit at Home",    basePrice: 699, icon: "👩‍⚕️" },
+  { name: "Minor Dressing",         basePrice: 200, icon: "🩹" },
+  { name: "Major Dressing",         basePrice: 400, icon: "🏥" },
 ];
 
 const VISIT_TYPES = [
