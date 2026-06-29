@@ -87,7 +87,7 @@ const MedKitChatbot = () => {
     <>
       {/* ── Chat Popup ── */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
+        <div className="fixed bottom-24 right-6 z-[10000] w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
           style={{ height: "500px" }}
         >
           {/* Header */}

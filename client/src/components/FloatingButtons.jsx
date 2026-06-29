@@ -18,7 +18,7 @@ const FloatingButtons = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-3">
+    <div className="fixed bottom-24 right-6 z-[9998] flex flex-col items-end gap-3">
 
       {/* WhatsApp Button */}
       <div className="relative flex items-center gap-3">
