@@ -7,7 +7,6 @@ export default function ElderlyCarePlans() {
   const plans = [
     {
       name: "Basic Care",
-      price: "₹2,999",
       features: [
         "Weekly nurse visit",
         "BP & sugar monitoring",
@@ -18,7 +17,6 @@ export default function ElderlyCarePlans() {
     },
     {
       name: "Advanced Care",
-      price: "₹4,999",
       features: [
         "2 nurse visits per week",
         "Medicine assistance",
@@ -29,7 +27,6 @@ export default function ElderlyCarePlans() {
     },
     {
       name: "Premium Care",
-      price: "₹7,999",
       features: [
         "Daily monitoring",
         "Dedicated caregiver support",

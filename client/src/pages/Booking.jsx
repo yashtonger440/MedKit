@@ -154,7 +154,7 @@ const Booking = () => {
       errors[field] ? "ring-2 ring-red-300 border border-red-300" : "focus:ring-blue-400"
     }`;
 
-  // ─── STEP 3: Confirmed ───────────────────────────────────────────────────
+  // ─── STEP 3: Confirmed ───
   if (step === STEPS.CONFIRMED) {
     const waMsg = encodeURIComponent(
       `Hi MedKit! My booking is confirmed.\nService: ${form.service}\nDate: ${form.date} at ${form.time}\nArea: ${form.area}\nPhone: ${form.phone}\nTotal: ₹${priceInfo?.total}`

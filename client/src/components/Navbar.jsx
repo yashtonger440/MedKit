@@ -58,6 +58,7 @@ export default function Navbar() {
           ))}
         </ul>
 
+
         {/* Right Section */}
         <div className="flex items-center gap-4">
           {user ? (
@@ -127,9 +128,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden transition-all duration-300 overflow-hidden ${
-          open ? "max-h-100 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`md:hidden transition-all duration-300 overflow-hidden ${open ? "max-h-100 opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <div className="bg-white/90 backdrop-blur-xl px-6 py-1 space-y-4 shadow-lg">
           {menuItems.map((item, i) => (
@@ -149,27 +149,27 @@ export default function Navbar() {
               <div className="text-center font-medium">{user.name}</div>
 
               <Link
-  to="/profile"
-  onClick={() => setOpen(false)}
-  className="block text-center bg-gray-200 py-2 rounded-full"
->
-  Profile
-</Link>
+                to="/profile"
+                onClick={() => setOpen(false)}
+                className="block text-center bg-gray-200 py-2 rounded-full"
+              >
+                Profile
+              </Link>
 
-<Link
-  to="/bookinghistory"
-  onClick={() => setOpen(false)}
-  className="block text-center bg-gray-200 py-2 rounded-full"
->
-  Booking History
-</Link>
+              <Link
+                to="/bookinghistory"
+                onClick={() => setOpen(false)}
+                className="block text-center bg-gray-200 py-2 rounded-full"
+              >
+                Booking History
+              </Link>
 
-<button
-  onClick={handleLogout}
-  className="block w-full text-center bg-red-500 text-white py-2 rounded-full"
->
-  Logout
-</button>
+              <button
+                onClick={handleLogout}
+                className="block w-full text-center bg-red-500 text-white py-2 rounded-full"
+              >
+                Logout
+              </button>
             </>
           ) : (
             <Link

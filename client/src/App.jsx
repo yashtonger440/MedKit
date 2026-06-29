@@ -25,6 +25,8 @@ import AdminTechnician from "./pages/admin/AdminTechnician";
 import TechnicianDashboard from "./pages/technician/TechnicianDashboard";
 import TechnicianProfile from "./pages/technician/TechnicianProfile";
 
+import MedKitChatbot from "./components/MedKitChatbot";
+
 function AppContent() {
   const location = useLocation();
   const isHome = location.pathname === "/";
@@ -67,6 +69,7 @@ function AppContent() {
       </Routes>
 
       {isHome && <FloatingButtons />}
+      <MedKitChatbot />
     </div>
   );
 }

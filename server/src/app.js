@@ -3,6 +3,7 @@ import cors from "cors";
 import routes from "./routes/index.js"
 import doctorRoutes from "./routes/doctorRoutes.js";
 import technicianRoutes from "./routes/technician.routes.js";
+import chatbotRoutes from "./routes/chatbot.routes.js";
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use("/api", doctorRoutes);
 app.use("/api/technician", technicianRoutes);
 
 app.use("/uploads", express.static("uploads"));
+
+app.use("/api/chatbot", chatbotRoutes);
 
 app.get("/", (req, res) => res.send("API Running"));
 
