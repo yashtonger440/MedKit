@@ -66,7 +66,7 @@ export default function DoctorCall() {
 
           <div className="absolute bottom-0 left-0 z-10 bg-gray-300 rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
             <div>
-              <p className="text-sm font-bold text-blue-600">🩺 4.8★ Rated Doctors</p>
+              <p className="text-sm font-bold text-blue-600"> 4.8★ Rated Doctors</p>
               <p className="text-sm font-semibold text-gray-700">Trusted by 100+ families</p>
             </div>
           </div>
