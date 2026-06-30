@@ -8,7 +8,7 @@ dotenv.config();
 const createAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ DB Connected");
+    console.log(" DB Connected");
 
     const hashed = await bcrypt.hash("admin123", 10);
 
@@ -23,10 +23,10 @@ const createAdmin = async () => {
       { upsert: true, new: true }            // create if not exists
     );
 
-    console.log("✅ Admin created successfully in DB");
+    console.log(" Admin created successfully in DB");
     await mongoose.disconnect();
   } catch (err) {
-    console.error("❌ Error:", err);
+    console.error(" Error:", err);
   }
 };
 

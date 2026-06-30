@@ -61,7 +61,6 @@ const services = [
   { name: "Plaster Removal",        price: 300, desc: "Safe plaster/cast removal by trained technician" },
 ];
 
-// Steps: 1 = form, 2 = review, 3 = confirmed
 const STEPS = { FORM: 1, REVIEW: 2, CONFIRMED: 3 };
 
 const Booking = () => {
