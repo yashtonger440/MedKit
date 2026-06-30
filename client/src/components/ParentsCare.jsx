@@ -50,7 +50,7 @@ export default function ElderlyCarePlans() {
         </h2>
 
         <p className="mt-4 text-5xl text-gray-800 font-bold">
-          Care for Your Parents at Home ❤️
+          Care for Your Parents at Home 
         </p>
 
         <p className="mt-4 text-gray-500 text-xl">
@@ -59,7 +59,7 @@ export default function ElderlyCarePlans() {
         </p>
 
         <p className="mt-3 text-gray-900 text-medium font-semibold">
-          👉 Ensure your parents are cared for even when you're not around.
+           Ensure your parents are cared for even when you're not around.
         </p>
       </motion.div>
 
@@ -139,7 +139,7 @@ export default function ElderlyCarePlans() {
         className="mt-16 text-center"
       >
         <p className="text-gray-700 font-medium">
-          💬 Talk to Expert & Get Plan
+          Talk to Expert & Get Plan
         </p>
 
         <a

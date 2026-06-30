@@ -2,15 +2,15 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const SERVICES = [
-  { name: "Injection at Home",      basePrice: 120, icon: "💉" },
-  { name: "IV Drip Administration", basePrice: 300, icon: "🩸" },
-  { name: "ECG Test at Home",       basePrice: 400, icon: "🫀" },
-  { name: "Physiotherapy",          basePrice: 500, icon: "🦴" },
-  { name: "BP & Sugar Check",       basePrice: 199, icon: "🩺" },
-  { name: "Blood Test at Home",     basePrice: 499, icon: "🧪" },
-  { name: "Nurse Visit at Home",    basePrice: 699, icon: "👩‍⚕️" },
-  { name: "Minor Dressing",         basePrice: 200, icon: "🩹" },
-  { name: "Major Dressing",         basePrice: 400, icon: "🏥" },
+  { name: "Injection at Home",      basePrice: 120,  },
+  { name: "IV Drip Administration", basePrice: 300,  },
+  { name: "ECG Test at Home",       basePrice: 400,  },
+  { name: "Physiotherapy",          basePrice: 500,  },
+  { name: "BP & Sugar Check",       basePrice: 199,  },
+  { name: "Blood Test at Home",     basePrice: 499,  },
+  { name: "Nurse Visit at Home",    basePrice: 699,  },
+  { name: "Minor Dressing",         basePrice: 200,  },
+  { name: "Major Dressing",         basePrice: 400,  },
 ];
 
 const VISIT_TYPES = [
@@ -80,11 +80,11 @@ const WHY_ITEMS = [
 ];
 
 const HOW_ITEMS = [
-  { icon: "📱", title: "Book online or call",  desc: "Select your service and time slot"        },
-  { icon: "📍", title: "Share your location",  desc: "Add your address in Dehradun"             },
-  { icon: "✅", title: "Technician arrives",   desc: "Verified professional at your door"       },
-  { icon: "❤️", title: "Service delivered",    desc: "Professional care at home"                },
-  { icon: "💵", title: "Pay after service",    desc: "Cash or UPI — only after you're satisfied" },
+  { title: "Book online or call",  desc: "Select your service and time slot"        },
+  { title: "Share your location",  desc: "Add your address in Dehradun"             },
+  { title: "Technician arrives",   desc: "Verified professional at your door"       },
+  { title: "Service delivered",    desc: "Professional care at home"                },
+  { title: "Pay after service",    desc: "Cash or UPI — only after you're satisfied" },
 ];
 
 const STATS = [
@@ -132,7 +132,7 @@ export default function PriceCalculator() {
           PRICE CALCULATOR
         </h2>
         <h2 className="text-4xl font-bold text-gray-800 mb-3">
-          Know your price before booking 🧮
+          Know your price before booking
         </h2>
         <p className="text-gray-500 text-lg">
           Professional care at your doorstep — transparent pricing, no hidden fees.
@@ -221,7 +221,6 @@ export default function PriceCalculator() {
           <div className="h-px bg-blue-100 mb-4" />
 
           <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
-            <span className="text-2xl">📞</span>
             <p className="text-sm font-semibold text-gray-800 mt-2">Need help? Call us</p>
             <p className="text-base font-bold text-blue-600 mt-1">+91 981818XXXX</p>
           </div>
@@ -315,11 +314,6 @@ export default function PriceCalculator() {
 
           {/* Error */}
           {error && <p className="text-xs text-red-500 mb-2">{error}</p>}
-
-          {/* ⚡ Limited slots notice */}
-          <p className="text-center text-xs text-orange-500 mb-3">
-            ⚡ Limited slots available today
-          </p>
 
           {/* Calculate button */}
           <button

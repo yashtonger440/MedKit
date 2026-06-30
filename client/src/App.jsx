@@ -26,6 +26,7 @@ import TechnicianDashboard from "./pages/technician/TechnicianDashboard";
 import TechnicianProfile from "./pages/technician/TechnicianProfile";
 
 import MedKitChatbot from "./components/MedKitChatbot";
+import CareNavigator from "./components/CareNavigator";
 
 function AppContent() {
   const location = useLocation();
@@ -69,7 +70,9 @@ function AppContent() {
       </Routes>
 
       {isHome && <FloatingButtons />}
+
       <MedKitChatbot />
+      <CareNavigator />
     </div>
   );
 }

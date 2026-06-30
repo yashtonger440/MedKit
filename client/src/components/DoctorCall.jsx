@@ -1,4 +1,5 @@
 import { FaPhoneAlt, FaWhatsapp, FaUserMd } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function DoctorCall() {
   const message = encodeURIComponent("Hi, I would like to consult a doctor. Please assist me with the booking process.");
@@ -32,15 +33,13 @@ export default function DoctorCall() {
 
           {/* Buttons */}
           <div className="mt-6 flex gap-4 flex-wrap">
-            
-            <a
-              href={`https://wa.me/919818185270?text=${message}`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-full hover:scale-105 transition"
+
+             <Link
+              to="/bookadoctor"
+              className="bg-linear-to-r from-blue-500 to-cyan-400 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition shadow-md"
             >
-              <FaWhatsapp /> Book Doctor on Whatsapp
-            </a>
+              Book a Doctor Now
+            </Link>
 
             <a
               href="tel:9818185270"

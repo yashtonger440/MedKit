@@ -26,11 +26,11 @@ function Home() {
       <WoundCare />
       <ParentsCare />
       <PriceCalculator />
-      <EmergencyCare />
       <DoctorCall />
+      <EmergencyCare />
+      <DietitianSection />
       <Ambulance />
       <Doctors />
-      <DietitianSection />
       <JoinMission />
       <Reviews />
       <FAQ />
