@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 
 const languages = [
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "hi", label: "हिंदी", flag: "🇮🇳" },
+  { code: "en", label: "English" },
+  { code: "hi", label: "हिंदी" },
 ];
 
 const LanguageSwitcher = () => {
@@ -40,7 +40,6 @@ const LanguageSwitcher = () => {
         }}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all text-sm font-medium text-gray-700"
       >
-        <span className="text-base">{currentLang.flag}</span>
         {currentLang.label}
         <ChevronDown
           size={14}
@@ -63,7 +62,6 @@ const LanguageSwitcher = () => {
                     : "text-gray-700"
                 }`}
               >
-                <span className="text-base">{lang.flag}</span>
                 {lang.label}
               </button>
             ))}
