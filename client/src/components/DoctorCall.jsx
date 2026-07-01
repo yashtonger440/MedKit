@@ -29,11 +29,6 @@ export default function DoctorCall() {
             <li>✔ {t("doctorCall.feature4")}</li>
           </ul>
 
-          {/* Price */}
-          <p className="mt-6 text-lg font-semibold text-blue-600">
-            {t("doctorCall.price")}
-          </p>
-
           {/* Buttons */}
           <div className="mt-6 flex gap-4 flex-wrap">
 

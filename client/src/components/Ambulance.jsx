@@ -52,11 +52,6 @@ export default function Ambulance() {
             <li>✔ {t("ambulancePage.feature4")}</li>
           </ul>
 
-          {/* Price */}
-          <p className="mt-6 font-semibold text-lg">
-            {t("ambulancePage.price")}
-          </p>
-
           {/* Buttons */}
           <div className="mt-6 flex gap-4 flex-wrap">
             
