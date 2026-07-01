@@ -1,56 +1,50 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Reviews() {
   const sliderRef = useRef();
+  const { t } = useTranslation();
 
   const reviews = [
     {
-      name: "Rahul Sharma",
+      key: "review1",
       img: "https://randomuser.me/api/portraits/men/32.jpg",
       rating: 5,
-      text: "Amazing service! Doctor arrived within 20 minutes. Highly recommended.",
     },
     {
-      name: "Neha Verma",
+      key: "review2",
       img: "https://randomuser.me/api/portraits/women/44.jpg",
       rating: 5,
-      text: "Very professional nurses. My parents feel safe and cared for.",
     },
     {
-      name: "Amit Singh",
+      key: "review3",
       img: "https://randomuser.me/api/portraits/men/12.jpg",
       rating: 4,
-      text: "Quick booking and transparent pricing. Great experience overall.",
     },
     {
-      name: "Priya Mehta",
+      key: "review4",
       img: "https://randomuser.me/api/portraits/women/65.jpg",
       rating: 5,
-      text: "Booked ambulance in emergency, reached very fast!",
     },
     {
-      name: "Karan Patel",
+      key: "review5",
       img: "https://randomuser.me/api/portraits/men/50.jpg",
       rating: 4,
-      text: "Smooth booking process and polite staff.",
     },
     {
-      name: "Sneha Kapoor",
+      key: "review6",
       img: "https://randomuser.me/api/portraits/women/22.jpg",
       rating: 5,
-      text: "Loved the service quality. Will use again.",
     },
     {
-      name: "Rohit Gupta",
+      key: "review7",
       img: "https://randomuser.me/api/portraits/men/77.jpg",
       rating: 5,
-      text: "Best healthcare service at home!",
     },
     {
-      name: "Anjali Sharma",
+      key: "review8",
       img: "https://randomuser.me/api/portraits/women/30.jpg",
       rating: 4,
-      text: "Affordable and quick response.",
     },
   ];
 
@@ -81,10 +75,10 @@ export default function Reviews() {
       {/* Heading */}
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-gray-800">
-          Client Reviews
+          {t("reviews.heading")}
         </h2>
         <p className="text-gray-600 mt-2">
-          Real experiences from our happy users
+          {t("reviews.subheading")}
         </p>
       </div>
 
@@ -106,7 +100,7 @@ export default function Reviews() {
               />
               <div>
                 <h4 className="font-semibold text-gray-800">
-                  {review.name}
+                  {t(`reviews.${review.key}.name`)}
                 </h4>
                 <div className="text-yellow-400 text-sm">
                   {"★".repeat(review.rating)}
@@ -116,7 +110,7 @@ export default function Reviews() {
 
             {/* Review */}
             <p className="text-gray-600 text-sm mt-4">
-              {review.text}
+              {t(`reviews.${review.key}.text`)}
             </p>
           </div>
         ))}

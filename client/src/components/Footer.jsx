@@ -1,7 +1,10 @@
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-[#0b2c3a] text-white pt-16 pb-6 px-6">
 
@@ -15,40 +18,39 @@ export default function Footer() {
           </h2>
 
           <p className="mt-4 text-gray-300 text-sm leading-relaxed">
-            Your trusted healthcare-at-home partner in Haldwani & Kathgodam.
-            Quality medical care delivered to your doorstep.
+            {t("footer.about")}
           </p>
         </div>
 
         {/* QUICK LINKS */}
         <div>
-          <h3 className="font-semibold mb-4">QUICK LINKS</h3>
+          <h3 className="font-semibold mb-4">{t("footer.quickLinks")}</h3>
 
           <div className="flex flex-col gap-2 text-gray-300 text-sm">
-            <Link to="/" className="hover:text-white cursor-pointer">Home</Link>
-            <Link to="/services" className="hover:text-white cursor-pointer">Services</Link>
-            <Link to="/bookadoctor" className="hover:text-white cursor-pointer">Book a doctor</Link>
-            <Link to="/partners" className="hover:text-white cursor-pointer">Partner With Us</Link>
+            <Link to="/" className="hover:text-white cursor-pointer">{t("footer.home")}</Link>
+            <Link to="/services" className="hover:text-white cursor-pointer">{t("footer.services")}</Link>
+            <Link to="/bookadoctor" className="hover:text-white cursor-pointer">{t("footer.bookADoctor")}</Link>
+            <Link to="/partners" className="hover:text-white cursor-pointer">{t("footer.partnerWithUs")}</Link>
           </div>
         </div>
 
         {/* SERVICES */}
         <div>
-          <h3 className="font-semibold mb-4">SERVICES</h3>
+          <h3 className="font-semibold mb-4">{t("footer.servicesHeading")}</h3>
 
           <ul className="space-y-2 text-gray-300 text-sm">
-            <li>Injection at Home</li>
-            <li>IV Drip</li>
-            <li>ECG Test</li>
-            <li>Nurse Visit</li>
-            <li>Doctor Consultation</li>
-            <li>Ambulance Service</li>
+            <li>{t("footer.service1")}</li>
+            <li>{t("footer.service2")}</li>
+            <li>{t("footer.service3")}</li>
+            <li>{t("footer.service4")}</li>
+            <li>{t("footer.service5")}</li>
+            <li>{t("footer.service6")}</li>
           </ul>
         </div>
 
         {/* CONTACT */}
         <div>
-          <h3 className="font-semibold mb-4">CONTACT</h3>
+          <h3 className="font-semibold mb-4">{t("footer.contactHeading")}</h3>
 
           <ul className="space-y-3 text-gray-300 text-sm">
             <li className="flex items-center gap-2">
@@ -63,7 +65,7 @@ export default function Footer() {
 
             <li className="flex items-center gap-2">
               <FaMapMarkerAlt className="text-red-400" />
-              xyz
+              {t("footer.address")}
             </li>
           </ul>
         </div>
@@ -73,7 +75,7 @@ export default function Footer() {
       {/* DIVIDER */}
       <div className="border-t border-gray-600 mt-12 pt-6 flex flex-col md:flex-row justify-center items-center text-sm text-gray-400">
 
-        <p>© 2026 MedKit. All rights reserved.</p>
+        <p>{t("footer.copyright")}</p>
       </div>
 
     </footer>

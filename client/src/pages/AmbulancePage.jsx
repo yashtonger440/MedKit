@@ -1,8 +1,11 @@
 import { FaAmbulance, FaPhoneAlt, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useTranslation } from "react-i18next";
 
 export default function Ambulance() {
+  const { t } = useTranslation();
+
   return (
     <>
     <Navbar />
@@ -15,21 +18,20 @@ export default function Ambulance() {
           {/* TEXT */}
           <div>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Fast & Reliable <br /> Ambulance Service 🚑
+              {t("ambulanceServicePage.heroLine1")} <br /> {t("ambulanceServicePage.heroLine2")}
             </h1>
 
             <p className="mt-4 text-white/90">
-              Emergency response within minutes. Our trained team ensures safe
-              and quick transportation with medical support.
+              {t("ambulanceServicePage.heroSubheading")}
             </p>
 
             <div className="mt-6 flex gap-4">
               <button className="bg-white text-red-600 px-6 py-3 rounded-full font-semibold hover:scale-105 transition">
-                Call Now
+                {t("ambulanceServicePage.callNow")}
               </button>
 
               <button className="bg-white/20 border border-white px-6 py-3 rounded-full hover:bg-white hover:text-red-600 transition">
-                Book Ambulance
+                {t("ambulanceServicePage.bookAmbulance")}
               </button>
             </div>
           </div>
@@ -51,40 +53,40 @@ export default function Ambulance() {
         <div className="max-w-7xl mx-auto text-center">
 
           <h2 className="text-3xl font-bold text-gray-800">
-            Why Choose Our Ambulance Service
+            {t("ambulanceServicePage.featuresHeading")}
           </h2>
 
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
             <div className="bg-white p-6 rounded-2xl shadow hover:shadow-xl transition">
               <FaClock className="text-red-500 text-3xl mb-4" />
-              <h3 className="font-semibold text-lg">24/7 Availability</h3>
+              <h3 className="font-semibold text-lg">{t("ambulanceServicePage.feature1.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Available anytime, anywhere for emergencies.
+                {t("ambulanceServicePage.feature1.desc")}
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-2xl shadow hover:shadow-xl transition">
               <FaAmbulance className="text-red-500 text-3xl mb-4" />
-              <h3 className="font-semibold text-lg">Advanced Ambulances</h3>
+              <h3 className="font-semibold text-lg">{t("ambulanceServicePage.feature2.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Fully equipped with oxygen & life-saving tools.
+                {t("ambulanceServicePage.feature2.desc")}
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-2xl shadow hover:shadow-xl transition">
               <FaMapMarkerAlt className="text-red-500 text-3xl mb-4" />
-              <h3 className="font-semibold text-lg">Quick Response</h3>
+              <h3 className="font-semibold text-lg">{t("ambulanceServicePage.feature3.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Reach your location within minutes.
+                {t("ambulanceServicePage.feature3.desc")}
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-2xl shadow hover:shadow-xl transition">
               <FaPhoneAlt className="text-red-500 text-3xl mb-4" />
-              <h3 className="font-semibold text-lg">Instant Booking</h3>
+              <h3 className="font-semibold text-lg">{t("ambulanceServicePage.feature4.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Call or WhatsApp for instant service.
+                {t("ambulanceServicePage.feature4.desc")}
               </p>
             </div>
 
@@ -95,20 +97,20 @@ export default function Ambulance() {
       {/* CTA */}
       <section className="py-20 bg-red-50 text-center px-6">
         <h2 className="text-3xl font-bold text-gray-800">
-          Need Emergency Help?
+          {t("ambulanceServicePage.ctaHeading")}
         </h2>
 
         <p className="mt-3 text-gray-600">
-          Call now and get ambulance within minutes.
+          {t("ambulanceServicePage.ctaSubheading")}
         </p>
 
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
           <button className="bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 transition">
-            📞 Call Now
+             {t("ambulanceServicePage.callNow")}
           </button>
 
           <button className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition">
-            WhatsApp Booking
+            {t("ambulanceServicePage.whatsappBooking")}
           </button>
         </div>
       </section>

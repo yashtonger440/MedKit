@@ -1,28 +1,31 @@
 import { Link } from "react-router-dom";
 import { FaBandAid, FaUserNurse } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function WoundCare() {
+  const { t } = useTranslation();
+
   const services = [
     {
-      title: "Minor Dressing",
-      desc: "Clean wound care & bandaging for minor injuries.",
+      title: t("woundCare.minorDressing.title"),
+      desc: t("woundCare.minorDressing.desc"),
     },
     {
-      title: "Major Dressing",
-      desc: "Professional wound care for deep or surgical wounds.",
+      title: t("woundCare.majorDressing.title"),
+      desc: t("woundCare.majorDressing.desc"),
       highlight: true,
     },
     {
-      title: "Burn Dressing",
-      desc: "Specialized burn care with medicated dressing.",
+      title: t("woundCare.burnDressing.title"),
+      desc: t("woundCare.burnDressing.desc"),
     },
     {
-      title: "Plaster Application",
-      desc: "Professional plaster/cast application at home.",
+      title: t("woundCare.plasterApplication.title"),
+      desc: t("woundCare.plasterApplication.desc"),
     },
     {
-      title: "Plaster Removal",
-      desc: "Safe plaster removal by trained technicians.",
+      title: t("woundCare.plasterRemoval.title"),
+      desc: t("woundCare.plasterRemoval.desc"),
     },
   ];
 
@@ -32,14 +35,14 @@ export default function WoundCare() {
       {/* Heading */}
       <div className="text-center max-w-2xl mx-auto px-6">
         <span className="text-blue-700 font-bold tracking-widest text-xs uppercase">
-          Wound Care
+          {t("woundCare.badge")}
         </span>
         <h2 className="text-4xl font-bold text-gray-800">
           {/* 🩹  */}
-          Dressing & Injury Management
+          {t("woundCare.heading")}
         </h2>
         <p className="mt-4 text-slate-500">
-          Professional wound care, burn treatment, and plaster services at your doorstep.
+          {t("woundCare.subheading")}
         </p>
       </div>
 
@@ -56,10 +59,6 @@ export default function WoundCare() {
               <div className="text-3xl text-blue-500 group-hover:scale-110 transition">
                 <FaBandAid />
               </div>
-
-              {/* <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                {service.price}
-              </span> */}
             </div>
 
             {/* Title */}
@@ -81,7 +80,7 @@ export default function WoundCare() {
               }}
               className="mt-6 inline-block w-full text-center bg-linear-to-r from-blue-500 to-cyan-400 text-white py-2 rounded-lg font-medium hover:scale-105 transition"
             >
-              Book Now
+              {t("common.bookNow")}
             </Link>
           </div>
         ))}
@@ -90,9 +89,9 @@ export default function WoundCare() {
       {/* Bottom Trust Line */}
       <div className="mt-16 text-center">
         <p className="text-gray-600 text-sm">
-          <span className="font-semibold text-gray-800">✔ Certified Nurses</span> •
-          <span className="font-semibold text-gray-800"> Sterile Equipment</span> •
-          <span className="font-semibold text-gray-800"> Safe Home Treatment</span>
+          <span className="font-semibold text-gray-800">✔ {t("woundCare.trust1")}</span> •
+          <span className="font-semibold text-gray-800"> {t("woundCare.trust2")}</span> •
+          <span className="font-semibold text-gray-800"> {t("woundCare.trust3")}</span>
         </p>
       </div>
     </section>

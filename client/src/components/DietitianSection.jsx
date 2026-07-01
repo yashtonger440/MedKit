@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
-import { FaWhatsapp, FaUserMd, FaLeaf, FaPhone, FaPhoneAlt } from "react-icons/fa";
+import { FaWhatsapp, FaUserMd, FaLeaf, FaPhoneAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function DietitianSection() {
-  const message = encodeURIComponent("Hi, I would like to consult a dietitian. Please assist me with the booking process.");
+  const { t } = useTranslation();
+  const message = encodeURIComponent(t("dietitian.whatsappMessage"));
+
   return (
     <section className="py-20 bg-linear-to-br from-green-50 to-emerald-100 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -14,63 +17,53 @@ export default function DietitianSection() {
         >
           {/* Badge */}
           <span className="inline-block bg-green-100 text-green-600 text-sm px-4 py-1 rounded-full font-medium">
-            New Service
+            {t("dietitian.badge")}
           </span>
 
           {/* Heading */}
           <h2 className="mt-4 text-4xl font-bold text-gray-800 leading-tight">
-            Talk to a Dietitian 🥗
+            {t("dietitian.heading")}
           </h2>
 
           {/* Description */}
           <p className="mt-4 text-gray-600">
-            Get personalized diet and nutrition advice from certified experts.
-            Whether it's weight management, diabetes care, or general wellness —
-            our dietitians are here to guide you.
+            {t("dietitian.description")}
           </p>
 
           {/* Features */}
           <div className="mt-6 space-y-4">
             <div className="flex items-center gap-3">
               <FaUserMd className="text-green-500 text-xl" />
-              <span className="text-gray-700">Certified nutrition experts</span>
+              <span className="text-gray-700">{t("dietitian.feature1")}</span>
             </div>
 
             <div className="flex items-center gap-3">
               <FaLeaf className="text-green-500 text-xl" />
-              <span className="text-gray-700">Personalized diet plans</span>
+              <span className="text-gray-700">{t("dietitian.feature2")}</span>
             </div>
 
             <div className="flex items-center gap-3">
-              <FaPhone className="text-green-500 text-xl" />
+              <FaPhoneAlt className="text-green-500 text-xl" />
               <span className="text-gray-700">
-                Phone or WhatsApp consultation
+                {t("dietitian.feature3")}
               </span>
             </div>
           </div>
 
           {/* CTA Buttons */}
           <div className="mt-8 flex gap-4 flex-wrap">
-            <a
-              href={`https://wa.me/919818185270?text=${message}`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 transition"
-            >
-              <FaWhatsapp /> Consult on WhatsApp
-            </a>
-
+          
             <a
               href="tel:9818185270"
               className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full hover:scale-105 transition"
             >
-              <FaPhoneAlt /> Call Now
+              <FaPhoneAlt /> {t("dietitian.callNow")}
             </a>
           </div>
 
           {/* Trust Line */}
           <p className="mt-4 text-sm text-gray-500">
-            ✅ No payment required to connect
+            ✅ {t("dietitian.trustLine")}
           </p>
         </motion.div>
 
@@ -90,10 +83,10 @@ export default function DietitianSection() {
           {/* Overlay Card */}
           <div className="absolute bottom-0 left-0 bg-gray-100 p-4 rounded-xl shadow-lg">
             <h3 className="font-semibold text-gray-800">
-              Expert Nutrition Advice
+              {t("dietitian.overlayTitle")}
             </h3>
             <p className="text-sm text-gray-500">
-              Personalized guidance for a healthier you
+              {t("dietitian.overlaySubtitle")}
             </p>
           </div>
         </motion.div>

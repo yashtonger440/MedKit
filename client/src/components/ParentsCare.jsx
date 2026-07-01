@@ -1,35 +1,38 @@
 import { motion } from "framer-motion";
 import { FaPhoneAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function ElderlyCarePlans() {
+  const { t } = useTranslation();
+
   const plans = [
     {
-      name: "Basic Care",
+      name: t("elderlyCare.basic.name"),
       features: [
-        "Weekly nurse visit",
-        "BP & sugar monitoring",
-        "Emergency support",
-        "Basic health tracking",
+        t("elderlyCare.basic.f1"),
+        t("elderlyCare.basic.f2"),
+        t("elderlyCare.basic.f3"),
+        t("elderlyCare.basic.f4"),
       ],
       popular: false,
     },
     {
-      name: "Advanced Care",
+      name: t("elderlyCare.advanced.name"),
       features: [
-        "2 nurse visits per week",
-        "Medicine assistance",
-        "Priority booking",
-        "Health monitoring",
+        t("elderlyCare.advanced.f1"),
+        t("elderlyCare.advanced.f2"),
+        t("elderlyCare.advanced.f3"),
+        t("elderlyCare.advanced.f4"),
       ],
       popular: true,
     },
     {
-      name: "Premium Care",
+      name: t("elderlyCare.premium.name"),
       features: [
-        "Daily monitoring",
-        "Dedicated caregiver support",
-        "Full assistance",
-        "Emergency priority response",
+        t("elderlyCare.premium.f1"),
+        t("elderlyCare.premium.f2"),
+        t("elderlyCare.premium.f3"),
+        t("elderlyCare.premium.f4"),
       ],
       popular: false,
     },
@@ -46,20 +49,19 @@ export default function ElderlyCarePlans() {
         className="text-center max-w-3xl mx-auto"
       >
         <h2 className="text-xl font-bold text-blue-500">
-          Elderly Care Plans
+          {t("elderlyCare.badge")}
         </h2>
 
         <p className="mt-4 text-5xl text-gray-800 font-bold">
-          Care for Your Parents at Home 
+          {t("elderlyCare.heading")}
         </p>
 
         <p className="mt-4 text-gray-500 text-xl">
-          Affordable monthly care plans designed for elderly safety,
-          comfort, and regular health monitoring.
+          {t("elderlyCare.subheading")}
         </p>
 
         <p className="mt-3 text-gray-900 text-medium font-semibold">
-           Ensure your parents are cared for even when you're not around.
+          {t("elderlyCare.tagline")}
         </p>
       </motion.div>
 
@@ -97,7 +99,7 @@ export default function ElderlyCarePlans() {
             {/* POPULAR TAG */}
             {plan.popular && (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-linear-to-r from-blue-500 to-cyan-400 text-white text-xs px-4 py-1 rounded-full shadow">
-                Most Popular
+                {t("elderlyCare.mostPopular")}
               </span>
             )}
 
@@ -123,7 +125,7 @@ export default function ElderlyCarePlans() {
                   : "border border-blue-500 text-blue-600 hover:bg-blue-50"
               }`}
             >
-              Choose Plan
+              {t("elderlyCare.choosePlan")}
             </button>
 
           </motion.div>
@@ -139,18 +141,17 @@ export default function ElderlyCarePlans() {
         className="mt-16 text-center"
       >
         <p className="text-gray-700 font-medium">
-          Talk to Expert & Get Plan
+          {t("elderlyCare.talkToExpert")}
         </p>
-
         <a
           href="tel:9818185270"
           className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 transition"
         >
-          <FaPhoneAlt /> Call: 9818185270
+          <FaPhoneAlt /> {t("elderlyCare.callText")}: 9818185270
         </a>
 
         <p className="mt-4 text-sm text-gray-500">
-          Trusted by families in Haldwani & Kathgodam
+          {t("elderlyCare.trustedBy")}
         </p>
       </motion.div>
 

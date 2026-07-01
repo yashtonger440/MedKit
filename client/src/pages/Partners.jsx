@@ -2,8 +2,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaUserMd, FaAmbulance, FaUserNurse } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Partners() {
+  const { t } = useTranslation();
+
+  const benefitKeys = ["benefit1", "benefit2", "benefit3", "benefit4", "benefit5", "benefit6"];
+
   return (
     <>
       <Navbar />
@@ -16,19 +21,18 @@ export default function Partners() {
           {/* TEXT */}
           <div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
-              Join Our Healthcare Network 🤝
+              {t("partnersPage.heroHeading")}
             </h1>
 
             <p className="mt-4 text-gray-600 text-lg">
-              Partner with us and help deliver quality healthcare services at
-              home. Grow your career while making a real impact in people's lives.
+              {t("partnersPage.heroSubheading")}
             </p>
 
             <ul className="mt-6 space-y-3 text-gray-600">
-              <li>✔ Flexible working hours</li>
-              <li>✔ High earning potential</li>
-              <li>✔ Work in your local area</li>
-              <li>✔ Trusted & growing platform</li>
+              <li>✔ {t("partnersPage.perk1")}</li>
+              <li>✔ {t("partnersPage.perk2")}</li>
+              <li>✔ {t("partnersPage.perk3")}</li>
+              <li>✔ {t("partnersPage.perk4")}</li>
             </ul>
 
             {/* UPDATED BUTTON */}
@@ -36,7 +40,7 @@ export default function Partners() {
               to="/partnerform"
               className="inline-block mt-6 px-6 py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transition"
             >
-              Become a Partner
+              {t("partnersPage.becomePartner")}
             </Link>
           </div>
 
@@ -55,7 +59,7 @@ export default function Partners() {
         <section className="max-w-7xl mx-auto px-6 py-10">
 
           <h2 className="text-3xl font-bold text-center text-gray-800">
-            Partner Opportunities
+            {t("partnersPage.opportunitiesHeading")}
           </h2>
 
           <div className="mt-12 grid md:grid-cols-3 gap-8">
@@ -63,9 +67,9 @@ export default function Partners() {
             {/* DOCTOR */}
             <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-2 transition">
               <FaUserMd className="text-3xl text-blue-500 mb-4" />
-              <h3 className="text-xl font-semibold">Doctor Partner</h3>
+              <h3 className="text-xl font-semibold">{t("partnersPage.doctorPartner.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Provide consultations via call, video, or home visits.
+                {t("partnersPage.doctorPartner.desc")}
               </p>
               <img
                 src="https://images.unsplash.com/photo-1758691461990-03b49d969495"
@@ -76,9 +80,9 @@ export default function Partners() {
             {/* TECHNICIAN */}
             <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-2 transition">
               <FaUserNurse className="text-3xl text-blue-500 mb-4" />
-              <h3 className="text-xl font-semibold">Healthcare Technician</h3>
+              <h3 className="text-xl font-semibold">{t("partnersPage.technicianPartner.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Provide services like injections, ECG, and home care.
+                {t("partnersPage.technicianPartner.desc")}
               </p>
               <img
                 src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b"
@@ -90,9 +94,9 @@ export default function Partners() {
             {/* AMBULANCE */}
             <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-2 transition">
               <FaAmbulance className="text-3xl text-blue-500 mb-4" />
-              <h3 className="text-xl font-semibold">Ambulance Partner</h3>
+              <h3 className="text-xl font-semibold">{t("partnersPage.ambulancePartner.title")}</h3>
               <p className="text-gray-600 text-sm mt-2">
-                Join our emergency network and get more bookings.
+                {t("partnersPage.ambulancePartner.desc")}
               </p>
               <img
                 src="/images/ambulance.jpg"
@@ -109,18 +113,18 @@ export default function Partners() {
         <section className=" bg-white py-20 text-center">
 
           <h2 className="text-3xl font-bold text-gray-800">
-            Ready to Join Us?
+            {t("partnersPage.ctaHeading")}
           </h2>
 
           <p className="text-gray-600 mt-3">
-            Fill a simple form and start your journey with MedKit
+            {t("partnersPage.ctaSubheading")}
           </p>
 
           <Link
             to="/partnerform"
             className="mt-6 inline-block px-8 py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transition"
           >
-            Apply Now 🚀
+            {t("partnersPage.applyNow")}
           </Link>
 
         </section>
@@ -131,24 +135,17 @@ export default function Partners() {
           <div className="max-w-6xl mx-auto text-center">
 
             <h2 className="text-3xl font-bold text-gray-800">
-              Why Join Us?
+              {t("partnersPage.whyJoinHeading")}
             </h2>
 
             <div className="mt-10 grid md:grid-cols-3 gap-6">
 
-              {[
-                "Get regular bookings",
-                "Grow your income",
-                "Work independently",
-                "Trusted by local families",
-                "Easy onboarding",
-                "24/7 support",
-              ].map((item, i) => (
+              {benefitKeys.map((key, i) => (
                 <div
                   key={i}
                   className="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition"
                 >
-                  <p className="font-medium text-gray-700">✔ {item}</p>
+                  <p className="font-medium text-gray-700">✔ {t(`partnersPage.${key}`)}</p>
                 </div>
               ))}
 

@@ -1,12 +1,14 @@
 import { FaStar } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function Doctors() {
+  const { t } = useTranslation();
+
   const doctors = [
     {
       name: "Dr. Rahul Sharma",
       degree: "MBBS, MD",
-      specialty: "General Physician",
-      exp: "8+ years experience",
+      key: "doc1",
       rating: "4.8",
       available: true,
       img: "/images/doctors/rahulsharma.jpg",
@@ -14,8 +16,7 @@ export default function Doctors() {
     {
       name: "Dr. Neha Verma",
       degree: "MBBS, DGO",
-      specialty: "Women's Health",
-      exp: "6+ years experience",
+      key: "doc2",
       rating: "4.7",
       available: true,
       img: "/images/doctors/nehaverma.jpg",
@@ -23,8 +24,7 @@ export default function Doctors() {
     {
       name: "Dr. Amit Joshi",
       degree: "MBBS, MD",
-      specialty: "Internal Medicine",
-      exp: "10+ years experience",
+      key: "doc3",
       rating: "4.9",
       available: false,
       img: "/images/doctors/amitjoshi.jpg",
@@ -32,8 +32,7 @@ export default function Doctors() {
     {
       name: "Dr. Priya Rawat",
       degree: "MBBS, DCH",
-      specialty: "Pediatrics",
-      exp: "5+ years experience",
+      key: "doc4",
       rating: "4.6",
       available: true,
       img: "/images/doctors/priyarawat.jpg",
@@ -46,10 +45,10 @@ export default function Doctors() {
       {/* Heading */}
       <div className="text-center max-w-2xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-gray-800">
-          Meet Our Expert Doctors
+          {t("doctorsPage.heading")}
         </h2>
         <p className="mt-4 text-gray-600">
-          Trusted, verified doctors available for consultations — at home or on call.
+          {t("doctorsPage.subheading")}
         </p>
       </div>
 
@@ -73,7 +72,7 @@ export default function Doctors() {
               {/* Availability Badge */}
               {doc.available && (
                 <span className="absolute top-3 left-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
-                  ● Available Now
+                  ● {t("doctorsPage.availableNow")}
                 </span>
               )}
             </div>
@@ -88,10 +87,10 @@ export default function Doctors() {
               <p className="text-sm text-gray-500">{doc.degree}</p>
 
               <p className="mt-2 text-blue-600 font-medium">
-                {doc.specialty}
+                {t(`doctorsPage.${doc.key}.specialty`)}
               </p>
 
-              <p className="text-sm text-gray-500 mt-1">{doc.exp}</p>
+              <p className="text-sm text-gray-500 mt-1">{t(`doctorsPage.${doc.key}.exp`)}</p>
 
               {/* Rating */}
               <div className="flex justify-center items-center gap-1 mt-3 text-yellow-500">
@@ -110,13 +109,12 @@ export default function Doctors() {
       {/* Bottom Trust Line */}
       <div className="mt-16 text-center">
         <p className="text-gray-600 text-sm">
-          <span className="font-semibold text-gray-800">✔ Verified Doctors</span> • 
-          <span className="font-semibold text-gray-800"> 4.8★ Avg Rating</span> • 
-          <span className="font-semibold text-gray-800"> Instant Consultation</span>
+          <span className="font-semibold text-gray-800">✔ {t("doctorsPage.trust1")}</span> • 
+          <span className="font-semibold text-gray-800"> {t("doctorsPage.trust2")}</span> • 
+          <span className="font-semibold text-gray-800"> {t("doctorsPage.trust3")}</span>
         </p>
       </div>
 
     </section>
   );
 }
-

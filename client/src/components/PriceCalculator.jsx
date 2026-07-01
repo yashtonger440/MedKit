@@ -1,39 +1,37 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const SERVICES = [
-  { name: "Injection at Home",      basePrice: 120,  },
-  { name: "IV Drip Administration", basePrice: 300,  },
-  { name: "ECG Test at Home",       basePrice: 400,  },
-  { name: "Physiotherapy",          basePrice: 500,  },
-  { name: "BP & Sugar Check",       basePrice: 199,  },
-  { name: "Blood Test at Home",     basePrice: 499,  },
-  { name: "Nurse Visit at Home",    basePrice: 699,  },
-  { name: "Minor Dressing",         basePrice: 200,  },
-  { name: "Major Dressing",         basePrice: 400,  },
+  { key: "injection",       basePrice: 120 },
+  { key: "ivDrip",          basePrice: 300 },
+  { key: "ecg",             basePrice: 400 },
+  { key: "physio",          basePrice: 500 },
+  { key: "bpSugar",         basePrice: 199 },
+  { key: "bloodTest",       basePrice: 499 },
+  { key: "nurseVisit",      basePrice: 699 },
+  { key: "minorDressing",   basePrice: 200 },
+  { key: "majorDressing",   basePrice: 400 },
 ];
 
 const VISIT_TYPES = [
   {
-    label: "Normal",
+    key: "normal",
     multiplier: 1.0,
-    desc: "Within 24 hrs",
     activeCard: "bg-green-50 border-2 border-green-300",
     labelColor: "text-green-700",
     surchargeColor: "text-green-600",
   },
   {
-    label: "Same Day",
+    key: "sameDay",
     multiplier: 1.3,
-    desc: "Today itself",
     activeCard: "bg-yellow-50 border-2 border-yellow-300",
     labelColor: "text-yellow-700",
     surchargeColor: "text-yellow-600",
   },
   {
-    label: "Emergency",
+    key: "emergency",
     multiplier: 1.7,
-    desc: "Within 1–2 hrs",
     activeCard: "bg-red-50 border-2 border-red-300",
     labelColor: "text-red-700",
     surchargeColor: "text-red-600",
@@ -41,75 +39,63 @@ const VISIT_TYPES = [
 ];
 
 const AREAS = [
-  { name: "Clock Tower / Paltan Bazaar", distance: 0  },
-  { name: "Karanpur",                    distance: 2  },
-  { name: "Patel Nagar",                 distance: 3  },
-  { name: "Dalanwala",                   distance: 3  },
-  { name: "ISBT / Rishikesh Road",       distance: 3  },
-  { name: "Rajpur Road",                 distance: 4  },
-  { name: "Dharampur",                   distance: 4  },
-  { name: "Rispana",                     distance: 4  },
-  { name: "Ballupur",                    distance: 5  },
-  { name: "Jogiwala",                    distance: 5  },
-  { name: "Haridwar Road",               distance: 5  },
-  { name: "Raipur Road",                 distance: 6  },
-  { name: "Niranjanpur",                 distance: 6  },
-  { name: "Majra",                       distance: 6  },
-  { name: "GMS Road",                    distance: 7  },
-  { name: "Sewla Kalan",                 distance: 7  },
-  { name: "Clement Town",                distance: 8  },
-  { name: "Dehrakhas",                   distance: 8  },
-  { name: "Sahastradhara Road",          distance: 9  },
-  { name: "Premnagar",                   distance: 9  },
-  { name: "Mussoorie Road",              distance: 10 },
-  { name: "Nathanpur",                   distance: 12 },
-  { name: "Selaqui",                     distance: 15 },
-  { name: "Doiwala",                     distance: 18 },
-  { name: "Vikasnagar",                  distance: 22 },
+  { key: "clockTower",         distance: 0  },
+  { key: "karanpur",           distance: 2  },
+  { key: "patelNagar",         distance: 3  },
+  { key: "dalanwala",          distance: 3  },
+  { key: "isbtRishikeshRoad",  distance: 3  },
+  { key: "rajpurRoad",         distance: 4  },
+  { key: "dharampur",          distance: 4  },
+  { key: "rispana",            distance: 4  },
+  { key: "ballupur",           distance: 5  },
+  { key: "jogiwala",           distance: 5  },
+  { key: "haridwarRoad",       distance: 5  },
+  { key: "raipurRoad",         distance: 6  },
+  { key: "niranjanpur",        distance: 6  },
+  { key: "majra",              distance: 6  },
+  { key: "gmsRoad",            distance: 7  },
+  { key: "sewlaKalan",         distance: 7  },
+  { key: "clementTown",        distance: 8  },
+  { key: "dehrakhas",          distance: 8  },
+  { key: "sahastradharaRoad",  distance: 9  },
+  { key: "premnagar",          distance: 9  },
+  { key: "mussoorieRoad",      distance: 10 },
+  { key: "nathanpur",          distance: 12 },
+  { key: "selaqui",            distance: 15 },
+  { key: "doiwala",            distance: 18 },
+  { key: "vikasnagar",         distance: 22 },
 ];
 
 const PLATFORM_FEE = 30;
 const PRICE_PER_KM = 10;
 
-const WHY_ITEMS = [
-  { title: "Certified professionals",  desc: "All technicians verified & trained" },
-  { title: "Pay after service",        desc: "No upfront payment required"        },
-  { title: "Emergency response",       desc: "Available within 1–2 hours"         },
-  { title: "Transparent pricing",      desc: "Know the cost before booking"       },
-  { title: "Doorstep service",         desc: "We come to you, anywhere in Dehradun" },
-];
-
-const HOW_ITEMS = [
-  { title: "Book online or call",  desc: "Select your service and time slot"        },
-  { title: "Share your location",  desc: "Add your address in Dehradun"             },
-  { title: "Technician arrives",   desc: "Verified professional at your door"       },
-  { title: "Service delivered",    desc: "Professional care at home"                },
-  { title: "Pay after service",    desc: "Cash or UPI — only after you're satisfied" },
-];
-
-const STATS = [
-  { num: "500+", lbl: "Patients served" },
-  { num: "4.9★", lbl: "Average rating"  },
-  { num: "24/7", lbl: "Available"       },
-  { num: "15+",  lbl: "Services"        },
+const WHY_KEYS = ["why1", "why2", "why3", "why4", "why5"];
+const HOW_KEYS = ["how1", "how2", "how3", "how4", "how5"];
+const STAT_ITEMS = [
+  { num: "500+", key: "stat1" },
+  { num: "4.9★", key: "stat2" },
+  { num: "24/7", key: "stat3" },
+  { num: "15+",  key: "stat4" },
 ];
 
 export default function PriceCalculator() {
+  const { t } = useTranslation();
+
   const [service,   setService]   = useState("");
-  const [visitType, setVisitType] = useState("Normal");
+  const [visitType, setVisitType] = useState("normal");
   const [area,      setArea]      = useState("");
   const [result,    setResult]    = useState(null);
   const [error,     setError]     = useState("");
 
-  const selectedVisit = VISIT_TYPES.find((v) => v.label === visitType);
+  const selectedVisit = VISIT_TYPES.find((v) => v.key === visitType);
 
   const calculate = () => {
-    if (!service)   { setError("Please select a service."); return; }
-    if (area === "") { setError("Please select your area."); return; }
+    if (!service)   { setError(t("priceCalc.errorService")); return; }
+    if (area === "") { setError(t("priceCalc.errorArea")); return; }
     setError("");
 
-    const svc        = SERVICES.find((s) => s.name === service);
-    const dist       = AREAS.find((a) => a.name === area)?.distance ?? 0;
+    const svc        = SERVICES.find((s) => s.key === service);
+    const dist       = AREAS.find((a) => a.key === area)?.distance ?? 0;
     const distCharge = dist * PRICE_PER_KM;
     const baseVisit  = Math.round(svc.basePrice * selectedVisit.multiplier);
     const surcharge  = baseVisit - svc.basePrice;
@@ -129,13 +115,13 @@ export default function PriceCalculator() {
         className="text-center max-w-3xl mx-auto mb-14"
       >
          <h2 className="text-xl font-bold text-blue-500 mb-3">
-          PRICE CALCULATOR
+          {t("priceCalc.badge")}
         </h2>
         <h2 className="text-4xl font-bold text-gray-800 mb-3">
-          Know your price before booking
+          {t("priceCalc.heading")}
         </h2>
         <p className="text-gray-500 text-lg">
-          Professional care at your doorstep — transparent pricing, no hidden fees.
+          {t("priceCalc.subheading")}
         </p>
       </motion.div>
 
@@ -155,21 +141,21 @@ export default function PriceCalculator() {
             <span className="text-xl">🛡️</span>
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">Why choose MedKit?</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">{t("priceCalc.whyChoose")}</h3>
           <div className="h-px bg-blue-100 mb-4" />
 
           {/* why items */}
           <div className="space-y-3 mb-5">
-            {WHY_ITEMS.map((item) => (
-              <div key={item.title} className="flex items-start gap-3">
+            {WHY_KEYS.map((key) => (
+              <div key={key} className="flex items-start gap-3">
                 <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center shrink-0 mt-0.5">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                     <path d="M2 5l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800 leading-tight">{item.title}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                  <p className="text-sm font-semibold text-gray-800 leading-tight">{t(`priceCalc.${key}.title`)}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{t(`priceCalc.${key}.desc`)}</p>
                 </div>
               </div>
             ))}
@@ -179,10 +165,10 @@ export default function PriceCalculator() {
 
           {/* stats */}
           <div className="grid grid-cols-2 gap-3">
-            {STATS.map((s) => (
-              <div key={s.lbl} className="bg-blue-50 border border-blue-100 rounded-2xl p-3 text-center">
+            {STAT_ITEMS.map((s) => (
+              <div key={s.key} className="bg-blue-50 border border-blue-100 rounded-2xl p-3 text-center">
                 <p className="text-xl font-bold text-blue-600">{s.num}</p>
-                <p className="text-xs text-gray-500 mt-1">{s.lbl}</p>
+                <p className="text-xs text-gray-500 mt-1">{t(`priceCalc.${s.key}`)}</p>
               </div>
             ))}
           </div>
@@ -200,19 +186,18 @@ export default function PriceCalculator() {
             <span className="text-xl">📋</span>
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">How it works</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">{t("priceCalc.howItWorks")}</h3>
           <div className="h-px bg-blue-100 mb-4" />
 
           <div className="space-y-3 mb-5">
-            {HOW_ITEMS.map((item) => (
+            {HOW_KEYS.map((key) => (
               <div
-                key={item.title}
+                key={key}
                 className="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-2xl p-3"
               >
-                <span className="text-xl shrink-0">{item.icon}</span>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800 leading-tight">{item.title}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                  <p className="text-sm font-semibold text-gray-800 leading-tight">{t(`priceCalc.${key}.title`)}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{t(`priceCalc.${key}.desc`)}</p>
                 </div>
               </div>
             ))}
@@ -221,7 +206,7 @@ export default function PriceCalculator() {
           <div className="h-px bg-blue-100 mb-4" />
 
           <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
-            <p className="text-sm font-semibold text-gray-800 mt-2">Need help? Call us</p>
+            <p className="text-sm font-semibold text-gray-800 mt-2">{t("priceCalc.needHelp")}</p>
             <p className="text-base font-bold text-blue-600 mt-1">+91 981818XXXX</p>
           </div>
         </motion.div>
@@ -238,13 +223,13 @@ export default function PriceCalculator() {
             <span className="text-xl">🧮</span>
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">Check price for your area</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">{t("priceCalc.checkPrice")}</h3>
           <div className="h-px bg-blue-100 mb-4" />
 
           {/* Service select */}
           <div className="mb-3">
             <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
-              Service
+              {t("priceCalc.serviceLabel")}
             </label>
             <div className="relative">
               <select
@@ -252,9 +237,9 @@ export default function PriceCalculator() {
                 onChange={(e) => { setService(e.target.value); setResult(null); setError(""); }}
                 className="w-full appearance-none bg-blue-50 border border-blue-100 rounded-2xl px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 pr-8 cursor-pointer"
               >
-                <option value="">— Select service —</option>
+                <option value="">{t("priceCalc.selectService")}</option>
                 {SERVICES.map((s) => (
-                  <option key={s.name} value={s.name}>{s.icon}  {s.name}</option>
+                  <option key={s.key} value={s.key}>{t(`priceCalc.services.${s.key}`)}</option>
                 ))}
               </select>
               <svg className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -266,23 +251,23 @@ export default function PriceCalculator() {
           {/* Visit type */}
           <div className="mb-3">
             <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
-              Visit Type
+              {t("priceCalc.visitTypeLabel")}
             </label>
             <div className="grid grid-cols-3 gap-1.5">
               {VISIT_TYPES.map((v) => (
                 <button
-                  key={v.label}
-                  onClick={() => { setVisitType(v.label); setResult(null); }}
+                  key={v.key}
+                  onClick={() => { setVisitType(v.key); setResult(null); }}
                   className={`rounded-2xl border px-2 py-2 text-center transition-all ${
-                    visitType === v.label
+                    visitType === v.key
                       ? v.activeCard
                       : "bg-blue-50 border-blue-100 text-gray-500 hover:bg-blue-100"
                   }`}
                 >
-                  <p className={`text-xs font-semibold ${visitType === v.label ? v.labelColor : "text-gray-700"}`}>
-                    {v.label}
+                  <p className={`text-xs font-semibold ${visitType === v.key ? v.labelColor : "text-gray-700"}`}>
+                    {t(`priceCalc.visitTypes.${v.key}.label`)}
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{v.desc}</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{t(`priceCalc.visitTypes.${v.key}.desc`)}</p>
                 </button>
               ))}
             </div>
@@ -291,7 +276,7 @@ export default function PriceCalculator() {
           {/* Area select */}
           <div className="mb-3">
             <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
-              Your Area
+              {t("priceCalc.areaLabel")}
             </label>
             <div className="relative">
               <select
@@ -299,10 +284,10 @@ export default function PriceCalculator() {
                 onChange={(e) => { setArea(e.target.value); setResult(null); setError(""); }}
                 className="w-full appearance-none bg-blue-50 border border-blue-100 rounded-2xl px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 pr-8 cursor-pointer"
               >
-                <option value="">— Select area —</option>
+                <option value="">{t("priceCalc.selectArea")}</option>
                 {AREAS.map((a) => (
-                  <option key={a.name} value={a.name}>
-                    {a.name} {a.distance === 0 ? "(City Center)" : `(~${a.distance} km)`}
+                  <option key={a.key} value={a.key}>
+                    {t(`priceCalc.areas.${a.key}`)} {a.distance === 0 ? t("priceCalc.cityCenter") : t("priceCalc.kmAway", { km: a.distance })}
                   </option>
                 ))}
               </select>
@@ -321,7 +306,7 @@ export default function PriceCalculator() {
             className="w-full py-3 rounded-full text-sm font-semibold text-white transition hover:scale-105 shadow-lg"
             style={{ background: "linear-gradient(90deg, #0ea5e9, #06b6d4)" }}
           >
-            Calculate Price
+            {t("priceCalc.calculateBtn")}
           </button>
 
           {/* Result breakdown */}
@@ -333,20 +318,22 @@ export default function PriceCalculator() {
               className="mt-4 bg-blue-50 border border-blue-100 rounded-2xl p-4"
             >
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
-                Price Breakdown
+                {t("priceCalc.priceBreakdown")}
               </p>
 
               <div className="space-y-2">
                 {/* Base */}
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Base price</span>
+                  <span className="text-gray-500">{t("priceCalc.basePrice")}</span>
                   <span className="font-semibold text-gray-800">₹{result.base}</span>
                 </div>
 
                 {/* Surcharge */}
                 {result.surcharge > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className={selectedVisit.surchargeColor}>{visitType} surcharge</span>
+                    <span className={selectedVisit.surchargeColor}>
+                      {t("priceCalc.surcharge", { visit: t(`priceCalc.visitTypes.${selectedVisit.key}.label`) })}
+                    </span>
                     <span className={`font-semibold ${selectedVisit.surchargeColor}`}>
                       +₹{result.surcharge}
                     </span>
@@ -356,14 +343,14 @@ export default function PriceCalculator() {
                 {/* Distance */}
                 {result.dist > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Distance ({result.dist} km × ₹10)</span>
+                    <span className="text-gray-500">{t("priceCalc.distance", { km: result.dist })}</span>
                     <span className="font-semibold text-gray-800">₹{result.distCharge}</span>
                   </div>
                 )}
 
                 {/* Platform fee */}
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Platform fee</span>
+                  <span className="text-gray-500">{t("priceCalc.platformFee")}</span>
                   <span className="font-semibold text-gray-800">₹{PLATFORM_FEE}</span>
                 </div>
 
@@ -371,7 +358,7 @@ export default function PriceCalculator() {
 
                 {/* Total */}
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-gray-800 text-base">Total</span>
+                  <span className="font-bold text-gray-800 text-base">{t("priceCalc.total")}</span>
                   <span className="text-2xl font-bold text-blue-600">₹{result.total}</span>
                 </div>
               </div>
@@ -381,7 +368,7 @@ export default function PriceCalculator() {
                 className="mt-4 w-full py-3 rounded-full text-xs font-semibold text-white flex items-center justify-center gap-2 transition hover:scale-105 shadow-lg"
                 style={{ background: "linear-gradient(90deg, #0ea5e9, #06b6d4)" }}
               >
-                🛡️ Pay after service · No upfront payment
+                🛡️ {t("priceCalc.payAfterService")}
               </button>
             </motion.div>
           )}

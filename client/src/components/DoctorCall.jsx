@@ -1,8 +1,11 @@
 import { FaPhoneAlt, FaWhatsapp, FaUserMd } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function DoctorCall() {
-  const message = encodeURIComponent("Hi, I would like to consult a doctor. Please assist me with the booking process.");
+  const { t } = useTranslation();
+  const message = encodeURIComponent(t("doctorCall.whatsappMessage"));
+
   return (
     <section className="py-20 bg-linear-to-b from-blue-50 to-white">
       
@@ -11,24 +14,24 @@ export default function DoctorCall() {
         {/* LEFT CONTENT */}
         <div>
           <h2 className="text-4xl font-bold text-gray-800">
-            Consult a Doctor from Home
+            {t("doctorCall.heading")}
           </h2>
 
           <p className="mt-4 text-gray-600">
-            Skip the clinic queues. Talk to verified, experienced doctors via audio or video call — anytime, from the comfort of your home.
+            {t("doctorCall.subheading")}
           </p>
 
           {/* Features */}
           <ul className="mt-6 space-y-3 text-gray-700">
-            <li>✔ Audio & Video consultations available</li>
-            <li>✔ Available 8 AM – 10 PM, 7 days a week</li>
-            <li>✔ MBBS / MD verified doctors only</li>
-            <li>✔ Digital prescription after consultation</li>
+            <li>✔ {t("doctorCall.feature1")}</li>
+            <li>✔ {t("doctorCall.feature2")}</li>
+            <li>✔ {t("doctorCall.feature3")}</li>
+            <li>✔ {t("doctorCall.feature4")}</li>
           </ul>
 
           {/* Price */}
           <p className="mt-6 text-lg font-semibold text-blue-600">
-            Starting at ₹499 per consultation
+            {t("doctorCall.price")}
           </p>
 
           {/* Buttons */}
@@ -38,14 +41,14 @@ export default function DoctorCall() {
               to="/bookadoctor"
               className="bg-linear-to-r from-blue-500 to-cyan-400 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition shadow-md"
             >
-              Book a Doctor Now
+              {t("doctorCall.bookNow")}
             </Link>
 
             <a
               href="tel:9818185270"
               className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full hover:scale-105 transition"
             >
-              <FaPhoneAlt /> Call Now
+              <FaPhoneAlt /> {t("doctorCall.callNow")}
             </a>
 
           </div>
@@ -66,8 +69,8 @@ export default function DoctorCall() {
 
           <div className="absolute bottom-0 left-0 z-10 bg-gray-300 rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
             <div>
-              <p className="text-sm font-bold text-blue-600">4.8★ Rated Doctors</p>
-              <p className="text-sm font-semibold text-gray-700">Trusted by 100+ families</p>
+              <p className="text-sm font-bold text-blue-600">{t("doctorCall.rating")}</p>
+              <p className="text-sm font-semibold text-gray-700">{t("doctorCall.trustedBy")}</p>
             </div>
           </div>
 

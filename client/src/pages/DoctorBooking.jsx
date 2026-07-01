@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import API from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -15,16 +16,16 @@ import {
 } from "react-icons/fa";
 
 const services = [
-  { name: "General Medicine",  price: 499,  icon: <FaUserMd />,    specialization: "General Medicine",  color: "bg-blue-50 text-blue-500 border-blue-100"    },
-  { name: "Gastroenterology",  price: 699,  icon: <FaHeartbeat />, specialization: "Gastroenterology",  color: "bg-red-50 text-red-500 border-red-100"        },
-  { name: "Orthopaedic",       price: 799,  icon: <FaBone />,      specialization: "Orthopaedic",       color: "bg-orange-50 text-orange-500 border-orange-100"},
-  { name: "Cardiology",        price: 899,  icon: <FaHeartbeat />, specialization: "cardiology",        color: "bg-pink-50 text-pink-500 border-pink-100"      },
-  { name: "Physician",         price: 499,  icon: <FaUserMd />,    specialization: "Physician",         color: "bg-indigo-50 text-indigo-500 border-indigo-100"},
-  { name: "Dietitian",         price: 399,  icon: <FaUserMd />,    specialization: "Dietitian",         color: "bg-green-50 text-green-500 border-green-100"   },
-  { name: "Pediatrician",      price: 599,  icon: <FaBaby />,      specialization: "Pediatrician",      color: "bg-yellow-50 text-yellow-500 border-yellow-100"},
-  { name: "Dermatology",       price: 699,  icon: <FaEye />,       specialization: "Dermatology",       color: "bg-purple-50 text-purple-500 border-purple-100"},
-  { name: "Gynecologist",      price: 799,  icon: <FaFemale />,    specialization: "Gynecologist",      color: "bg-rose-50 text-rose-500 border-rose-100"      },
-  { name: "ENT",               price: 599,  icon: <FaUserMd />,    specialization: "ENT",               color: "bg-teal-50 text-teal-500 border-teal-100"      },
+  { key: "generalMedicine", price: 499,  icon: <FaUserMd />,    specialization: "General Medicine",  color: "bg-blue-50 text-blue-500 border-blue-100"    },
+  { key: "gastroenterology",price: 699,  icon: <FaHeartbeat />, specialization: "Gastroenterology",  color: "bg-red-50 text-red-500 border-red-100"        },
+  { key: "orthopaedic",     price: 799,  icon: <FaBone />,      specialization: "Orthopaedic",       color: "bg-orange-50 text-orange-500 border-orange-100"},
+  { key: "cardiology",      price: 899,  icon: <FaHeartbeat />, specialization: "cardiology",        color: "bg-pink-50 text-pink-500 border-pink-100"      },
+  { key: "physician",       price: 499,  icon: <FaUserMd />,    specialization: "Physician",         color: "bg-indigo-50 text-indigo-500 border-indigo-100"},
+  { key: "dietitian",       price: 399,  icon: <FaUserMd />,    specialization: "Dietitian",         color: "bg-green-50 text-green-500 border-green-100"   },
+  { key: "pediatrician",    price: 599,  icon: <FaBaby />,      specialization: "Pediatrician",      color: "bg-yellow-50 text-yellow-500 border-yellow-100"},
+  { key: "dermatology",     price: 699,  icon: <FaEye />,       specialization: "Dermatology",       color: "bg-purple-50 text-purple-500 border-purple-100"},
+  { key: "gynecologist",    price: 799,  icon: <FaFemale />,    specialization: "Gynecologist",      color: "bg-rose-50 text-rose-500 border-rose-100"      },
+  { key: "ent",             price: 599,  icon: <FaUserMd />,    specialization: "ENT",               color: "bg-teal-50 text-teal-500 border-teal-100"      },
 ];
 
 const TIME_SLOTS = [
@@ -34,9 +35,9 @@ const TIME_SLOTS = [
 ];
 
 const CONSULT_TYPES = [
-  { value: "Call",       label: "📞 Audio Call",   desc: "Voice consultation, ~15-20 min",   needsAddress: false },
-  { value: "Video",      label: "📹 Video Call",   desc: "Face-to-face video, ~20-30 min",   needsAddress: false },
-  { value: "Home Visit", label: "🏠 Home Visit",   desc: "Doctor visits your home",          needsAddress: true  },
+  { value: "Call",       emoji: "📞", labelKey: "audioCall",  descKey: "audioCallDesc",  needsAddress: false },
+  { value: "Video",      emoji: "📹", labelKey: "videoCall",  descKey: "videoCallDesc",  needsAddress: false },
+  { value: "Home Visit", emoji: "🏠", labelKey: "homeVisit",  descKey: "homeVisitDesc",  needsAddress: true  },
 ];
 
 const Toast = ({ msg, type, onClose }) => (
@@ -50,6 +51,7 @@ const Toast = ({ msg, type, onClose }) => (
 
 const DoctorBooking = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [selectedService,    setSelectedService]    = useState(null);
   const [doctors,            setDoctors]            = useState([]);
@@ -104,7 +106,7 @@ const DoctorBooking = () => {
       const res = await API.get(`/bookings/doctors?specialization=${svc.specialization}`);
       setDoctors(res.data);
     } catch {
-      showToast("Could not load doctors. Try again.", "error");
+      showToast(t("doctorBooking.errLoadDoctors"), "error");
     } finally {
       setLoadingDoctors(false);
     }
@@ -147,12 +149,12 @@ const DoctorBooking = () => {
     if (!file) return;
     const allowed = ["image/jpeg", "image/png", "image/jpg", "application/pdf"];
     if (!allowed.includes(file.type)) {
-      showToast("Only JPG, PNG or PDF files are allowed", "error");
+      showToast(t("doctorBooking.errFileType"), "error");
       e.target.value = "";
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      showToast("File size must be under 5MB", "error");
+      showToast(t("doctorBooking.errFileSize"), "error");
       e.target.value = "";
       return;
     }
@@ -164,13 +166,13 @@ const DoctorBooking = () => {
   // Validate form
   const validate = () => {
     const e = {};
-    if (!form.date)  e.date  = "Select a date.";
-    if (!form.time)  e.time  = "Select a time slot.";
-    if (!form.phone.trim()) e.phone = "Enter your phone number.";
+    if (!form.date)  e.date  = t("doctorBooking.errSelectDate");
+    if (!form.time)  e.time  = t("doctorBooking.errSelectTime");
+    if (!form.phone.trim()) e.phone = t("doctorBooking.errEnterPhone");
     else if (!/^[6-9]\d{9}$/.test(form.phone.trim()))
-      e.phone = "Enter a valid 10-digit Indian mobile number.";
+      e.phone = t("doctorBooking.errInvalidPhone");
     if (selectedConsultType?.needsAddress && !form.address.trim())
-      e.address = "Enter your address for home visit.";
+      e.address = t("doctorBooking.errEnterAddress");
     setFormErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -211,7 +213,7 @@ const DoctorBooking = () => {
       });
       setBookingStep("confirmed");
     } catch (err) {
-      showToast(err.response?.data?.message || "Booking failed. Try again.", "error");
+      showToast(err.response?.data?.message || t("doctorBooking.errBookingFailed"), "error");
     } finally {
       setLoading(false);
     }
@@ -225,27 +227,27 @@ const DoctorBooking = () => {
   // ── Confirmed screen inside popup ──────────────────────────────────────────
   const renderConfirmed = () => {
     const waMsg = encodeURIComponent(
-      `Hi MedKit! My doctor booking is confirmed.\nDoctor: ${lastBooking?.doctor?.name}\nService: ${lastBooking?.service?.name}\nDate: ${lastBooking?.form?.date} at ${lastBooking?.form?.time}\nType: ${lastBooking?.form?.type}\nPhone: ${lastBooking?.form?.phone}`
+      `Hi MedKit! My doctor booking is confirmed.\nDoctor: ${lastBooking?.doctor?.name}\nService: ${t(`doctorBooking.services.${lastBooking?.service?.key}`)}\nDate: ${lastBooking?.form?.date} at ${lastBooking?.form?.time}\nType: ${lastBooking?.form?.type}\nPhone: ${lastBooking?.form?.phone}`
     );
     return (
       <div className="p-8 text-center">
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <FaCheckCircle className="text-green-500 text-3xl" />
         </div>
-        <h3 className="text-xl font-bold text-gray-800 mb-1">Booking confirmed!</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-1">{t("doctorBooking.confirmedTitle")}</h3>
         <p className="text-gray-500 text-sm mb-6">
-           {lastBooking?.doctor?.name} will contact you before the appointment.
+           {t("doctorBooking.confirmedSubtitle", { doctor: lastBooking?.doctor?.name })}
         </p>
 
         <div className="bg-blue-50 rounded-2xl p-4 text-left mb-5 space-y-2">
           {[
-            { label: "Doctor",  value: lastBooking?.doctor?.name },
-            { label: "Service", value: lastBooking?.service?.name },
-            { label: "Type",    value: lastBooking?.form?.type },
-            { label: "Date",    value: lastBooking?.form?.date },
-            { label: "Time",    value: lastBooking?.form?.time },
-            { label: "Phone",   value: lastBooking?.form?.phone },
-            lastBooking?.form?.address && { label: "Address", value: lastBooking?.form?.address },
+            { label: t("doctorBooking.labelDoctor"),  value: lastBooking?.doctor?.name },
+            { label: t("doctorBooking.labelService"), value: t(`doctorBooking.services.${lastBooking?.service?.key}`) },
+            { label: t("doctorBooking.labelType"),    value: lastBooking?.form?.type },
+            { label: t("doctorBooking.labelDate"),    value: lastBooking?.form?.date },
+            { label: t("doctorBooking.labelTime"),    value: lastBooking?.form?.time },
+            { label: t("doctorBooking.labelPhone"),   value: lastBooking?.form?.phone },
+            lastBooking?.form?.address && { label: t("doctorBooking.labelAddress"), value: lastBooking?.form?.address },
           ].filter(Boolean).map((item) => (
             <div key={item.label} className="flex justify-between text-sm">
               <span className="text-gray-500">{item.label}</span>
@@ -254,7 +256,7 @@ const DoctorBooking = () => {
           ))}
           <div className="h-px bg-blue-200" />
           <div className="flex justify-between">
-            <span className="font-bold text-gray-800">Fee</span>
+            <span className="font-bold text-gray-800">{t("doctorBooking.labelFee")}</span>
             <span className="font-bold text-blue-600">₹{lastBooking?.price}</span>
           </div>
         </div>
@@ -264,19 +266,19 @@ const DoctorBooking = () => {
           target="_blank" rel="noreferrer"
           className="flex items-center justify-center gap-2 w-full py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold mb-3 transition text-sm"
         >
-          <FaWhatsapp /> Share on WhatsApp
+          <FaWhatsapp /> {t("doctorBooking.shareWhatsapp")}
         </a>
         <button
           onClick={() => navigate("/bookinghistory")}
           className="w-full py-2.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold text-sm mb-2 transition"
         >
-          View my bookings
+          {t("doctorBooking.viewMyBookings")}
         </button>
         <button
           onClick={() => { setBookingOpen(false); setBookingStep("form"); }}
           className="w-full py-2 text-gray-400 hover:text-gray-600 text-sm transition"
         >
-          Close
+          {t("doctorBooking.close")}
         </button>
       </div>
     );
@@ -289,10 +291,10 @@ const DoctorBooking = () => {
         onClick={() => setBookingStep("form")}
         className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-5 transition"
       >
-        <FaArrowLeft size={12} /> Back to edit
+        <FaArrowLeft size={12} /> {t("doctorBooking.backToEdit")}
       </button>
-      <h3 className="text-lg font-bold text-gray-800 mb-1">Review appointment</h3>
-      <p className="text-gray-500 text-sm mb-5">Confirm details before we notify the doctor.</p>
+      <h3 className="text-lg font-bold text-gray-800 mb-1">{t("doctorBooking.reviewAppointment")}</h3>
+      <p className="text-gray-500 text-sm mb-5">{t("doctorBooking.reviewSubtitle")}</p>
 
       <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-2xl mb-5">
         <img
@@ -311,12 +313,12 @@ const DoctorBooking = () => {
 
       <div className="space-y-2 mb-5">
         {[
-          { label: "Consultation",  value: form.type },
-          { label: "Date",          value: form.date },
-          { label: "Time",          value: form.time },
-          { label: "Phone",         value: form.phone },
-          form.address && { label: "Address", value: form.address },
-          reportFile && { label: "Report", value: reportFile.name },
+          { label: t("doctorBooking.labelConsultation"), value: form.type },
+          { label: t("doctorBooking.labelDate"),          value: form.date },
+          { label: t("doctorBooking.labelTime"),          value: form.time },
+          { label: t("doctorBooking.labelPhone"),         value: form.phone },
+          form.address && { label: t("doctorBooking.labelAddress"), value: form.address },
+          reportFile && { label: t("doctorBooking.labelReport"), value: reportFile.name },
         ].filter(Boolean).map((item) => (
           <div key={item.label} className="flex justify-between text-sm py-2 border-b border-gray-100">
             <span className="text-gray-500">{item.label}</span>
@@ -331,8 +333,8 @@ const DoctorBooking = () => {
         className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold transition disabled:opacity-60 flex items-center justify-center gap-2"
       >
         {loading
-          ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Confirming...</>
-          : `Confirm booking — ₹${selectedDoctor?.fee || selectedService?.price}`}
+          ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> {t("doctorBooking.confirming")}</>
+          : t("doctorBooking.confirmBooking", { price: selectedDoctor?.fee || selectedService?.price })}
       </button>
     </div>
   );
@@ -352,7 +354,7 @@ const DoctorBooking = () => {
           <p className="font-semibold text-gray-800">{selectedDoctor?.name}</p>
           <p className="text-sm text-gray-500">{selectedDoctor?.specialization}</p>
           {selectedDoctor?.experience && (
-            <p className="text-xs text-blue-500 mt-0.5">{selectedDoctor.experience} yrs experience</p>
+            <p className="text-xs text-blue-500 mt-0.5">{t("doctorBooking.yrsExperience", { years: selectedDoctor.experience })}</p>
           )}
         </div>
         <p className="font-bold text-blue-600 text-lg">₹{selectedDoctor?.fee || selectedService?.price}</p>
@@ -362,7 +364,7 @@ const DoctorBooking = () => {
 
         {/* Consultation Type */}
         <div>
-          <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Consultation type</label>
+          <label className="text-xs font-semibold text-gray-500 mb-1.5 block">{t("doctorBooking.consultationType")}</label>
           <div className="grid grid-cols-3 gap-2">
             {CONSULT_TYPES.map((ct) => (
               <button
@@ -376,9 +378,9 @@ const DoctorBooking = () => {
                 }`}
               >
                 <p className={`text-xs font-semibold ${form.type === ct.value ? "text-blue-600" : "text-gray-700"}`}>
-                  {ct.label.split(" ").slice(1).join(" ")}
+                  {ct.emoji} {t(`doctorBooking.consultTypes.${ct.labelKey}`)}
                 </p>
-                <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{ct.desc}</p>
+                <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">{t(`doctorBooking.consultTypes.${ct.descKey}`)}</p>
               </button>
             ))}
           </div>
@@ -387,7 +389,7 @@ const DoctorBooking = () => {
         {/* Date & Time */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs font-semibold text-gray-500 mb-1 block">Date <span className="text-red-400">*</span></label>
+            <label className="text-xs font-semibold text-gray-500 mb-1 block">{t("doctorBooking.date")} <span className="text-red-400">*</span></label>
             <input
               type="date"
               min={today}
@@ -398,14 +400,14 @@ const DoctorBooking = () => {
             {formErrors.date && <p className="text-xs text-red-500 mt-1">{formErrors.date}</p>}
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 mb-1 block">Time slot <span className="text-red-400">*</span></label>
+            <label className="text-xs font-semibold text-gray-500 mb-1 block">{t("doctorBooking.timeSlot")} <span className="text-red-400">*</span></label>
             <select
               value={form.time}
               onChange={(e) => { setForm({ ...form, time: e.target.value }); setFormErrors((p) => ({ ...p, time: "" })); }}
               className={inputCls("time")}
             >
-              <option value="">— Select —</option>
-              {TIME_SLOTS.map((t) => <option key={t} value={t}>{t}</option>)}
+              <option value="">{t("doctorBooking.selectDash")}</option>
+              {TIME_SLOTS.map((t2) => <option key={t2} value={t2}>{t2}</option>)}
             </select>
             {formErrors.time && <p className="text-xs text-red-500 mt-1">{formErrors.time}</p>}
           </div>
@@ -413,13 +415,13 @@ const DoctorBooking = () => {
 
         {/* Phone */}
         <div>
-          <label className="text-xs font-semibold text-gray-500 mb-1 block">Phone number <span className="text-red-400">*</span></label>
+          <label className="text-xs font-semibold text-gray-500 mb-1 block">{t("doctorBooking.phoneNumber")} <span className="text-red-400">*</span></label>
           <input
             type="tel"
             maxLength={10}
             value={form.phone}
             onChange={(e) => { setForm({ ...form, phone: e.target.value }); setFormErrors((p) => ({ ...p, phone: "" })); }}
-            placeholder="10-digit mobile number"
+            placeholder={t("doctorBooking.phonePlaceholder")}
             className={inputCls("phone")}
           />
           {formErrors.phone && <p className="text-xs text-red-500 mt-1">{formErrors.phone}</p>}
@@ -428,12 +430,12 @@ const DoctorBooking = () => {
         {/* Address — only for Home Visit */}
         {selectedConsultType?.needsAddress && (
           <div>
-            <label className="text-xs font-semibold text-gray-500 mb-1 block">Home address <span className="text-red-400">*</span></label>
+            <label className="text-xs font-semibold text-gray-500 mb-1 block">{t("doctorBooking.homeAddress")} <span className="text-red-400">*</span></label>
             <textarea
               rows={2}
               value={form.address}
               onChange={(e) => { setForm({ ...form, address: e.target.value }); setFormErrors((p) => ({ ...p, address: "" })); }}
-              placeholder="Flat/House no, Street, Landmark..."
+              placeholder={t("doctorBooking.addressPlaceholder")}
               className={inputCls("address") + " resize-none"}
             />
             {formErrors.address && <p className="text-xs text-red-500 mt-1">{formErrors.address}</p>}
@@ -443,7 +445,7 @@ const DoctorBooking = () => {
         {/* Report Upload */}
         <div>
           <label className="text-xs font-semibold text-gray-500 mb-1.5 block">
-            Medical report <span className="text-gray-400 font-normal">(optional)</span>
+            {t("doctorBooking.medicalReport")} <span className="text-gray-400 font-normal">{t("doctorBooking.optional")}</span>
           </label>
           <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition-all">
             <input type="file" accept=".jpg,.jpeg,.png,.pdf" onChange={handleReportChange} className="hidden" />
@@ -461,8 +463,8 @@ const DoctorBooking = () => {
               </div>
             ) : (
               <div className="text-center px-4">
-                <p className="text-sm text-blue-500 font-medium">Click to upload report</p>
-                <p className="text-xs text-gray-400 mt-0.5">JPG, PNG or PDF · Max 5MB</p>
+                <p className="text-sm text-blue-500 font-medium">{t("doctorBooking.clickToUpload")}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{t("doctorBooking.fileTypesHint")}</p>
               </div>
             )}
           </label>
@@ -473,7 +475,7 @@ const DoctorBooking = () => {
           onClick={goToReview}
           className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold transition shadow-md"
         >
-          Review booking →
+          {t("doctorBooking.reviewBookingBtn")}
         </button>
       </div>
     </div>
@@ -506,20 +508,20 @@ const DoctorBooking = () => {
         {!token && (
           <div className="max-w-6xl mx-auto mb-6">
             <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-5 py-3 flex items-center justify-between gap-4">
-              <p className="text-sm text-yellow-700 font-medium">⚠ Login required to book a doctor.</p>
+              <p className="text-sm text-yellow-700 font-medium">⚠ {t("doctorBooking.loginRequired")}</p>
               <button
                 onClick={() => navigate("/login", { state: { redirect: "/doctor-booking" } })}
                 className="text-xs font-semibold text-white bg-yellow-500 hover:bg-yellow-600 px-4 py-1.5 rounded-lg transition shrink-0"
               >
-                Login / Sign up
+                {t("doctorBooking.loginSignup")}
               </button>
             </div>
           </div>
         )}
 
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800">Book a Doctor 👨‍⚕️</h1>
-          <p className="text-gray-600 mt-2">Choose your service and we'll find the best doctor for you</p>
+          <h1 className="text-4xl font-bold text-gray-800">{t("doctorBooking.pageTitle")} 👨‍⚕️</h1>
+          <p className="text-gray-600 mt-2">{t("doctorBooking.pageSubtitle")}</p>
         </div>
 
         {/* Service Cards */}
@@ -533,9 +535,9 @@ const DoctorBooking = () => {
               <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center text-xl mb-3 ${svc.color}`}>
                 {svc.icon}
               </div>
-              <h3 className="font-semibold text-gray-800 text-sm">{svc.name}</h3>
-              <p className="text-xs text-gray-400 mt-1">Consultation</p>
-              <p className="text-sm font-bold text-blue-600 mt-1">From ₹{svc.price}</p>
+              <h3 className="font-semibold text-gray-800 text-sm">{t(`doctorBooking.services.${svc.key}`)}</h3>
+              <p className="text-xs text-gray-400 mt-1">{t("doctorBooking.consultation")}</p>
+              <p className="text-sm font-bold text-blue-600 mt-1">{t("doctorBooking.fromPrice", { price: svc.price })}</p>
             </div>
           ))}
         </div>
@@ -548,9 +550,9 @@ const DoctorBooking = () => {
 
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <div>
-                <h2 className="text-xl font-bold text-gray-800">{selectedService?.name} doctors</h2>
+                <h2 className="text-xl font-bold text-gray-800">{t("doctorBooking.doctorsHeading", { service: t(`doctorBooking.services.${selectedService?.key}`) })}</h2>
                 <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                  <FaMapMarkerAlt className="text-blue-500" /> Available doctors
+                  <FaMapMarkerAlt className="text-blue-500" /> {t("doctorBooking.availableDoctors")}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -561,10 +563,10 @@ const DoctorBooking = () => {
                     onChange={(e) => setSortBy(e.target.value)}
                     className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer appearance-none pr-6"
                   >
-                    <option value="default">Sort by</option>
-                    <option value="rating">Top rated</option>
-                    <option value="fee_low">Fee: low to high</option>
-                    <option value="fee_high">Fee: high to low</option>
+                    <option value="default">{t("doctorBooking.sortBy")}</option>
+                    <option value="rating">{t("doctorBooking.topRated")}</option>
+                    <option value="fee_low">{t("doctorBooking.feeLowHigh")}</option>
+                    <option value="fee_high">{t("doctorBooking.feeHighLow")}</option>
                   </select>
                   <FaSortAmountDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
@@ -581,12 +583,12 @@ const DoctorBooking = () => {
               {loadingDoctors ? (
                 <div className="text-center py-10">
                   <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                  <p className="text-gray-500 mt-3">Finding doctors...</p>
+                  <p className="text-gray-500 mt-3">{t("doctorBooking.findingDoctors")}</p>
                 </div>
               ) : sortedDoctors.length === 0 ? (
                 <div className="text-center py-10">
-                  <p className="text-gray-500 text-lg">No doctors available</p>
-                  <p className="text-gray-400 text-sm mt-1">Please try another service</p>
+                  <p className="text-gray-500 text-lg">{t("doctorBooking.noDoctors")}</p>
+                  <p className="text-gray-400 text-sm mt-1">{t("doctorBooking.tryAnotherService")}</p>
                 </div>
               ) : (
                 sortedDoctors.map((doc) => {
@@ -609,7 +611,7 @@ const DoctorBooking = () => {
                         <p className="font-semibold text-gray-800">{doc.name}</p>
                         <p className="text-sm text-gray-500">{doc.specialization}</p>
                         {doc.experience && (
-                          <p className="text-xs text-blue-500 mt-0.5">{doc.experience} yrs experience</p>
+                          <p className="text-xs text-blue-500 mt-0.5">{t("doctorBooking.yrsExperience", { years: doc.experience })}</p>
                         )}
                         <div className="flex items-center gap-1 mt-1">
                           {[1,2,3,4,5].map((star) => (
@@ -617,14 +619,14 @@ const DoctorBooking = () => {
                               className={star <= (doc.rating || 4) ? "text-yellow-400" : "text-gray-200"} />
                           ))}
                           <span className="text-xs text-gray-400 ml-1">({doc.rating || 4}.0)</span>
-                          <span className="text-xs text-green-500 ml-2 font-medium">● Available today</span>
+                          <span className="text-xs text-green-500 ml-2 font-medium">● {t("doctorBooking.availableToday")}</span>
                         </div>
                         {confirmedType && (
                           <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-green-600 font-medium">
                             <FaCheckCircle size={10} />
-                            {confirmedType === "Call" && "Audio call booked"}
-                            {confirmedType === "Video" && "Video call booked"}
-                            {confirmedType === "Home Visit" && "Home visit booked"}
+                            {confirmedType === "Call" && t("doctorBooking.audioCallBooked")}
+                            {confirmedType === "Video" && t("doctorBooking.videoCallBooked")}
+                            {confirmedType === "Home Visit" && t("doctorBooking.homeVisitBooked")}
                           </div>
                         )}
                       </div>
@@ -635,7 +637,7 @@ const DoctorBooking = () => {
                         {!confirmedType && (
                           <button onClick={() => handleBookNow(doc)}
                             className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-xs font-medium transition w-full text-center">
-                            Book now
+                            {t("doctorBooking.bookNowBtn")}
                           </button>
                         )}
 
@@ -646,7 +648,7 @@ const DoctorBooking = () => {
                             ${hasVideoBooked ? "bg-green-500 hover:bg-green-600 text-white" : "bg-gray-100 text-gray-400 cursor-not-allowed"}`}
                         >
                           <FaVideo size={10} />
-                          {hasVideoBooked ? "Video call" : "Video (book first)"}
+                          {hasVideoBooked ? t("doctorBooking.videoCall") : t("doctorBooking.videoBookFirst")}
                         </button>
 
                         <button
@@ -656,7 +658,7 @@ const DoctorBooking = () => {
                             ${hasCallBooked ? "bg-purple-500 hover:bg-purple-600 text-white" : "bg-gray-100 text-gray-400 cursor-not-allowed"}`}
                         >
                           <FaPhoneAlt size={10} />
-                          {hasCallBooked ? "Audio call" : "Audio (book first)"}
+                          {hasCallBooked ? t("doctorBooking.audioCall") : t("doctorBooking.audioBookFirst")}
                         </button>
                       </div>
                     </div>
@@ -674,9 +676,9 @@ const DoctorBooking = () => {
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
               <h2 className="text-xl font-bold text-gray-800">
-                {bookingStep === "form"      && "Book appointment"}
-                {bookingStep === "review"    && "Review appointment"}
-                {bookingStep === "confirmed" && "Booking confirmed"}
+                {bookingStep === "form"      && t("doctorBooking.bookAppointment")}
+                {bookingStep === "review"    && t("doctorBooking.reviewAppointment")}
+                {bookingStep === "confirmed" && t("doctorBooking.bookingConfirmed")}
               </h2>
               {bookingStep !== "confirmed" && (
                 <button

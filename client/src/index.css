@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+.goog-te-banner-frame,
+#google_translate_element {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}

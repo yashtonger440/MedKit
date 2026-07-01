@@ -1,0 +1,837 @@
+{
+  "nav": {
+  "home": "Home",
+  "services": "Services",
+  "booking": "Booking",
+  "partners": "Partners",
+  "ambulance": "Ambulance",
+  "findmyservice": "Find My Service",
+  "login": "Login",
+  "profile": "Profile",
+  "bookingHistory": "Booking History",
+  "logout": "Logout"
+},
+  "hero": {
+  "badge": "Doctors available near you right now",
+  "titleLine1": "Get Healthcare",
+  "titleLine2": "Services",
+  "titleHighlight": "Within 30 Minutes",
+  "rating": "4.8/5 from 2,000+ reviews",
+  "subtitle": "Book trusted doctors, nurses, and emergency services near you instantly.",
+  "bookDoctorNow": "Book a Doctor Now",
+  "elderlyCare": "Elderly Care",
+  "exploreServices": "Explore Services",
+  "statsUsers": "500+ Users",
+  "statsDoctors": "100+ Doctors",
+  "statsService": "24/7 Service",
+  "statsResponse": "Avg. 22 min response",
+  "servicesDone": "Services Done",
+  "trustBadge": "Verified Doctors · NABH Compliant · 100% Safe"
+},
+  "servicesPage": {
+  "heading": "Healthcare Services at Your Doorstep",
+  "subheading": "Certified professionals delivering quality healthcare at home.",
+  "injection": {
+    "title": "Injection at Home",
+    "desc": "Safe & sterile injections by certified nurses."
+  },
+  "ivDrip": {
+    "title": "IV Drip Administration",
+    "desc": "IV therapy for hydration, vitamins & medications."
+  },
+  "ecg": {
+    "title": "ECG Test at Home",
+    "desc": "Complete ECG with instant reports."
+  },
+  "physio": {
+    "title": "Physiotherapy",
+    "desc": "Professional therapy sessions at your home."
+  },
+  "nurse": {
+    "title": "Nurse Visit at Home",
+    "desc": "Professional nurse support for elderly & recovery care."
+  },
+  "viewAll": "View All Services →",
+  "trust1": "Certified Nurses",
+  "trust2": "Quick Response",
+  "trust3": "100% Safe & Hygienic"
+},
+"woundCare": {
+  "badge": "Wound Care",
+  "heading": "Dressing & Injury Management",
+  "subheading": "Professional wound care, burn treatment, and plaster services at your doorstep.",
+  "minorDressing": { "title": "Minor Dressing", "desc": "Clean wound care & bandaging for minor injuries." },
+  "majorDressing": { "title": "Major Dressing", "desc": "Professional wound care for deep or surgical wounds." },
+  "burnDressing": { "title": "Burn Dressing", "desc": "Specialized burn care with medicated dressing." },
+  "plasterApplication": { "title": "Plaster Application", "desc": "Professional plaster/cast application at home." },
+  "plasterRemoval": { "title": "Plaster Removal", "desc": "Safe plaster removal by trained technicians." },
+  "trust1": "Certified Nurses",
+  "trust2": "Sterile Equipment",
+  "trust3": "Safe Home Treatment"
+},
+"elderlyCare": {
+  "badge": "Elderly Care Plans",
+  "heading": "Care for Your Parents at Home",
+  "subheading": "Affordable monthly care plans designed for elderly safety, comfort, and regular health monitoring.",
+  "tagline": "Ensure your parents are cared for even when you're not around.",
+  "mostPopular": "Most Popular",
+  "choosePlan": "Choose Plan",
+  "talkToExpert": "Talk to Expert & Get Plan",
+  "callText": "Call",
+  "trustedBy": "Trusted by families in Haldwani & Kathgodam",
+  "basic": {
+    "name": "Basic Care",
+    "f1": "Weekly nurse visit",
+    "f2": "BP & sugar monitoring",
+    "f3": "Emergency support",
+    "f4": "Basic health tracking"
+  },
+  "advanced": {
+    "name": "Advanced Care",
+    "f1": "2 nurse visits per week",
+    "f2": "Medicine assistance",
+    "f3": "Priority booking",
+    "f4": "Health monitoring"
+  },
+  "premium": {
+    "name": "Premium Care",
+    "f1": "Daily monitoring",
+    "f2": "Dedicated caregiver support",
+    "f3": "Full assistance",
+    "f4": "Emergency priority response"
+  }
+},
+"priceCalc": {
+  "badge": "PRICE CALCULATOR",
+  "heading": "Know your price before booking",
+  "subheading": "Professional care at your doorstep — transparent pricing, no hidden fees.",
+  "whyChoose": "Why choose MedKit?",
+  "howItWorks": "How it works",
+  "needHelp": "Need help? Call us",
+  "checkPrice": "Check price for your area",
+  "serviceLabel": "Service",
+  "selectService": "— Select service —",
+  "visitTypeLabel": "Visit Type",
+  "areaLabel": "Your Area",
+  "selectArea": "— Select area —",
+  "cityCenter": "(City Center)",
+  "kmAway": "(~{{km}} km)",
+  "errorService": "Please select a service.",
+  "errorArea": "Please select your area.",
+  "calculateBtn": "Calculate Price",
+  "priceBreakdown": "Price Breakdown",
+  "basePrice": "Base price",
+  "surcharge": "{{visit}} surcharge",
+  "distance": "Distance ({{km}} km × ₹10)",
+  "platformFee": "Platform fee",
+  "total": "Total",
+  "payAfterService": "Pay after service · No upfront payment",
+  "why1": { "title": "Certified professionals", "desc": "All technicians verified & trained" },
+  "why2": { "title": "Pay after service", "desc": "No upfront payment required" },
+  "why3": { "title": "Emergency response", "desc": "Available within 1–2 hours" },
+  "why4": { "title": "Transparent pricing", "desc": "Know the cost before booking" },
+  "why5": { "title": "Doorstep service", "desc": "We come to you, anywhere in Dehradun" },
+  "how1": { "title": "Book online or call", "desc": "Select your service and time slot" },
+  "how2": { "title": "Share your location", "desc": "Add your address in Dehradun" },
+  "how3": { "title": "Technician arrives", "desc": "Verified professional at your door" },
+  "how4": { "title": "Service delivered", "desc": "Professional care at home" },
+  "how5": { "title": "Pay after service", "desc": "Cash or UPI — only after you're satisfied" },
+  "stat1": "Patients served",
+  "stat2": "Average rating",
+  "stat3": "Available",
+  "stat4": "Services",
+  "services": {
+    "injection": "Injection at Home",
+    "ivDrip": "IV Drip Administration",
+    "ecg": "ECG Test at Home",
+    "physio": "Physiotherapy",
+    "bpSugar": "BP & Sugar Check",
+    "bloodTest": "Blood Test at Home",
+    "nurseVisit": "Nurse Visit at Home",
+    "minorDressing": "Minor Dressing",
+    "majorDressing": "Major Dressing"
+  },
+  "visitTypes": {
+    "normal": { "label": "Normal", "desc": "Within 24 hrs" },
+    "sameDay": { "label": "Same Day", "desc": "Today itself" },
+    "emergency": { "label": "Emergency", "desc": "Within 1–2 hrs" }
+  },
+  "areas": {
+    "clockTower": "Clock Tower / Paltan Bazaar",
+    "karanpur": "Karanpur",
+    "patelNagar": "Patel Nagar",
+    "dalanwala": "Dalanwala",
+    "isbtRishikeshRoad": "ISBT / Rishikesh Road",
+    "rajpurRoad": "Rajpur Road",
+    "dharampur": "Dharampur",
+    "rispana": "Rispana",
+    "ballupur": "Ballupur",
+    "jogiwala": "Jogiwala",
+    "haridwarRoad": "Haridwar Road",
+    "raipurRoad": "Raipur Road",
+    "niranjanpur": "Niranjanpur",
+    "majra": "Majra",
+    "gmsRoad": "GMS Road",
+    "sewlaKalan": "Sewla Kalan",
+    "clementTown": "Clement Town",
+    "dehrakhas": "Dehrakhas",
+    "sahastradharaRoad": "Sahastradhara Road",
+    "premnagar": "Premnagar",
+    "mussoorieRoad": "Mussoorie Road",
+    "nathanpur": "Nathanpur",
+    "selaqui": "Selaqui",
+    "doiwala": "Doiwala",
+    "vikasnagar": "Vikasnagar"
+  }
+},
+"doctorCall": {
+  "whatsappMessage": "Hi, I would like to consult a doctor. Please assist me with the booking process.",
+  "heading": "Consult a Doctor from Home",
+  "subheading": "Skip the clinic queues. Talk to verified, experienced doctors via audio or video call — anytime, from the comfort of your home.",
+  "feature1": "Audio & Video consultations available",
+  "feature2": "Available 8 AM – 10 PM, 7 days a week",
+  "feature3": "MBBS / MD verified doctors only",
+  "feature4": "Digital prescription after consultation",
+  "price": "Starting at ₹499 per consultation",
+  "bookNow": "Book a Doctor Now",
+  "callNow": "Call Now",
+  "rating": "4.8★ Rated Doctors",
+  "trustedBy": "Trusted by 100+ families"
+},
+"emergencyCare": {
+  "badge": "Emergency Care",
+  "heading": "Bite & Emergency Injection Care",
+  "subheading": "Immediate professional response for animal bite emergencies. Follow these guidelines and seek help right away.",
+  "whatToDo": "What To Do",
+  "ctaPrefix": "In case of emergency,",
+  "ctaBold": "call our experts immediately on 9818185270",
+  "ctaSuffix": "— our team is available to assist you right away.",
+  "dogBite": {
+    "title": "Dog Bite Injection",
+    "description": "Anti-rabies vaccination & wound care for dog bites.",
+    "timeWindow": "Within 24 hours",
+    "guidelines": [
+      "Wash the wound with soap and water for at least 10 minutes",
+      "Visit immediately for anti-rabies injection (ARV)",
+      "Follow-up doses required on Day 3, 7, 14 & 28",
+      "Inform doctor if the animal had prior vaccination"
+    ],
+    "warning": "Delaying treatment increases rabies risk significantly."
+  },
+  "monkeyBite": {
+    "title": "Monkey Bite Injection",
+    "description": "Immediate injection & care for monkey bite injuries.",
+    "timeWindow": "Within 24 hours",
+    "guidelines": [
+      "Clean the wound thoroughly under running water",
+      "Anti-rabies vaccination required as a precaution",
+      "Tetanus injection may also be administered",
+      "Complete all scheduled follow-up doses"
+    ],
+    "warning": "Monkey bites can transmit rabies — do not ignore."
+  },
+  "snakeBite": {
+    "title": "Snake Bite (Emergency)",
+    "description": "Emergency anti-venom & first-aid for snake bites.",
+    "timeWindow": "IMMEDIATE",
+    "guidelines": [
+      "Keep the patient calm and immobilize the affected limb",
+      "Do NOT cut, suck, or apply tourniquet on the wound",
+      "Remove rings/tight clothing near the bite area",
+      "Rush to emergency for anti-venom administration"
+    ],
+    "warning": "Snake venom acts fast — every minute matters."
+  }
+},
+"dietitian": {
+  "whatsappMessage": "Hi, I would like to consult a dietitian. Please assist me with the booking process.",
+  "badge": "New Service",
+  "heading": "Talk to a Dietitian",
+  "description": "Get personalized diet and nutrition advice from certified experts. Whether it's weight management, diabetes care, or general wellness — our dietitians are here to guide you.",
+  "feature1": "Certified nutrition experts",
+  "feature2": "Personalized diet plans",
+  "feature3": "Phone or WhatsApp consultation",
+  "callNow": "Call Now",
+  "trustLine": "No payment required to connect",
+  "overlayTitle": "Expert Nutrition Advice",
+  "overlaySubtitle": "Personalized guidance for a healthier you"
+},
+"ambulancePage": {
+  "whatsappMessage": "Hi, I need an ambulance immediately! Please send help to my location.",
+  "emergency247": "24/7 Emergency",
+  "responseInMinutes": "Response in minutes",
+  "headingLine1": "Ambulance Service",
+  "headingLine2": "We're Minutes Away",
+  "subheading": "Fast, reliable ambulance dispatch for emergencies and hospital transfers in Haldwani & Kathgodam. Every second counts — and we don't waste them.",
+  "feature1": "Fastest response — under 15 minutes",
+  "feature2": "GPS-tracked fleet across all areas",
+  "feature3": "Equipped with oxygen & first-aid",
+  "feature4": "Accident, cardiac & emergency support",
+  "price": "Starting at ₹999 • No hidden charges",
+  "callAmbulance": "Call Ambulance",
+  "whatsappSOS": "WhatsApp SOS"
+},
+"joinMission": {
+  "badge": "Join Our Mission",
+  "headingLine1": "Be the Reason Someone Gets",
+  "headingLine2": "Care in Time",
+  "subheading": "Healthcare isn't just a profession — it's a calling. Partner with MedKit and help families in India access quality care at their doorstep.",
+  "point1": "Make a real difference in your community",
+  "point2": "Join a growing network of trusted professionals",
+  "point3": "Verified, supported & respected partnership",
+  "joinAsPartner": "Join as Partner",
+  "trustedBy": "Trusted by healthcare professionals across the Country",
+  "technician": {
+    "role": "HEALTHCARE TECHNICIAN",
+    "title": "Bring care closer to every home that suits everybody",
+    "desc": "Serve patients in your own city with flexible hours — from injections to ECGs."
+  },
+  "doctor": {
+    "role": "DOCTOR PARTNER",
+    "title": "Be there when someone needs care the most",
+    "desc": "Consult patients remotely via audio or video calls. Set your own schedule."
+  },
+  "ambulance": {
+    "role": "AMBULANCE PARTNER",
+    "title": "Every second matters. Be the help that arrives in time",
+    "desc": "Register your ambulance with MedKit's emergency network in your area."
+  }
+},
+"doctorsPage": {
+  "heading": "Meet Our Expert Doctors",
+  "subheading": "Trusted, verified doctors available for consultations — at home or on call.",
+  "availableNow": "Available Now",
+  "trust1": "Verified Doctors",
+  "trust2": "4.8★ Avg Rating",
+  "trust3": "Instant Consultation",
+  "doc1": { "specialty": "General Physician", "exp": "8+ years experience" },
+  "doc2": { "specialty": "Women's Health", "exp": "6+ years experience" },
+  "doc3": { "specialty": "Internal Medicine", "exp": "10+ years experience" },
+  "doc4": { "specialty": "Pediatrics", "exp": "5+ years experience" }
+},
+"reviews": {
+  "heading": "Client Reviews",
+  "subheading": "Real experiences from our happy users",
+  "review1": { "name": "Rahul Sharma", "text": "Amazing service! Doctor arrived within 20 minutes. Highly recommended." },
+  "review2": { "name": "Neha Verma", "text": "Very professional nurses. My parents feel safe and cared for." },
+  "review3": { "name": "Amit Singh", "text": "Quick booking and transparent pricing. Great experience overall." },
+  "review4": { "name": "Priya Mehta", "text": "Booked ambulance in emergency, reached very fast!" },
+  "review5": { "name": "Karan Patel", "text": "Smooth booking process and polite staff." },
+  "review6": { "name": "Sneha Kapoor", "text": "Loved the service quality. Will use again." },
+  "review7": { "name": "Rohit Gupta", "text": "Best healthcare service at home!" },
+  "review8": { "name": "Anjali Sharma", "text": "Affordable and quick response." }
+},
+"faq": {
+  "badge": "FAQ",
+  "heading": "Frequently Asked Questions",
+  "subheading": "Everything you need to know about MedKit. Can't find the answer? Feel free to contact us.",
+  "stillHaveQuestions": "Still have questions?",
+  "contactUs": "Contact us",
+  "q1": {
+    "question": "How do I book a doctor on MedKit?",
+    "answer": "Booking a doctor on MedKit is simple! Just login to your account, go to the 'Book a Doctor' section, select your required service (e.g. Cardiology, Dermatology), choose a doctor, fill in your details, and confirm your booking. You can choose between Audio Call, Video Call, or Home Visit as per your preference."
+  },
+  "q2": {
+    "question": "Can I consult a doctor via video or audio call?",
+    "answer": "Yes! MedKit supports both Audio Call and Video Call consultations. Once your booking is accepted by the doctor, they will initiate the call at the scheduled time. Make sure your microphone and camera permissions are enabled in your browser for a smooth experience."
+  },
+  "q3": {
+    "question": "Is my medical information safe on MedKit?",
+    "answer": "Absolutely. MedKit takes your privacy very seriously. All your personal and medical data is securely stored and encrypted. We never share your information with third parties without your consent. Your consultation history is only visible to you and your assigned doctor."
+  },
+  "q4": {
+    "question": "What if the doctor is not available at the scheduled time?",
+    "answer": "If a doctor is unavailable, your booking status will be updated and you will be notified. You can then rebook with the same doctor or choose another available doctor from the same specialization. Our support team is also available to help you reschedule."
+  },
+  "q5": {
+    "question": "How do I request a Home Visit?",
+    "answer": "During the booking process, simply select 'Home Visit' as your consultation type. Make sure to provide your correct address and phone number. The doctor will review your request and visit you at the scheduled time. Home visits are available for select specializations."
+  }
+},
+"coverage": {
+  "badge": "Coverage",
+  "headingLine1": "Areas We",
+  "headingLine2": "Serve",
+  "subheading": "Currently serving Haldwani & Kathgodam with plans to expand.",
+  "areas": {
+    "rampurRoad": "Rampur Road",
+    "kaladhungiRoad": "Kaladhungi Road",
+    "nainitalRoad": "Nainital Road",
+    "mukhani": "Mukhani",
+    "heeraNagar": "Heera Nagar",
+    "kusumkhera": "Kusumkhera",
+    "panchakki": "Panchakki",
+    "bareillyRoad": "Bareilly Road",
+    "transportNagar": "Transport Nagar",
+    "lamachaur": "Lamachaur",
+    "kathgharia": "Kathgharia",
+    "devalchaur": "Devalchaur",
+    "chadail": "Chadail",
+    "kathgodamMarket": "Kathgodam Market",
+    "gaulaBarrage": "Gaula Barrage",
+    "shishMahal": "Shish Mahal",
+    "ranibagh": "Ranibagh"
+  }
+},
+"footer": {
+  "about": "Your trusted healthcare-at-home partner in Haldwani & Kathgodam. Quality medical care delivered to your doorstep.",
+  "quickLinks": "QUICK LINKS",
+  "home": "Home",
+  "services": "Services",
+  "bookADoctor": "Book a doctor",
+  "partnerWithUs": "Partner With Us",
+  "servicesHeading": "SERVICES",
+  "service1": "Injection at Home",
+  "service2": "IV Drip",
+  "service3": "ECG Test",
+  "service4": "Nurse Visit",
+  "service5": "Doctor Consultation",
+  "service6": "Ambulance Service",
+  "contactHeading": "CONTACT",
+  "address": "xyz",
+  "copyright": "© 2026 MedKit. All rights reserved."
+},
+"servicesPage2": {
+  "heading": "Our Healthcare Services",
+  "subheading": "Book trusted healthcare services at home with certified professionals. Fast, safe and reliable care at your doorstep.",
+  "bookNow": "Book Now",
+  "injection": {
+    "name": "Injection at Home",
+    "desc": "Safe and hygienic injection service at home."
+  },
+  "ivDrip": {
+    "name": "IV Drip Administration",
+    "desc": "Fluid and vitamin drips administered by experts."
+  },
+  "ecg": {
+    "name": "ECG Test at Home",
+    "desc": "Heart checkup service with instant reports."
+  },
+  "physio": {
+    "name": "Physiotherapy",
+    "desc": "Professional therapy sessions at your home."
+  },
+  "bpSugar": {
+    "name": "BP & Sugar Check",
+    "desc": "Quick health check for BP and sugar levels."
+  },
+  "bloodTest": {
+    "name": "Blood Test at Home",
+    "desc": "Lab sample collection from your home."
+  },
+  "nurseVisit": {
+    "name": "Nurse Visit at Home",
+    "desc": "Professional nurse support for elderly & recovery care.",
+    "tag": "Recommended"
+  }
+},
+"bookingPage": {
+  "errors": {
+    "area": "Please select your area.",
+    "date": "Please select a date.",
+    "time": "Please select a time slot.",
+    "address": "Please enter your full address.",
+    "phoneRequired": "Please enter your phone number.",
+    "phoneInvalid": "Enter a valid 10-digit Indian mobile number.",
+    "bookingFailed": "Booking failed. Please try again."
+  },
+  "confirmed": {
+    "heading": "Booking Confirmed!",
+    "subtext": "A technician will be assigned shortly and will contact you before arrival.",
+    "service": "Service",
+    "dateTime": "Date & Time",
+    "area": "Area",
+    "total": "Total",
+    "payNote": "Pay after service · No upfront payment",
+    "shareWhatsapp": "Share on WhatsApp",
+    "trackBooking": "Track My Booking",
+    "backHome": "Back to Home"
+  },
+  "review": {
+    "backToEdit": "Back to edit",
+    "heading": "Review your booking",
+    "subheading": "Please confirm the details before we assign a technician.",
+    "service": "Service",
+    "area": "Area",
+    "address": "Address",
+    "date": "Date",
+    "time": "Time",
+    "phone": "Phone",
+    "notes": "Notes",
+    "confirming": "Confirming...",
+    "confirmBooking": "Confirm Booking — ₹{{amount}}"
+  },
+  "priceBreakdown": {
+    "title": "Price Breakdown",
+    "base": "Base charge",
+    "distance": "Distance ({{dist}} km × ₹{{rate}})",
+    "platformFee": "Platform fee",
+    "totalAmount": "Total Amount",
+    "payNote": "💵 Pay after service — no upfront payment"
+  },
+  "loginWarning": {
+    "text": "You need to be logged in to confirm a booking.",
+    "button": "Login / Sign up"
+  },
+  "left": {
+    "heading": "Book Healthcare Service",
+    "subheading": "Schedule a professional healthcare visit at your doorstep.",
+    "urgentHelp": "Need urgent help? Call now:",
+    "features": {
+      "schedule": { "title": "Schedule at Your Convenience", "desc": "Pick your preferred date & time slot" },
+      "flexible": { "title": "Flexible Timings", "desc": "Available 9 AM to 6 PM daily" },
+      "certified": { "title": "Certified Professionals", "desc": "Trained & verified technicians" },
+      "hygienic": { "title": "100% Safe & Hygienic", "desc": "Sterile equipment guaranteed" }
+    }
+  },
+  "form": {
+    "selectService": "Select Service",
+    "yourArea": "Your Area",
+    "selectAreaPlaceholder": "— Select your area —",
+    "cityCenter": "City Center",
+    "date": "Date",
+    "timeSlot": "Time Slot",
+    "selectSlotPlaceholder": "— Select slot —",
+    "fullAddress": "Full Address",
+    "addressPlaceholder": "Flat/House no, Street, Landmark...",
+    "phoneNumber": "Phone Number",
+    "phonePlaceholder": "10-digit mobile number",
+    "additionalNotes": "Additional Notes",
+    "optional": "Optional",
+    "notesPlaceholder": "Special instructions, landmark details...",
+    "reviewBooking": "Review Booking →",
+    "reviewBookingWithPrice": "Review Booking — ₹{{amount}}"
+  },
+  "services": {
+    "injection": { "name": "Injection at Home", "desc": "Safe injection by certified nurse at your home" },
+    "ivDrip": { "name": "IV Drip Administration", "desc": "IV fluid or medicine drip administered at home" },
+    "ecg": { "name": "ECG Test at Home", "desc": "12-lead ECG test done at your doorstep" },
+    "nurseVisit": { "name": "Nurse Visit at Home", "desc": "Certified nurse visit for general care & monitoring" },
+    "physio": { "name": "Physiotherapy", "desc": "Therapeutic exercises & physiotherapy session at home" },
+    "bpSugar": { "name": "BP & Sugar Check", "desc": "Blood pressure & blood sugar monitoring at home" },
+    "bloodTest": { "name": "Blood Test at Home", "desc": "Sample collection at home, report delivered digitally" },
+    "minorDressing": { "name": "Minor Dressing", "desc": "Wound cleaning & dressing for minor cuts/injuries" },
+    "majorDressing": { "name": "Major Dressing", "desc": "Dressing for large wounds, burns or post-surgical sites" },
+    "burnDressing": { "name": "Burn Dressing", "desc": "Specialized burn wound care & dressing" },
+    "plasterApply": { "name": "Plaster Application", "desc": "POP or fiber cast application at home" },
+    "plasterRemove": { "name": "Plaster Removal", "desc": "Safe plaster/cast removal by trained technician" }
+  },
+  "areas": {
+    "clockTower": "Clock Tower / Paltan Bazaar",
+    "karanpur": "Karanpur",
+    "patelNagar": "Patel Nagar",
+    "dalanwala": "Dalanwala",
+    "isbt": "ISBT / Rishikesh Road",
+    "rajpurRoad": "Rajpur Road",
+    "dharampur": "Dharampur",
+    "rispana": "Rispana",
+    "ballupur": "Ballupur",
+    "jogiwala": "Jogiwala",
+    "haridwarRoad": "Haridwar Road",
+    "raipurRoad": "Raipur Road",
+    "niranjanpur": "Niranjanpur",
+    "majra": "Majra",
+    "gmsRoad": "GMS Road",
+    "sewlaKalan": "Sewla Kalan",
+    "clementTown": "Clement Town",
+    "dehrakhas": "Dehrakhas",
+    "sahastradharaRoad": "Sahastradhara Road",
+    "premnagar": "Premnagar",
+    "mussoorieRoad": "Mussoorie Road",
+    "nathanpur": "Nathanpur",
+    "selaqui": "Selaqui",
+    "doiwala": "Doiwala",
+    "vikasnagar": "Vikasnagar"
+  }
+},
+"partnersPage": {
+  "heroHeading": "Join Our Healthcare Network",
+  "heroSubheading": "Partner with us and help deliver quality healthcare services at home. Grow your career while making a real impact in people's lives.",
+  "perk1": "Flexible working hours",
+  "perk2": "High earning potential",
+  "perk3": "Work in your local area",
+  "perk4": "Trusted & growing platform",
+  "becomePartner": "Become a Partner",
+  "opportunitiesHeading": "Partner Opportunities",
+  "doctorPartner": {
+    "title": "Doctor Partner",
+    "desc": "Provide consultations via call, video, or home visits."
+  },
+  "technicianPartner": {
+    "title": "Healthcare Technician",
+    "desc": "Provide services like injections, ECG, and home care."
+  },
+  "ambulancePartner": {
+    "title": "Ambulance Partner",
+    "desc": "Join our emergency network and get more bookings."
+  },
+  "ctaHeading": "Ready to Join Us?",
+  "ctaSubheading": "Fill a simple form and start your journey with MedKit",
+  "applyNow": "Apply Now",
+  "whyJoinHeading": "Why Join Us?",
+  "benefit1": "Get regular bookings",
+  "benefit2": "Grow your income",
+  "benefit3": "Work independently",
+  "benefit4": "Trusted by local families",
+  "benefit5": "Easy onboarding",
+  "benefit6": "24/7 support"
+},
+"ambulanceServicePage": {
+  "heroLine1": "Fast & Reliable",
+  "heroLine2": "Ambulance Service",
+  "heroSubheading": "Emergency response within minutes. Our trained team ensures safe and quick transportation with medical support.",
+  "callNow": "Call Now",
+  "bookAmbulance": "Book Ambulance",
+  "featuresHeading": "Why Choose Our Ambulance Service",
+  "feature1": {
+    "title": "24/7 Availability",
+    "desc": "Available anytime, anywhere for emergencies."
+  },
+  "feature2": {
+    "title": "Advanced Ambulances",
+    "desc": "Fully equipped with oxygen & life-saving tools."
+  },
+  "feature3": {
+    "title": "Quick Response",
+    "desc": "Reach your location within minutes."
+  },
+  "feature4": {
+    "title": "Instant Booking",
+    "desc": "Call or WhatsApp for instant service."
+  },
+  "ctaHeading": "Need Emergency Help?",
+  "ctaSubheading": "Call now and get ambulance within minutes.",
+  "whatsappBooking": "WhatsApp Booking"
+},
+"partnerForm": {
+  "heading": "Become a Partner",
+  "subheading": "Join MedKit & grow your career with us",
+  "fullName": "Full Name",
+  "phoneNumber": "Phone Number",
+  "roleTechnician": "Healthcare Technician",
+  "roleDoctor": "Doctor Partner",
+  "roleAmbulance": "Ambulance Partner",
+  "yourCity": "Your City",
+  "experiencePlaceholder": "Experience / Details (optional)",
+  "submitting": "Submitting...",
+  "submitApplication": "Submit Application",
+  "submitSuccess": "Application Submitted Successfully",
+  "submitError": "Something went wrong"
+},
+"careNavigator": {
+  "title": "MedKit Care Navigator",
+  "subtitle": "Find the right service in seconds",
+  "bestServiceLabel": "Best service for you",
+  "startAgain": "Not what you needed? Start again",
+  "back": "Back",
+  "relations": {
+    "self": "Self",
+    "parent": "Parent",
+    "child": "Child",
+    "otherFamily": "Other family member"
+  },
+  "step0": {
+    "heading": "Who needs care?",
+    "subheading": "Select who this service is for"
+  },
+  "step1": {
+    "heading": "What's the concern?",
+    "subheading": "Choose the closest match"
+  },
+  "concerns": {
+    "fever": "Fever / Cold",
+    "injury": "Injury / Wound",
+    "checkup": "Regular Checkup",
+    "injection": "Need an Injection",
+    "bloodtest": "Need a Blood Test",
+    "elderly": "Elderly Care"
+  },
+  "recommendations": {
+    "fever": {
+      "title": "Doctor Consultation",
+      "desc": "For fever/cold, it's best to consult a doctor. You can choose either a home visit or a video call.",
+      "homeActionLabel": "Book Home Visit",
+      "onlineActionLabel": "Book Video Call or Voice Call"
+    },
+    "injury": {
+      "title": "Dressing / Wound Care",
+      "desc": "For minor injuries or wounds, a home dressing service is best. A certified technician will visit your home and dress the wound professionally.",
+      "actionLabel": "Book Dressing Service"
+    },
+    "checkup": {
+      "title": "BP & Sugar Checkup",
+      "desc": "For regular health monitoring, a checkup at home is the best option. A technician will check your BP, sugar, and basic vitals.",
+      "actionLabel": "Book Checkup"
+    },
+    "injection": {
+      "title": "Injection at Home",
+      "desc": "Getting an injection at home is safe and convenient. A certified nurse will visit your home to administer it.",
+      "actionLabel": "Book Injection Service"
+    },
+    "bloodtest": {
+      "title": "Blood Test at Home",
+      "desc": "Sample collection can be done right from your home. A technician will collect the sample and you'll get the report online.",
+      "actionLabel": "Book Blood Test"
+    },
+    "elderly": {
+      "title": "Elderly Care Plan",
+      "desc": "For the elderly — regular nursing support, checkups, and medication management, all at home. Check out our elderly care plans.",
+      "actionLabel": "View Elderly Care Plans"
+    }
+  }
+},
+"doctorBooking": {
+  "pageTitle": "Book a Doctor",
+  "pageSubtitle": "Choose your service and we'll find the best doctor for you",
+  "loginRequired": "Login required to book a doctor.",
+  "loginSignup": "Login / Sign up",
+  "consultation": "Consultation",
+  "fromPrice": "From ₹{{price}}",
+  "errLoadDoctors": "Could not load doctors. Try again.",
+  "errFileType": "Only JPG, PNG or PDF files are allowed",
+  "errFileSize": "File size must be under 5MB",
+  "errSelectDate": "Select a date.",
+  "errSelectTime": "Select a time slot.",
+  "errEnterPhone": "Enter your phone number.",
+  "errInvalidPhone": "Enter a valid 10-digit Indian mobile number.",
+  "errEnterAddress": "Enter your address for home visit.",
+  "errBookingFailed": "Booking failed. Try again.",
+  "consultationType": "Consultation type",
+  "date": "Date",
+  "timeSlot": "Time slot",
+  "selectDash": "— Select —",
+  "phoneNumber": "Phone number",
+  "phonePlaceholder": "10-digit mobile number",
+  "homeAddress": "Home address",
+  "addressPlaceholder": "Flat/House no, Street, Landmark...",
+  "medicalReport": "Medical report",
+  "optional": "(optional)",
+  "clickToUpload": "Click to upload report",
+  "fileTypesHint": "JPG, PNG or PDF · Max 5MB",
+  "reviewBookingBtn": "Review booking →",
+  "yrsExperience": "{{years}} yrs experience",
+  "doctorsHeading": "{{service}} doctors",
+  "availableDoctors": "Available doctors",
+  "sortBy": "Sort by",
+  "topRated": "Top rated",
+  "feeLowHigh": "Fee: low to high",
+  "feeHighLow": "Fee: high to low",
+  "findingDoctors": "Finding doctors...",
+  "noDoctors": "No doctors available",
+  "tryAnotherService": "Please try another service",
+  "availableToday": "Available today",
+  "audioCallBooked": "Audio call booked",
+  "videoCallBooked": "Video call booked",
+  "homeVisitBooked": "Home visit booked",
+  "bookNowBtn": "Book now",
+  "videoCall": "Video call",
+  "videoBookFirst": "Video (book first)",
+  "audioCall": "Audio call",
+  "audioBookFirst": "Audio (book first)",
+  "bookAppointment": "Book appointment",
+  "reviewAppointment": "Review appointment",
+  "bookingConfirmed": "Booking confirmed",
+  "backToEdit": "Back to edit",
+  "reviewSubtitle": "Confirm details before we notify the doctor.",
+  "labelConsultation": "Consultation",
+  "labelDate": "Date",
+  "labelTime": "Time",
+  "labelPhone": "Phone",
+  "labelAddress": "Address",
+  "labelReport": "Report",
+  "labelDoctor": "Doctor",
+  "labelService": "Service",
+  "labelType": "Type",
+  "labelFee": "Fee",
+  "confirming": "Confirming...",
+  "confirmBooking": "Confirm booking — ₹{{price}}",
+  "confirmedTitle": "Booking confirmed!",
+  "confirmedSubtitle": "{{doctor}} will contact you before the appointment.",
+  "shareWhatsapp": "Share on WhatsApp",
+  "viewMyBookings": "View my bookings",
+  "close": "Close",
+  "consultTypes": {
+    "audioCall": "Audio Call",
+    "audioCallDesc": "Voice consultation, ~15-20 min",
+    "videoCall": "Video Call",
+    "videoCallDesc": "Face-to-face video, ~20-30 min",
+    "homeVisit": "Home Visit",
+    "homeVisitDesc": "Doctor visits your home"
+  },
+  "services": {
+    "generalMedicine": "General Medicine",
+    "gastroenterology": "Gastroenterology",
+    "orthopaedic": "Orthopaedic",
+    "cardiology": "Cardiology",
+    "physician": "Physician",
+    "dietitian": "Dietitian",
+    "pediatrician": "Pediatrician",
+    "dermatology": "Dermatology",
+    "gynecologist": "Gynecologist",
+    "ent": "ENT"
+  }
+},
+"elderlyCarePlans": {
+  "badge": "Elderly Care Plans",
+  "heading": "Care for Your Parents at Home",
+  "subheading": "Affordable monthly care plans designed for elderly safety, comfort, and regular health monitoring.",
+  "note": "Ensure your parents are cared for even when you're not around.",
+  "popularTag": "Most Popular",
+  "perMonth": "/month",
+  "limitedSlots": "⚡ Limited slots available this week",
+  "chooseButton": "Choose Plan",
+  "ctaText": "Talk to Expert & Get Plan",
+  "callButton": "Call: 9818185270",
+  "trustedText": "Trusted by families in Haldwani & Kathgodam",
+  "plans": [
+    {
+      "name": "Basic Care",
+      "popular": false,
+      "features": [
+        "Weekly nurse visit",
+        "BP & sugar monitoring",
+        "Emergency support",
+        "Basic health tracking"
+      ]
+    },
+    {
+      "name": "Advanced Care",
+      "popular": true,
+      "features": [
+        "2 nurse visits per week",
+        "Medicine assistance",
+        "Priority booking",
+        "Health monitoring"
+      ]
+    },
+    {
+      "name": "Premium Care",
+      "popular": false,
+      "features": [
+        "Daily monitoring",
+        "Dedicated caregiver support",
+        "Full assistance",
+        "Emergency priority response"
+      ]
+    }
+  ]
+},
+  "booking": {
+    "title": "Book Healthcare Service",
+    "selectService": "Select Service",
+    "yourArea": "Your Area",
+    "date": "Date",
+    "time": "Time",
+    "address": "Full Address",
+    "phone": "Phone Number",
+    "notes": "Additional Notes (Optional)",
+    "confirm": "Confirm Booking",
+    "success": "Booking successful! A technician will be assigned shortly."
+  },
+  "common": {
+    "bookNow": "Book Now",
+    "loading": "Loading...",
+    "back": "Back",
+    "submit": "Submit"
+  }
+}

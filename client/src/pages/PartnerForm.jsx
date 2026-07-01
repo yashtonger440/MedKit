@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useTranslation } from "react-i18next";
 import {
   FaUser,
   FaPhoneAlt,
@@ -12,6 +13,7 @@ import {
 export default function PartnerForm() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [form, setForm] = useState({
     name: "",
@@ -44,14 +46,14 @@ export default function PartnerForm() {
       // yaha future me API call lagega to submit the form data
       console.log(form);
 
-      alert("Application Submitted Successfully ✅");
+      alert(t("partnerForm.submitSuccess"));
 
       setTimeout(() => {
         navigate("/partner-form");
       }, 1000);
 
     } catch (err) {
-      alert("Something went wrong");
+      alert(t("partnerForm.submitError"));
     } finally {
       setLoading(false);
     }
@@ -78,11 +80,11 @@ export default function PartnerForm() {
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mt-10">
 
             <h1 className="text-3xl font-bold text-gray-800 text-center">
-              Become a Partner 🤝
+              {t("partnerForm.heading")}
             </h1>
 
             <p className="text-center text-gray-500 mt-2">
-              Join MedKit & grow your career with us
+              {t("partnerForm.subheading")}
             </p>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -93,7 +95,7 @@ export default function PartnerForm() {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Full Name"
+                  placeholder={t("partnerForm.fullName")}
                   required
                   onChange={handleChange}
                   className="bg-transparent w-full outline-none"
@@ -106,7 +108,7 @@ export default function PartnerForm() {
                 <input
                   type="text"
                   name="phone"
-                  placeholder="Phone Number"
+                  placeholder={t("partnerForm.phoneNumber")}
                   required
                   onChange={handleChange}
                   className="bg-transparent w-full outline-none"
@@ -122,9 +124,9 @@ export default function PartnerForm() {
                   onChange={handleChange}
                   className="bg-transparent w-full outline-none"
                 >
-                  <option>Healthcare Technician</option>
-                  <option>Doctor Partner</option>
-                  <option>Ambulance Partner</option>
+                  <option value="Healthcare Technician">{t("partnerForm.roleTechnician")}</option>
+                  <option value="Doctor Partner">{t("partnerForm.roleDoctor")}</option>
+                  <option value="Ambulance Partner">{t("partnerForm.roleAmbulance")}</option>
                 </select>
               </div>
 
@@ -134,7 +136,7 @@ export default function PartnerForm() {
                 <input
                   type="text"
                   name="city"
-                  placeholder="Your City"
+                  placeholder={t("partnerForm.yourCity")}
                   required
                   onChange={handleChange}
                   className="bg-transparent w-full outline-none"
@@ -144,7 +146,7 @@ export default function PartnerForm() {
               {/* EXPERIENCE */}
               <textarea
                 name="experience"
-                placeholder="Experience / Details (optional)"
+                placeholder={t("partnerForm.experiencePlaceholder")}
                 onChange={handleChange}
                 className="w-full p-3 rounded-xl bg-gray-100 outline-none focus:ring-2 focus:ring-blue-400"
               />
@@ -155,7 +157,7 @@ export default function PartnerForm() {
                 disabled={loading}
                 className="w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold hover:scale-105 transition"
               >
-                {loading ? "Submitting..." : "Submit Application 🚀"}
+                {loading ? t("partnerForm.submitting") : t("partnerForm.submitApplication")}
               </button>
 
             </form>

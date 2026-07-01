@@ -10,51 +10,53 @@ import {
   FaUserNurse,
 } from "react-icons/fa";
 import Footer from "../components/Footer";
+import { useTranslation } from "react-i18next";
 
 const Services = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const services = [
     {
+      key: "injection",
       name: "Injection at Home",
       price: 120,
-      desc: "Safe and hygienic injection service at home.",
       icon: <FaSyringe />,
     },
     {
+      key: "ivDrip",
       name: "IV Drip Administration",
       price: 300,
-      desc: "Fluid and vitamin drips administered by experts.",
       icon: <FaTint />,
     },
     {
+      key: "ecg",
       name: "ECG Test at Home",
       price: 400,
-      desc: "Heart checkup service with instant reports.",
       icon: <FaHeartbeat />,
     },
     {
+      key: "physio",
       name: "Physiotherapy",
       price: 500,
-      desc: "Professional therapy sessions at your home.",
       icon: <FaWalking />,
     },
     {
+      key: "bpSugar",
       name: "BP & Sugar Check",
       price: 199,
-      desc: "Quick health check for BP and sugar levels.",
       icon: <FaStethoscope />,
     },
     {
+      key: "bloodTest",
       name: "Blood Test at Home",
       price: 499,
-      desc: "Lab sample collection from your home.",
       icon: <FaFlask />,
     },
     {
+      key: "nurseVisit",
       name: "Nurse Visit at Home",
       price: 699,
-      desc: "Professional nurse support for elderly & recovery care.",
       icon: <FaUserNurse />,
       tag: "Recommended",
     },
@@ -77,11 +79,10 @@ const Services = () => {
 
         <div className="text-center max-w-2xl mx-auto mb-14 mt-5">
           <h1 className="text-4xl font-bold text-gray-800">
-            Our Healthcare Services
+            {t("servicesPage2.heading")}
           </h1>
           <p className="mt-3 text-gray-600">
-            Book trusted healthcare services at home with certified professionals.
-            Fast, safe and reliable care at your doorstep.
+            {t("servicesPage2.subheading")}
           </p>
         </div>
 
@@ -90,12 +91,12 @@ const Services = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-white/70 backdrop-blur-lg rounded-2xl p-6 shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-2 border border-transparent hover:border-blue-200"
+              className="group relative bg-white/70 backdrop-blur-lg rounded-2xl p-6 shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-2 border border-transparent hover:border-blue-200"
             >
 
               {service.tag && (
                 <span className="absolute top-4 right-4 text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full font-medium">
-                  {service.tag}
+                  {t(`servicesPage2.${service.key}.tag`)}
                 </span>
               )}
 
@@ -105,10 +106,10 @@ const Services = () => {
 
               <div>
                 <h2 className="text-lg font-semibold text-gray-800">
-                  {service.name}
+                  {t(`servicesPage2.${service.key}.name`)}
                 </h2>
                 <p className="text-gray-600 text-sm mt-2">
-                  {service.desc}
+                  {t(`servicesPage2.${service.key}.desc`)}
                 </p>
               </div>
 
@@ -121,7 +122,7 @@ const Services = () => {
                   onClick={() => handleBooking(service)}
                   className="mt-3 w-full py-2 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-lg font-medium hover:scale-105 transition cursor-pointer"
                 >
-                  Book Now
+                  {t("servicesPage2.bookNow")}
                 </button>
               </div>
 

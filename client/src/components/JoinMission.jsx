@@ -4,26 +4,23 @@ import {
   FaAmbulance,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function JoinMission() {
+  const { t } = useTranslation();
+
   const partners = [
     {
       icon: <FaUserNurse />,
-      role: "HEALTHCARE TECHNICIAN",
-      title: "Bring care closer to every home that suits everybody",
-      desc: "Serve patients in your own city with flexible hours — from injections to ECGs.",
+      key: "technician",
     },
     {
       icon: <FaUserMd />,
-      role: "DOCTOR PARTNER",
-      title: "Be there when someone needs care the most",
-      desc: "Consult patients remotely via audio or video calls. Set your own schedule.",
+      key: "doctor",
     },
     {
       icon: <FaAmbulance />,
-      role: "AMBULANCE PARTNER",
-      title: "Every second matters. Be the help that arrives in time",
-      desc: "Register your ambulance with MedKit's emergency network in your area.",
+      key: "ambulance",
     },
   ];
 
@@ -40,18 +37,16 @@ export default function JoinMission() {
           {/* LEFT TEXT */}
           <div>
             <p className="text-sm text-blue-500 font-semibold uppercase tracking-wide">
-              Join Our Mission
+              {t("joinMission.badge")}
             </p>
 
             <h2 className="text-4xl font-bold text-gray-800 mt-2 leading-tight">
-              Be the Reason Someone Gets 
-              <span className="text-cyan-500"> Care in Time </span>
+              {t("joinMission.headingLine1")}
+              <span className="text-cyan-500"> {t("joinMission.headingLine2")} </span>
             </h2>
 
             <p className="mt-4 text-gray-600 leading-relaxed">
-              Healthcare isn't just a profession — it's a calling. Partner with
-              MedKit and help families in India access quality care
-              at their doorstep.
+              {t("joinMission.subheading")}
             </p>
 
             {/* POINTS */}
@@ -62,7 +57,7 @@ export default function JoinMission() {
                   ✔
                 </div>
                 <span className="text-gray-700">
-                  Make a real difference in your community
+                  {t("joinMission.point1")}
                 </span>
               </div>
 
@@ -71,7 +66,7 @@ export default function JoinMission() {
                   👥
                 </div>
                 <span className="text-gray-700">
-                  Join a growing network of trusted professionals
+                  {t("joinMission.point2")}
                 </span>
               </div>
 
@@ -80,7 +75,7 @@ export default function JoinMission() {
                   🛡
                 </div>
                 <span className="text-gray-700">
-                  Verified, supported & respected partnership
+                  {t("joinMission.point3")}
                 </span>
               </div>
 
@@ -114,24 +109,24 @@ export default function JoinMission() {
 
               {/* ROLE */}
               <p className="text-xs font-semibold text-blue-500 uppercase">
-                {p.role}
+                {t(`joinMission.${p.key}.role`)}
               </p>
 
               {/* TITLE */}
               <h3 className="text-lg font-semibold text-gray-800 mt-1">
-                {p.title}
+                {t(`joinMission.${p.key}.title`)}
               </h3>
 
               {/* DESC */}
               <p className="text-gray-600 text-sm mt-2">
-                {p.desc}
+                {t(`joinMission.${p.key}.desc`)}
               </p>
 
               {/* BUTTON */}
               <button
                 onClick={() => navigate("/partners")}
                 className="mt-6 w-full py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-full font-medium hover:scale-105 transition">
-                Join as Partner
+                {t("joinMission.joinAsPartner")}
               </button>
 
             </div>
@@ -141,7 +136,7 @@ export default function JoinMission() {
 
         {/* BOTTOM TEXT */}
         <p className="text-center text-gray-500 text-sm mt-10">
-          ✔ Trusted by healthcare professionals across the Country
+          ✔ {t("joinMission.trustedBy")}
         </p>
 
       </div>

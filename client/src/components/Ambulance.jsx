@@ -1,7 +1,10 @@
 import { FaPhoneAlt, FaWhatsapp, FaAmbulance } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function Ambulance() {
-  const message = encodeURIComponent("Hi, I need an ambulance immediately! Please send help to my location.");
+  const { t } = useTranslation();
+  const message = encodeURIComponent(t("ambulancePage.whatsappMessage"));
+
   return (
     <section className="py-20 bg-gradient-to-r from-red-600 via-red-500 to-pink-500 text-white relative overflow-hidden">
       
@@ -22,8 +25,8 @@ export default function Ambulance() {
 
           <div className="absolute bottom-0 left-108 z-10 bg-gray-300 rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
             <div>
-              <p className="text-sm font-bold text-blue-600">🚨 24/7 Emergency</p>
-              <p className="text-sm font-semibold text-gray-700">Response in minutes</p>
+              <p className="text-sm font-bold text-blue-600"> {t("ambulancePage.emergency247")}</p>
+              <p className="text-sm font-semibold text-gray-700">{t("ambulancePage.responseInMinutes")}</p>
             </div>
           </div>
 
@@ -33,25 +36,25 @@ export default function Ambulance() {
         <div>
           
           <h2 className="text-4xl font-bold leading-tight">
-            Ambulance Service <br />
-            <span className="text-yellow-300">We're Minutes Away</span>
+            {t("ambulancePage.headingLine1")} <br />
+            <span className="text-yellow-300">{t("ambulancePage.headingLine2")}</span>
           </h2>
 
           <p className="mt-5 text-white/90">
-            Fast, reliable ambulance dispatch for emergencies and hospital transfers in Haldwani & Kathgodam. Every second counts — and we don't waste them.
+            {t("ambulancePage.subheading")}
           </p>
 
           {/* Features */}
           <ul className="mt-6 space-y-3">
-            <li>✔ Fastest response — under 15 minutes</li>
-            <li>✔ GPS-tracked fleet across all areas</li>
-            <li>✔ Equipped with oxygen & first-aid</li>
-            <li>✔ Accident, cardiac & emergency support</li>
+            <li>✔ {t("ambulancePage.feature1")}</li>
+            <li>✔ {t("ambulancePage.feature2")}</li>
+            <li>✔ {t("ambulancePage.feature3")}</li>
+            <li>✔ {t("ambulancePage.feature4")}</li>
           </ul>
 
           {/* Price */}
           <p className="mt-6 font-semibold text-lg">
-            Starting at ₹999 • No hidden charges
+            {t("ambulancePage.price")}
           </p>
 
           {/* Buttons */}
@@ -61,7 +64,7 @@ export default function Ambulance() {
               href="tel:9818185270"
               className="flex items-center gap-2 bg-white text-red-600 px-6 py-3 rounded-full font-semibold hover:scale-105 transition animate-pulse"
             >
-              <FaPhoneAlt /> Call Ambulance
+              <FaPhoneAlt /> {t("ambulancePage.callAmbulance")}
             </a>
 
             <a
@@ -70,7 +73,7 @@ export default function Ambulance() {
               rel="noreferrer"
               className="flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition"
             >
-              <FaWhatsapp /> WhatsApp SOS
+              <FaWhatsapp /> {t("ambulancePage.whatsappSOS")}
             </a>
 
           </div>

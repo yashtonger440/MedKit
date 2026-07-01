@@ -1,24 +1,27 @@
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function Coverage() {
-  const areas = [
-    "Rampur Road",
-    "Kaladhungi Road",
-    "Nainital Road",
-    "Mukhani",
-    "Heera Nagar",
-    "Kusumkhera",
-    "Panchakki",
-    "Bareilly Road",
-    "Transport Nagar",
-    "Lamachaur",
-    "Kathgharia",
-    "Devalchaur",
-    "Chadail",
-    "Kathgodam Market",
-    "Gaula Barrage",
-    "Shish Mahal",
-    "Ranibagh",
+  const { t } = useTranslation();
+
+  const areaKeys = [
+    "rampurRoad",
+    "kaladhungiRoad",
+    "nainitalRoad",
+    "mukhani",
+    "heeraNagar",
+    "kusumkhera",
+    "panchakki",
+    "bareillyRoad",
+    "transportNagar",
+    "lamachaur",
+    "kathgharia",
+    "devalchaur",
+    "chadail",
+    "kathgodamMarket",
+    "gaulaBarrage",
+    "shishMahal",
+    "ranibagh",
   ];
 
   return (
@@ -28,30 +31,33 @@ export default function Coverage() {
 
         {/* SMALL TAG */}
         <p className="text-sm text-blue-500 font-semibold tracking-wider uppercase">
-          Coverage
+          {t("coverage.badge")}
         </p>
 
         {/* HEADING */}
         <h2 className="text-4xl font-bold text-gray-800 mt-2">
-          Areas We <span className="text-blue-500">Serve</span>
+          {t("coverage.headingLine1")}{" "}
+          {t("coverage.headingLine2") && (
+            <span className="text-blue-500">{t("coverage.headingLine2")}</span>
+          )}
         </h2>
 
         {/* SUBTEXT */}
         <p className="text-gray-500 mt-3">
-          Currently serving Haldwani & Kathgodam with plans to expand.
+          {t("coverage.subheading")}
         </p>
 
         {/* AREAS */}
         <div className="mt-10 flex flex-wrap justify-center gap-4">
 
-          {areas.map((area, index) => (
+          {areaKeys.map((key, index) => (
             <div
               key={index}
               className="flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-200"
             >
               <FaMapMarkerAlt className="text-blue-500 text-sm" />
               <span className="text-gray-700 text-sm font-medium">
-                {area}
+                {t(`coverage.areas.${key}`)}
               </span>
             </div>
           ))}

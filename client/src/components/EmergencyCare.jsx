@@ -1,59 +1,38 @@
 import React from 'react';
 import { ShieldAlert, Clock, AlertTriangle, CheckCircle, Phone } from 'lucide-react';
 import { FaSyringe } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const EmergencyCare = () => {
+  const { t } = useTranslation();
+
   const emergencyServices = [
     {
       id: 1,
-      title: "Dog Bite Injection",
-      description: "Anti-rabies vaccination & wound care for dog bites.",
+      key: "dogBite",
       icon: <FaSyringe className="w-6 h-6 text-blue-500" />,
       isUrgent: false,
-      timeWindow: "Within 24 hours",
       timeColor: "text-amber-500",
       timeBg: "bg-amber-50",
-      guidelines: [
-        "Wash the wound with soap and water for at least 10 minutes",
-        "Visit immediately for anti-rabies injection (ARV)",
-        "Follow-up doses required on Day 3, 7, 14 & 28",
-        "Inform doctor if the animal had prior vaccination",
-      ],
-      warning: "Delaying treatment increases rabies risk significantly."
+      guidelineCount: 4,
     },
     {
       id: 2,
-      title: "Monkey Bite Injection",
-      description: "Immediate injection & care for monkey bite injuries.",
+      key: "monkeyBite",
       icon: <FaSyringe className="w-6 h-6 text-blue-500" />,
       isUrgent: false,
-      timeWindow: "Within 24 hours",
       timeColor: "text-amber-500",
       timeBg: "bg-amber-50",
-      guidelines: [
-        "Clean the wound thoroughly under running water",
-        "Anti-rabies vaccination required as a precaution",
-        "Tetanus injection may also be administered",
-        "Complete all scheduled follow-up doses",
-      ],
-      warning: "Monkey bites can transmit rabies — do not ignore."
+      guidelineCount: 4,
     },
     {
       id: 3,
-      title: "Snake Bite (Emergency)",
-      description: "Emergency anti-venom & first-aid for snake bites.",
+      key: "snakeBite",
       icon: <ShieldAlert className="w-6 h-6 text-red-500" />,
       isUrgent: true,
-      timeWindow: "IMMEDIATE",
       timeColor: "text-red-600",
       timeBg: "bg-red-100",
-      guidelines: [
-        "Keep the patient calm and immobilize the affected limb",
-        "Do NOT cut, suck, or apply tourniquet on the wound",
-        "Remove rings/tight clothing near the bite area",
-        "Rush to emergency for anti-venom administration",
-      ],
-      warning: "Snake venom acts fast — every minute matters."
+      guidelineCount: 4,
     }
   ];
 
@@ -62,13 +41,13 @@ const EmergencyCare = () => {
       {/* Heading */}
       <div className="text-center mb-12 max-w-2xl mx-auto px-6">
         <span className="text-red-500 font-bold tracking-widest text-xs uppercase">
-          Emergency Care
+          {t("emergencyCare.badge")}
         </span>
         <h2 className="text-4xl font-bold text-gray-800 mt-4">
-          Bite & Emergency Injection Care
+          {t("emergencyCare.heading")}
         </h2>
         <p className="text-slate-500 mt-4 leading-relaxed">
-          Immediate professional response for animal bite emergencies. Follow these guidelines and seek help right away.
+          {t("emergencyCare.subheading")}
         </p>
       </div>
 
@@ -86,14 +65,14 @@ const EmergencyCare = () => {
               </div>
               <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${service.timeBg} ${service.timeColor}`}>
                 <Clock className="w-3.5 h-3.5" />
-                {service.timeWindow}
+                {t(`emergencyCare.${service.key}.timeWindow`)}
               </div>
             </div>
 
             {/* Title + Description */}
             <div>
-              <h3 className="text-xl font-semibold text-gray-800">{service.title}</h3>
-              <p className="mt-1 text-gray-600 text-sm">{service.description}</p>
+              <h3 className="text-xl font-semibold text-gray-800">{t(`emergencyCare.${service.key}.title`)}</h3>
+              <p className="mt-1 text-gray-600 text-sm">{t(`emergencyCare.${service.key}.description`)}</p>
             </div>
 
             {/* Divider */}
@@ -101,12 +80,12 @@ const EmergencyCare = () => {
 
             {/* Guidelines */}
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">What To Do</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{t("emergencyCare.whatToDo")}</p>
               <ul className="flex flex-col gap-2">
-                {service.guidelines.map((step, i) => (
+                {Array.from({ length: service.guidelineCount }).map((_, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-slate-600 leading-snug">
                     <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    {step}
+                    {t(`emergencyCare.${service.key}.guidelines.${i}`)}
                   </li>
                 ))}
               </ul>
@@ -116,7 +95,7 @@ const EmergencyCare = () => {
             <div className={`flex items-start gap-2 mt-auto px-3 py-2 rounded-lg ${service.isUrgent ? 'bg-red-100' : 'bg-amber-50'}`}>
               <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${service.isUrgent ? 'text-red-500' : 'text-amber-500'}`} />
               <p className={`text-xs font-medium ${service.isUrgent ? 'text-red-600' : 'text-amber-700'}`}>
-                {service.warning}
+                {t(`emergencyCare.${service.key}.warning`)}
               </p>
             </div>
           </div>
@@ -127,9 +106,9 @@ const EmergencyCare = () => {
       <div className="mt-10 max-w-7xl mx-auto flex items-center justify-center gap-3 bg-slate-800 text-white rounded-2xl px-8 py-5">
         <Phone className="w-5 h-5 text-cyan-400 shrink-0" />
         <p className="text-sm text-slate-300">
-          In case of emergency,{" "}
-          <span className="text-white font-semibold">call our experts immediately on 9818185270</span>{" "}
-          — our team is available to assist you right away.
+          {t("emergencyCare.ctaPrefix")}{" "}
+          <span className="text-white font-semibold">{t("emergencyCare.ctaBold")}</span>{" "}
+          {t("emergencyCare.ctaSuffix")}
         </p>
       </div>
     </section>

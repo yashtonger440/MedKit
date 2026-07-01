@@ -1,55 +1,51 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { FaCompass, FaTimes, FaArrowLeft, FaCheckCircle, FaHome, FaVideo } from "react-icons/fa";
 
-const RELATIONS = ["Self", "Parent", "Child", "Other family member"];
+const RELATION_KEYS = ["self", "parent", "child", "otherFamily"];
 
 const CONCERNS = [
-  { label: " Fever / Cold",        value: "fever" },
-  { label: " Injury / Wound",      value: "injury" },
-  { label: " Regular Checkup",     value: "checkup" },
-  { label: " Need an Injection",   value: "injection" },
-  { label: " Need a Blood Test",   value: "bloodtest" },
-  { label: " Elderly Care",        value: "elderly" },
+  { key: "fever",     value: "fever" },
+  { key: "injury",    value: "injury" },
+  { key: "checkup",   value: "checkup" },
+  { key: "injection", value: "injection" },
+  { key: "bloodtest", value: "bloodtest" },
+  { key: "elderly",   value: "elderly" },
 ];
 
 const RECOMMENDATIONS = {
   fever: {
-    title: "Doctor Consultation",
-    desc: "Fever/cold ke liye doctor se consult karna best rehta hai. Aap ghar pe home visit ya video call dono choose kar sakte hain.",
-    dual: true, // 2 buttons dikhao
-    homeAction: { label: " Book Home Visit", path: "/bookadoctor", service: "General Medicine - Home Visit" },
-    onlineAction: { label: " Book Video Call or Voice call", path: "/bookadoctor", service: "General Medicine - Video/Voice Call" },
+    key: "fever",
+    dual: true,
+    homeAction: { path: "/bookadoctor", service: "General Medicine - Home Visit" },
+    onlineAction: { path: "/bookadoctor", service: "General Medicine - Video/Voice Call" },
   },
   injury: {
-    title: "Dressing / Wound Care",
-    desc: "Choti injury ya wound ke liye ghar pe dressing service best hai. Certified technician aapke ghar aakar professionally dressing karenge.",
-    action: { label: "Book Dressing Service", path: "/booking", service: "Minor Dressing" },
+    key: "injury",
+    action: { path: "/booking", service: "Minor Dressing" },
   },
   checkup: {
-    title: "BP & Sugar Checkup",
-    desc: "Regular health monitoring ke liye ghar pe checkup best option hai. Technician BP, sugar aur basic vitals check kar denge.",
-    action: { label: "Book Checkup", path: "/booking", service: "BP & Sugar Check" },
+    key: "checkup",
+    action: { path: "/booking", service: "BP & Sugar Check" },
   },
   injection: {
-    title: "Injection at Home",
-    desc: "Ghar pe injection lena safe aur convenient hai. Certified nurse aapke ghar aakar injection denge.",
-    action: { label: "Book Injection Service", path: "/booking", service: "Injection at Home" },
+    key: "injection",
+    action: { path: "/booking", service: "Injection at Home" },
   },
   bloodtest: {
-    title: "Blood Test at Home",
-    desc: "Sample collection ghar se hi ho sakti hai. Technician aake sample lenge aur report online mil jayegi.",
-    action: { label: "Book Blood Test", path: "/booking", service: "Blood Test at Home" },
+    key: "bloodtest",
+    action: { path: "/booking", service: "Blood Test at Home" },
   },
   elderly: {
-    title: "Elderly Care Plan",
-    desc: "Elderly ke liye regular nursing support, checkups aur medication management — sab ghar pe. Hamare elderly care plans dekhein.",
-    action: { label: "View Elderly Care Plans", path: "/elderlycare", service: null },
+    key: "elderly",
+    action: { path: "/elderlycare", service: null },
   },
 };
 
 const CareNavigator = ({ open, onClose }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({ relation: "", concern: "" });
 
@@ -84,8 +80,8 @@ const CareNavigator = ({ open, onClose }) => {
                   <FaCompass size={16} className="text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-white text-sm">MedKit Care Navigator</p>
-                  <p className="text-xs text-white/80">Find the right service in seconds</p>
+                  <p className="font-semibold text-white text-sm">{t("careNavigator.title")}</p>
+                  <p className="text-xs text-white/80">{t("careNavigator.subtitle")}</p>
                 </div>
               </div>
               <button
@@ -118,20 +114,20 @@ const CareNavigator = ({ open, onClose }) => {
               {/* Step 0 — Who needs care */}
               {step === 0 && (
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-gray-800 mb-1">Who needs care?</h3>
-                  <p className="text-sm text-gray-500 mb-5">Select who this service is for</p>
+                  <h3 className="text-lg font-bold text-gray-800 mb-1">{t("careNavigator.step0.heading")}</h3>
+                  <p className="text-sm text-gray-500 mb-5">{t("careNavigator.step0.subheading")}</p>
                   <div className="grid grid-cols-2 gap-3">
-                    {RELATIONS.map((r) => (
+                    {RELATION_KEYS.map((rKey) => (
                       <button
-                        key={r}
-                        onClick={() => selectAndNext("relation", r)}
+                        key={rKey}
+                        onClick={() => selectAndNext("relation", rKey)}
                         className={`p-4 rounded-2xl border text-sm font-medium transition-all text-left ${
-                          answers.relation === r
+                          answers.relation === rKey
                             ? "border-blue-400 bg-blue-50 text-blue-700"
                             : "border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 text-gray-700"
                         }`}
                       >
-                        {r}
+                        {t(`careNavigator.relations.${rKey}`)}
                       </button>
                     ))}
                   </div>
@@ -141,8 +137,8 @@ const CareNavigator = ({ open, onClose }) => {
               {/* Step 1 — Concern */}
               {step === 1 && (
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-gray-800 mb-1">What's the concern?</h3>
-                  <p className="text-sm text-gray-500 mb-4">Choose the closest match</p>
+                  <h3 className="text-lg font-bold text-gray-800 mb-1">{t("careNavigator.step1.heading")}</h3>
+                  <p className="text-sm text-gray-500 mb-4">{t("careNavigator.step1.subheading")}</p>
                   <div className="grid grid-cols-1 gap-2">
                     {CONCERNS.map((c) => (
                       <button
@@ -154,7 +150,7 @@ const CareNavigator = ({ open, onClose }) => {
                             : "border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 text-gray-700"
                         }`}
                       >
-                        {c.label}
+                        {t(`careNavigator.concerns.${c.key}`)}
                       </button>
                     ))}
                   </div>
@@ -169,13 +165,13 @@ const CareNavigator = ({ open, onClose }) => {
                   </div>
 
                   <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                    Best service for you
+                    {t("careNavigator.bestServiceLabel")}
                   </p>
                   <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {recommendation.title}
+                    {t(`careNavigator.recommendations.${recommendation.key}.title`)}
                   </h3>
                   <p className="text-sm text-gray-500 mb-6 leading-relaxed">
-                    {recommendation.desc}
+                    {t(`careNavigator.recommendations.${recommendation.key}.desc`)}
                   </p>
 
                   {/* Fever — 2 buttons */}
@@ -188,7 +184,7 @@ const CareNavigator = ({ open, onClose }) => {
                         )}
                         className="w-full py-3.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold transition shadow-md hover:scale-[1.02]"
                       >
-                        {recommendation.homeAction.label}
+                        {t(`careNavigator.recommendations.${recommendation.key}.homeActionLabel`)}
                       </button>
                       <button
                         onClick={() => handleBook(
@@ -197,7 +193,7 @@ const CareNavigator = ({ open, onClose }) => {
                         )}
                         className="w-full py-3.5 border-2 border-blue-400 text-blue-600 rounded-xl font-semibold transition hover:bg-blue-50"
                       >
-                        {recommendation.onlineAction.label}
+                        {t(`careNavigator.recommendations.${recommendation.key}.onlineActionLabel`)}
                       </button>
                     </div>
                   ) : (
@@ -208,7 +204,7 @@ const CareNavigator = ({ open, onClose }) => {
                       )}
                       className="w-full py-3.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl font-semibold transition shadow-md hover:scale-[1.02]"
                     >
-                      {recommendation.action.label}
+                      {t(`careNavigator.recommendations.${recommendation.key}.actionLabel`)}
                     </button>
                   )}
 
@@ -220,7 +216,7 @@ const CareNavigator = ({ open, onClose }) => {
                     }}
                     className="mt-3 text-xs text-gray-400 hover:text-gray-600 transition"
                   >
-                     Not what you needed? Start again
+                    {t("careNavigator.startAgain")}
                   </button>
                 </div>
               )}
@@ -233,7 +229,7 @@ const CareNavigator = ({ open, onClose }) => {
                   onClick={() => setStep(0)}
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition"
                 >
-                  <FaArrowLeft size={11} /> Back
+                  <FaArrowLeft size={11} /> {t("careNavigator.back")}
                 </button>
               </div>
             )}

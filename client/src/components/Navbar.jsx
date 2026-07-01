@@ -4,11 +4,15 @@ import { Menu, X } from "lucide-react";
 import { FaCompass } from "react-icons/fa";
 import CareNavigator from "./CareNavigator";
 
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openNavigator, setOpenNavigator] = useState(false);
+  const { t } = useTranslation();
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -28,7 +32,13 @@ export default function Navbar() {
     };
   }, []);
 
-  const menuItems = ["Home", "Services", "Booking", "Partners", "Ambulance"];
+  const menuItems = [
+    { key: "nav.home", path: "/" },
+    { key: "nav.services", path: "/services" },
+    { key: "nav.booking", path: "/booking" },
+    { key: "nav.partners", path: "/partners" },
+    { key: "nav.ambulance", path: "/ambulance" },
+  ];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -55,11 +65,8 @@ export default function Navbar() {
           <ul className="hidden md:flex gap-10 font-medium text-gray-800">
             {menuItems.map((item, i) => (
               <li key={i}>
-                <Link
-                  to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                  className="relative group"
-                >
-                  {item}
+                <Link to={item.path} className="relative group">
+                  {t(item.key)}
                   <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-linear-to-r from-cyan-400 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
@@ -68,13 +75,13 @@ export default function Navbar() {
 
           {/* Right Section */}
           <div className="flex items-center gap-4">
-            {/* Find My Service Button */}
+            <LanguageSwitcher />
             <button
               onClick={() => setOpenNavigator(true)}
               className="hidden md:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
               <FaCompass size={15} />
-              Find My Service
+              {t("nav.findmyservice")}
             </button>
 
             {user ? (
@@ -125,7 +132,7 @@ export default function Navbar() {
                 to="/login"
                 className="hidden md:block px-5 py-2 rounded-full font-medium transition-all duration-300 bg-linear-to-r from-blue-500 to-cyan-400 text-white shadow hover:scale-105"
               >
-                Login
+                {t("nav.login")}
               </Link>
             )}
 
@@ -156,17 +163,17 @@ export default function Navbar() {
               className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-3 rounded-full font-semibold shadow"
             >
               <FaCompass size={16} />
-              Find My Service
+              {t("nav.findmyservice")}
             </button>
 
             {menuItems.map((item, i) => (
               <Link
                 key={i}
-                to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                to={item.path}
                 onClick={() => setOpen(false)}
                 className="block text-gray-800 font-medium"
               >
-                {item}
+                {t(item.key)}
               </Link>
             ))}
 
@@ -179,7 +186,7 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className="block text-center bg-gray-200 py-2 rounded-full"
                 >
-                  Profile
+                  {t("nav.profile")}
                 </Link>
 
                 <Link
@@ -187,14 +194,14 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className="block text-center bg-gray-200 py-2 rounded-full"
                 >
-                  Booking History
+                  {t("nav.bookingHistory")}
                 </Link>
 
                 <button
                   onClick={handleLogout}
                   className="block w-full text-center bg-red-500 text-white py-2 rounded-full"
                 >
-                  Logout
+                  {t("nav.logout")}
                 </button>
               </>
             ) : (
@@ -203,7 +210,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="block text-center bg-linear-to-r from-blue-500 to-cyan-400 text-white py-2 rounded-full"
               >
-                Login
+                {t("nav.login")}
               </Link>
             )}
           </div>

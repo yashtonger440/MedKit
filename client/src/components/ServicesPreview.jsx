@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useTranslation } from "react-i18next";
 
 import {
   FaSyringe,
@@ -11,31 +12,33 @@ import {
 } from "react-icons/fa";
 
 export default function Services() {
+  const { t } = useTranslation();
+
   const services = [
     {
       icon: <FaSyringe />,
-      title: "Injection at Home",
-      desc: "Safe & sterile injections by certified nurses.",
+      title: t("servicesPage.injection.title"),
+      desc: t("servicesPage.injection.desc"),
     },
     {
       icon: <FaVial />,
-      title: "IV Drip Administration",
-      desc: "IV therapy for hydration, vitamins & medications.",
+      title: t("servicesPage.ivDrip.title"),
+      desc: t("servicesPage.ivDrip.desc"),
     },
     {
       icon: <FaHeartbeat />,
-      title: "ECG Test at Home",
-      desc: "Complete ECG with instant reports.",
+      title: t("servicesPage.ecg.title"),
+      desc: t("servicesPage.ecg.desc"),
     },
     {
       icon: <FaWalking />,
-      title: "Physiotherapy",
-      desc: "Professional therapy sessions at your home.",
+      title: t("servicesPage.physio.title"),
+      desc: t("servicesPage.physio.desc"),
     },
     {
       icon: <FaUserNurse />,
-      title: "Nurse Visit at Home",
-      desc: "Professional nurse support for elderly & recovery care.",
+      title: t("servicesPage.nurse.title"),
+      desc: t("servicesPage.nurse.desc"),
     },
   ];
 
@@ -47,10 +50,10 @@ export default function Services() {
         {/* Heading */}
         <div className="text-center max-w-2xl mx-auto px-6">
           <h2 className="text-4xl font-bold text-gray-800">
-            Healthcare Services at Your Doorstep
+            {t("servicesPage.heading")}
           </h2>
           <p className="mt-4 text-slate-500">
-            Certified professionals delivering quality healthcare at home.
+            {t("servicesPage.subheading")}
           </p>
         </div>
 
@@ -67,10 +70,6 @@ export default function Services() {
                 <div className="text-3xl text-blue-500 group-hover:scale-110 transition">
                   {service.icon}
                 </div>
-
-                {/* <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                  {service.price}
-                </span> */}
               </div>
 
               {/* Title */}
@@ -92,7 +91,7 @@ export default function Services() {
                  }}
                 className="mt-6 inline-block w-full text-center bg-linear-to-r from-blue-500 to-cyan-400 text-white py-2 rounded-lg font-medium hover:scale-105 transition"
               >
-                Book Now
+                {t("common.bookNow")}
               </Link>
             </div>
           ))}
@@ -104,16 +103,16 @@ export default function Services() {
             to="/services"
             className="inline-block px-8 py-3 bg-linear-to-r from-blue-500 to-cyan-400 text-white font-semibold rounded-full shadow-md hover:scale-105 transition"
           >
-            View All Services →
+            {t("servicesPage.viewAll")}
           </Link>
         </div>
 
         {/* Bottom Trust Line */}
         <div className="mt-16 text-center">
           <p className="text-gray-600 text-sm">
-            <span className="font-semibold text-gray-800">✔ Certified Nurses</span> •
-            <span className="font-semibold text-gray-800"> Quick Response</span> •
-            <span className="font-semibold text-gray-800"> 100% Safe & Hygienic</span>
+            <span className="font-semibold text-gray-800">✔ {t("servicesPage.trust1")}</span> •
+            <span className="font-semibold text-gray-800"> {t("servicesPage.trust2")}</span> •
+            <span className="font-semibold text-gray-800"> {t("servicesPage.trust3")}</span>
           </p>
         </div>
       </section>
