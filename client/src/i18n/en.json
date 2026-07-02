@@ -116,128 +116,123 @@
             "f4": "Emergency priority response"
         }
     },
-    "priceCalc": {
-        "badge": "PRICE CALCULATOR",
-        "heading": "Know your price before booking",
-        "subheading": "Professional care at your doorstep — transparent pricing, no hidden fees.",
-        "whyChoose": "Why choose MedKit?",
-        "howItWorks": "How it works",
-        "needHelp": "Need help? Call us",
-        "checkPrice": "Check price for your area",
-        "serviceLabel": "Service",
-        "selectService": "— Select service —",
-        "visitTypeLabel": "Visit Type",
-        "areaLabel": "Your Area",
-        "selectArea": "— Select area —",
-        "cityCenter": "(City Center)",
-        "kmAway": "(~{{km}} km)",
-        "errorService": "Please select a service.",
-        "errorArea": "Please select your area.",
-        "calculateBtn": "Calculate Price",
-        "priceBreakdown": "Price Breakdown",
-        "basePrice": "Base price",
-        "surcharge": "{{visit}} surcharge",
-        "distance": "Distance ({{km}} km × ₹10)",
-        "platformFee": "Platform fee",
-        "total": "Total",
-        "payAfterService": "Pay after service · No upfront payment",
-        "why1": {
-            "title": "Certified professionals",
-            "desc": "All technicians verified & trained"
-        },
-        "why2": {
-            "title": "Pay after service",
-            "desc": "No upfront payment required"
-        },
-        "why3": {
-            "title": "Emergency response",
-            "desc": "Available within 1–2 hours"
-        },
-        "why4": {
-            "title": "Transparent pricing",
-            "desc": "Know the cost before booking"
-        },
-        "why5": {
-            "title": "Doorstep service",
-            "desc": "We come to you, anywhere in Dehradun"
-        },
-        "how1": {
-            "title": "Book online or call",
-            "desc": "Select your service and time slot"
-        },
-        "how2": {
-            "title": "Share your location",
-            "desc": "Add your address in Dehradun"
-        },
-        "how3": {
-            "title": "Technician arrives",
-            "desc": "Verified professional at your door"
-        },
-        "how4": {
-            "title": "Service delivered",
-            "desc": "Professional care at home"
-        },
-        "how5": {
-            "title": "Pay after service",
-            "desc": "Cash or UPI — only after you're satisfied"
-        },
-        "stat1": "Patients served",
-        "stat2": "Average rating",
-        "stat3": "Available",
-        "stat4": "Services",
-        "services": {
-            "injection": "Injection at Home",
-            "ivDrip": "IV Drip Administration",
-            "ecg": "ECG Test at Home",
-            "physio": "Physiotherapy",
-            "bpSugar": "BP & Sugar Check",
-            "bloodTest": "Blood Test at Home",
-            "nurseVisit": "Nurse Visit at Home",
-            "minorDressing": "Minor Dressing",
-            "majorDressing": "Major Dressing"
-        },
-        "visitTypes": {
-            "normal": {
-                "label": "Normal",
-                "desc": "Within 24 hrs"
-            },
-            "sameDay": {
-                "label": "Same Day",
-                "desc": "Today itself"
-            },
-            "emergency": {
-                "label": "Emergency",
-                "desc": "Within 1–2 hrs"
-            }
-        },
-        "areas": {
-            "clockTower": "Clock Tower / Paltan Bazaar",
-            "karanpur": "Karanpur",
-            "patelNagar": "Patel Nagar",
-            "dalanwala": "Dalanwala",
-            "isbtRishikeshRoad": "ISBT / Rishikesh Road",
-            "rajpurRoad": "Rajpur Road",
-            "dharampur": "Dharampur",
-            "rispana": "Rispana",
-            "ballupur": "Ballupur",
-            "jogiwala": "Jogiwala",
-            "haridwarRoad": "Haridwar Road",
-            "raipurRoad": "Raipur Road",
-            "niranjanpur": "Niranjanpur",
-            "majra": "Majra",
-            "gmsRoad": "GMS Road",
-            "sewlaKalan": "Sewla Kalan",
-            "clementTown": "Clement Town",
-            "dehrakhas": "Dehrakhas",
-            "sahastradharaRoad": "Sahastradhara Road",
-            "premnagar": "Premnagar",
-            "mussoorieRoad": "Mussoorie Road",
-            "nathanpur": "Nathanpur",
-            "selaqui": "Selaqui",
-            "doiwala": "Doiwala",
-            "vikasnagar": "Vikasnagar"
-        }
+  "priceCalc": {
+    "badge": "PRICE CALCULATOR",
+    "heading": "Know your price before booking ",
+    "subheading": "Professional care at your doorstep — transparent pricing, no hidden fees.",
+    "whyChoose": "Why choose MedKit?",
+    "howItWorks": "How it works",
+    "needHelp": "Need help? Call us",
+    "checkPrice": "Check price for your area",
+    "serviceLabel": "Service",
+    "selectService": "— Select service —",
+    "visitTypeLabel": "Visit Type",
+    "cityLabel": "City",
+    "selectCity": "— Select city —",
+    "areaLabel": "Your Area",
+    "selectArea": "— Select area —",
+    "calculateBtn": "Calculate Price",
+    "priceBreakdown": "Price Breakdown",
+    "basePrice": "Base price",
+    "surcharge": "{{visit}} surcharge",
+    "visitCharge": "Visit charge",
+    "platformFee": "Platform fee",
+    "total": "Total",
+    "payAfterService": "Pay after service · No upfront payment",
+    "errorService": "Please select a service.",
+    "errorCity": "Please select a city.",
+    "errorArea": "Please select your area.",
+
+    "why1": { "title": "Certified professionals", "desc": "All technicians verified & trained" },
+    "why2": { "title": "Pay after service", "desc": "No upfront payment required" },
+    "why3": { "title": "Emergency response", "desc": "Available within 1–2 hours" },
+    "why4": { "title": "Transparent pricing", "desc": "Know the cost before booking" },
+    "why5": { "title": "Doorstep service", "desc": "We come to you, anywhere in your city" },
+
+    "how1": { "title": "Book online or call", "desc": "Select your service and time slot" },
+    "how2": { "title": "Share your location", "desc": "Add your address in your city" },
+    "how3": { "title": "Technician arrives", "desc": "Verified professional at your door" },
+    "how4": { "title": "Service delivered", "desc": "Professional care at home" },
+    "how5": { "title": "Pay after service", "desc": "Cash or UPI — only after you're satisfied" },
+
+    "stat1": "Patients served",
+    "stat2": "Average rating",
+    "stat3": "Available",
+    "stat4": "Services",
+
+    "services": {
+      "injection":     "Injection at Home",
+      "ivDrip":        "IV Drip Administration",
+      "ecg":           "ECG Test at Home",
+      "physio":        "Physiotherapy",
+      "bpSugar":       "BP & Sugar Check",
+      "bloodTest":     "Blood Test at Home",
+      "nurseVisit":    "Nurse Visit at Home",
+      "minorDressing": "Minor Dressing",
+      "majorDressing": "Major Dressing"
     },
+
+    "visitTypes": {
+      "normal":    { "label": "Normal",    "desc": "Within 24 hrs" },
+      "sameDay":   { "label": "Same Day",  "desc": "Today itself"  },
+      "emergency": { "label": "Emergency", "desc": "Within 1–2 hrs" }
+    },
+
+    "cities": {
+      "dehradun":  "Dehradun",
+      "haridwar":  "Haridwar",
+      "haldwani":  "Haldwani",
+      "kathgodam": "Kathgodam",
+      "rudrapur":  "Rudrapur"
+    },
+
+    "areas": {
+      "clockTower":       "Clock Tower / Paltan Bazaar",
+      "karanpur":         "Karanpur",
+      "patelNagar":       "Patel Nagar",
+      "dalanwala":        "Dalanwala",
+      "rajpurRoad":       "Rajpur Road",
+      "ballupur":         "Ballupur",
+      "haridwarRoad":     "Haridwar Road",
+      "gmsRoad":          "GMS Road",
+      "clementTown":      "Clement Town",
+      "premnagar":        "Premnagar",
+      "mussoorieRoad":    "Mussoorie Road",
+      "selaqui":          "Selaqui",
+      "harKiPauri":       "Har Ki Pauri",
+      "bhupatwala":       "Bhupatwala",
+      "kankhal":          "Kankhal",
+      "jwalapur":         "Jwalapur",
+      "ranipur":          "Ranipur",
+      "jagjeetpur":       "Jagjeetpur",
+      "sidcul":           "SIDCUL",
+      "shivalikNagar":    "Shivalik Nagar",
+      "bahadrabad":       "Bahadrabad",
+      "roorkeeRoad":      "Roorkee Road",
+      "nainitalRoad":     "Nainital Road",
+      "kusumkhera":       "Kusumkhera",
+      "bhotiaParao":      "Bhotia Parao",
+      "bariMukhani":      "Bari Mukhani",
+      "rampurRoad":       "Rampur Road",
+      "kaladhungiRoad":   "Kaladhungi Road",
+      "gaulapar":         "Gaulapar",
+      "kathgodamTown":    "Kathgodam Town",
+      "lalkuan":          "Lalkuan",
+      "kathgodamStation": "Kathgodam Station",
+      "haldwaniTown":     "Haldwani Town",
+      "jeolikot":         "Jeolikot",
+      "bhowali":          "Bhowali",
+      "bhimtal":          "Bhimtal",
+      "sattal":           "Sattal",
+      "nehruNagar":       "Nehru Nagar",
+      "preetVihar":       "Preet Vihar",
+      "transportNagar":   "Transport Nagar",
+      "awasVikas":        "Awas Vikas",
+      "vikasNagar":       "Vikas Nagar",
+      "kichhaRoad":       "Kichha Road",
+      "gadarpur":         "Gadarpur"
+    }
+  },
     "doctorCall": {
         "whatsappMessage": "Hi, I would like to consult a doctor. Please assist me with the booking process.",
         "heading": "Consult a Doctor from Home",
@@ -440,29 +435,25 @@
         "badge": "Coverage",
         "headingLine1": "Areas We",
         "headingLine2": "Serve",
-        "subheading": "Currently serving Haldwani & Kathgodam with plans to expand.",
+        "subheading": "Currently serving Uttarakhand with plans to expand.",
         "areas": {
-            "rampurRoad": "Rampur Road",
-            "kaladhungiRoad": "Kaladhungi Road",
-            "nainitalRoad": "Nainital Road",
-            "mukhani": "Mukhani",
-            "heeraNagar": "Heera Nagar",
-            "kusumkhera": "Kusumkhera",
-            "panchakki": "Panchakki",
-            "bareillyRoad": "Bareilly Road",
-            "transportNagar": "Transport Nagar",
-            "lamachaur": "Lamachaur",
-            "kathgharia": "Kathgharia",
-            "devalchaur": "Devalchaur",
-            "chadail": "Chadail",
-            "kathgodamMarket": "Kathgodam Market",
-            "gaulaBarrage": "Gaula Barrage",
-            "shishMahal": "Shish Mahal",
-            "ranibagh": "Ranibagh"
-        }
-    },
+      "Almora": "Almora",
+      "Bageshwar": "Bageshwar",
+      "Chamoli": "Chamoli",
+      "Champawat": "Champawat",
+      "Dehradun": "Dehradun",
+      "Haridwar": "Haridwar",
+      "Nainital": "Nainital",
+      "Pauri Garhwal": "Pauri Garhwal",
+      "Pithoragarh": "Pithoragarh",
+      "Rudraprayag": "Rudraprayag",
+      "Tehri Garhwal": "Tehri Garhwal",
+      "Udham Singh Nagar": "Udham Singh Nagar",
+      "Uttarkashi": "Uttarkashi"
+    }
+  },
     "footer": {
-        "about": "Your trusted healthcare-at-home partner in Haldwani & Kathgodam. Quality medical care delivered to your doorstep.",
+        "about": "Your trusted healthcare-at-home partner in Uttarakhand. Quality medical care delivered to your doorstep.",
         "quickLinks": "QUICK LINKS",
         "home": "Home",
         "services": "Services",
@@ -521,7 +512,11 @@
             "address": "Please enter your full address.",
             "phoneRequired": "Please enter your phone number.",
             "phoneInvalid": "Enter a valid 10-digit Indian mobile number.",
-            "bookingFailed": "Booking failed. Please try again."
+            "bookingFailed": "Booking failed. Please try again.",
+            "prescriptionRequired": "Please upload the doctor's prescription.",
+            "prescriptionType": "Only JPG, PNG or PDF files are allowed",
+            "prescriptionSize": "File size must be under 5MB",
+            "medicineNameRequired": "Please enter the medicine name."
         },
         "confirmed": {
             "heading": "Booking Confirmed!",
@@ -529,11 +524,15 @@
             "service": "Service",
             "dateTime": "Date & Time",
             "area": "Area",
+            "prescription": "Prescription",
+            "prescriptionUploaded": "Uploaded",
             "total": "Total",
             "payNote": "Pay after service · No upfront payment",
             "shareWhatsapp": "Share on WhatsApp",
             "trackBooking": "Track My Booking",
-            "backHome": "Back to Home"
+            "backHome": "Back to Home",
+            "medicine": "Medicine",
+            "medicineArrangeNote": "Your technician will bring the medicine and share the pharmacy receipt with you. Please pay the exact medicine cost directly to them (cash/UPI) — this is separate from your service charge."
         },
         "review": {
             "backToEdit": "Back to edit",
@@ -546,8 +545,13 @@
             "time": "Time",
             "phone": "Phone",
             "notes": "Notes",
+            "prescription": "Prescription",
             "confirming": "Confirming...",
-            "confirmBooking": "Confirm Booking — ₹{{amount}}"
+            "confirmBooking": "Confirm Booking — ₹{{amount}}",
+            "medicine": "Medicine",
+            "dosage": "Dosage",
+            "medicineSource": "Medicine Source",
+            "medicineArrangeNote": "Medicine cost is separate — pay the technician directly based on the pharmacy receipt. No commission is added by MedKit."
         },
         "priceBreakdown": {
             "title": "Price Breakdown",
@@ -555,7 +559,8 @@
             "distance": "Distance ({{dist}} km × ₹{{rate}})",
             "platformFee": "Platform fee",
             "totalAmount": "Total Amount",
-            "payNote": "💵 Pay after service — no upfront payment"
+            "payNote": " Pay after service — no upfront payment",
+            "medicineExtraNote": "+ Medicine cost (pay technician directly, on actual bill)"
         },
         "loginWarning": {
             "text": "You need to be logged in to confirm a booking.",
@@ -586,6 +591,10 @@
         },
         "form": {
             "selectService": "Select Service",
+            "prescriptionLabel": "Upload Doctor's Prescription",
+            "prescriptionUploadHint": "Click to upload prescription",
+            "prescriptionFileTypes": "JPG, PNG or PDF · Max 5MB",
+            "prescriptionNote": "Prescription is mandatory for injections & IV drips as per medical guidelines.",
             "yourArea": "Your Area",
             "selectAreaPlaceholder": "— Select your area —",
             "cityCenter": "City Center",
@@ -600,7 +609,17 @@
             "optional": "Optional",
             "notesPlaceholder": "Special instructions, landmark details...",
             "reviewBooking": "Review Booking →",
-            "reviewBookingWithPrice": "Review Booking — ₹{{amount}}"
+            "reviewBookingWithPrice": "Review Booking — ₹{{amount}}",
+            "medicineName": "Medicine Name",
+            "medicineNamePlaceholder": "e.g. Voveran, Augmentin...",
+            "dosage": "Dosage",
+            "dosagePlaceholder": "e.g. 2ml, 500mg...",
+            "medicineSourceLabel": "Do you have the medicine?",
+            "medicineHasIt": "I have it",
+            "medicineHasItDesc": "You already have the medicine ready",
+            "medicineArrangeIt": "Arrange it for me",
+            "medicineArrangeItDesc": "Technician will bring it from a nearby pharmacy",
+            "medicineArrangeNote": "The technician will purchase this from a nearby pharmacy and show you the receipt. You pay the exact medicine cost directly to them — MedKit does not charge any commission on it."
         },
         "services": {
             "injection": {

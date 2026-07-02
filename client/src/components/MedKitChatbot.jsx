@@ -21,10 +21,11 @@ Reply in the same language the user writes in (Hindi or English).`;
 
 const MedKitChatbot = () => {
   const [open, setOpen]       = useState(false);
+  const [botTooltip, setBotTooltip] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Namaste! 👋 Main MedKit AI Assistant hoon. Aapki koi bhi health ya booking related problem mein help kar sakta hoon. Kya poochna chahte hain?",
+      content: "Namaste! Main MedKit AI Assistant hoon. Aapki koi bhi health ya booking related problem mein help kar sakta hoon. Kya poochna chahte hain?",
     },
   ]);
   const [input, setInput]     = useState("");
@@ -205,22 +206,34 @@ const MedKitChatbot = () => {
       )}
 
       {/* ── Floating Button ── */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full shadow-2xl flex items-center justify-center transition hover:scale-110"
-      >
-        {open ? (
-          <FaTimes size={20} className="text-white" />
-        ) : (
-          <FaRobot size={22} className="text-white" />
-        )}
-        {/* Notification dot */}
-        {!open && (
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-xs font-bold">1</span>
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        {/* Tooltip */}
+        {botTooltip && !open && (
+          <div className="absolute right-16 bg-gray-800 text-white text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
+            Chat with AI Assistant
+            <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-gray-800" />
           </div>
         )}
-      </button>
+
+        <button
+          onClick={() => setOpen(!open)}
+          onMouseEnter={() => setBotTooltip(true)}
+          onMouseLeave={() => setBotTooltip(false)}
+          className="w-14 h-14 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full shadow-2xl flex items-center justify-center transition hover:scale-110"
+        >
+          {open ? (
+            <FaTimes size={20} className="text-white" />
+          ) : (
+            <FaRobot size={22} className="text-white" />
+          )}
+          {/* Notification dot */}
+          {!open && (
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">1</span>
+            </div>
+          )}
+        </button>
+      </div>
     </>
   );
 };

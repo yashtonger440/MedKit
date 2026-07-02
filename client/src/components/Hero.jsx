@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FaCalculator } from "react-icons/fa";
 
 export default function Hero() {
   const [location, setLocation] = useState("");
+  const [calcTooltip, setCalcTooltip] = useState(false);
   const { t } = useTranslation();
 
   return (
@@ -40,7 +42,6 @@ export default function Hero() {
             {t("hero.subtitle")}
           </p>
 
-
           {/* Buttons */}
           <div className="mt-6 flex gap-4 flex-wrap">
             <Link
@@ -61,6 +62,29 @@ export default function Hero() {
             >
               {t("hero.exploreServices")}
             </Link>
+
+            {/* Calculate Price icon button */}
+            <div className="relative flex items-center">
+              {calcTooltip && (
+                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
+                  Calculate Price
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800" />
+                </div>
+              )}
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("price-calculator")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                onMouseEnter={() => setCalcTooltip(true)}
+                onMouseLeave={() => setCalcTooltip(false)}
+                aria-label={t("hero.calculatePrice")}
+                className="w-12 h-12 rounded-full bg-gray-200 text-blue-900 flex items-center justify-center shadow-md hover:scale-110 transition"
+              >
+                <FaCalculator size={18} />
+              </button>
+            </div>
           </div>
 
           {/* Stats */}
@@ -89,7 +113,7 @@ export default function Hero() {
         <div className="flex justify-center relative">
 
           <img
-            src="https://plus.unsplash.com/premium_photo-1681843126728-04eab730febe"
+            src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?"
             alt="Medical team of trusted doctors"
             className="relative z-10 w-112.5 md:w-167.5 rounded-3xl shadow-2xl animate-float"
             style={{ maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)" }}

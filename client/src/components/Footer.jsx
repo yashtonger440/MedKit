@@ -1,4 +1,4 @@
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaHeart } from "react-icons/fa";
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +13,6 @@ export default function Footer() {
         {/* LOGO + ABOUT */}
         <div>
           <h2 className="text-xl font-semibold flex items-center gap-2">
-            <FaHeart className="text-cyan-400" />
             MedKit
           </h2>
 

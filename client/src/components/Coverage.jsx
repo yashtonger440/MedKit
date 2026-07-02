@@ -5,24 +5,35 @@ export default function Coverage() {
   const { t } = useTranslation();
 
   const areaKeys = [
-    "rampurRoad",
-    "kaladhungiRoad",
-    "nainitalRoad",
-    "mukhani",
-    "heeraNagar",
-    "kusumkhera",
-    "panchakki",
-    "bareillyRoad",
-    "transportNagar",
-    "lamachaur",
-    "kathgharia",
-    "devalchaur",
-    "chadail",
-    "kathgodamMarket",
-    "gaulaBarrage",
-    "shishMahal",
-    "ranibagh",
+    "Almora",
+    "Bageshwar",
+    "Chamoli",
+    "Champawat",
+    "Dehradun",
+    "Haridwar",
+    "Nainital",
+    "Pauri Garhwal",
+    "Pithoragarh",
+    "Rudraprayag",
+    "Tehri Garhwal",
+    "Udham Singh Nagar",
+    "Uttarkashi",
   ];
+
+  // Split into rows: 6, 5, then remaining
+  const rowSizes = [6, 5];
+  const rows = [];
+  let startIndex = 0;
+
+  rowSizes.forEach((size) => {
+    rows.push(areaKeys.slice(startIndex, startIndex + size));
+    startIndex += size;
+  });
+
+  // Remaining items go in the last row
+  if (startIndex < areaKeys.length) {
+    rows.push(areaKeys.slice(startIndex));
+  }
 
   return (
     <section className="py-25 bg-gray-50">
@@ -48,20 +59,25 @@ export default function Coverage() {
         </p>
 
         {/* AREAS */}
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-
-          {areaKeys.map((key, index) => (
+        <div className="mt-10 flex flex-col items-center gap-4">
+          {rows.map((row, rowIndex) => (
             <div
-              key={index}
-              className="flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-200"
+              key={rowIndex}
+              className="flex flex-wrap justify-center gap-4"
             >
-              <FaMapMarkerAlt className="text-blue-500 text-sm" />
-              <span className="text-gray-700 text-sm font-medium">
-                {t(`coverage.areas.${key}`)}
-              </span>
+              {row.map((key, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-200"
+                >
+                  <FaMapMarkerAlt className="text-blue-500 text-sm" />
+                  <span className="text-gray-700 text-sm font-medium">
+                    {t(`coverage.areas.${key}`)}
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
-
         </div>
 
       </div>

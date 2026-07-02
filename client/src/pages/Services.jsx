@@ -20,43 +20,36 @@ const Services = () => {
     {
       key: "injection",
       name: "Injection at Home",
-      price: 120,
       icon: <FaSyringe />,
     },
     {
       key: "ivDrip",
       name: "IV Drip Administration",
-      price: 300,
       icon: <FaTint />,
     },
     {
       key: "ecg",
       name: "ECG Test at Home",
-      price: 400,
       icon: <FaHeartbeat />,
     },
     {
       key: "physio",
       name: "Physiotherapy",
-      price: 500,
       icon: <FaWalking />,
     },
     {
       key: "bpSugar",
       name: "BP & Sugar Check",
-      price: 199,
       icon: <FaStethoscope />,
     },
     {
       key: "bloodTest",
       name: "Blood Test at Home",
-      price: 499,
       icon: <FaFlask />,
     },
     {
       key: "nurseVisit",
       name: "Nurse Visit at Home",
-      price: 699,
       icon: <FaUserNurse />,
       tag: "Recommended",
     },
@@ -66,7 +59,6 @@ const Services = () => {
     navigate("/booking", {
       state: {
         service: service.name,
-        price: service.price,
       },
     });
   };
@@ -114,9 +106,6 @@ const Services = () => {
               </div>
 
               <div className="mt-5">
-                <p className="text-lg font-bold text-blue-600">
-                  ₹{service.price}
-                </p>
 
                 <button
                   onClick={() => handleBooking(service)}

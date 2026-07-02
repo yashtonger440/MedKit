@@ -73,7 +73,7 @@ export default function ElderlyCarePlans() {
         className="max-w-2xl mx-auto mb-12"
       >
         <img
-          src="/images/careforparents.jpg"
+          src="/images/elderlyCare1.jpg"
           alt="Elderly Care"
           className="w-full mt-3 h-137.5 object-cover rounded-3xl shadow-2xl"
         />
